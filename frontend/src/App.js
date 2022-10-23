@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Admin from './pages/Admin';
 import Instructor from './pages/Instructor';
 import Trainee from './pages/Trainee';
+import Courses from './pages/Courses';
 function App() {
   return (
     <>
@@ -23,6 +24,7 @@ function App() {
         <Route path='/admin' element={<Admin />} />
         <Route path='/instructor' element={<Instructor />} />
         <Route path='/trainee' element={<Trainee />} />
+        <Route path='/courses' element={<Courses />} />
       </Routes>
     </div>
     </Router>

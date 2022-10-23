@@ -5,20 +5,14 @@ import {useSelector} from 'react-redux'
 import {toast} from 'react-toastify'
 
 
-function Trainee() {
+function Courses() {
     const navigate = useNavigate()
 
     const {user} = useSelector((state) => state.auth)
 
     useEffect(() => {
 
-        if(!user){
-            navigate('/login')
-        }else if((user.role !== "admin") && (user.role !== "trainee")){
-            toast.error('not Authorized!')
-            navigate('/'+user.role)
-            
-        }
+        
 
     },[user,navigate])
 
@@ -28,8 +22,8 @@ function Trainee() {
 
 
 
-    <div>Trainee Home Page</div>
+    <div>Courses Home Page</div>
   )
 }
 
-export default Trainee
+export default Courses
