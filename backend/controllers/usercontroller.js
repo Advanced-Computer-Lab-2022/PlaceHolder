@@ -8,11 +8,14 @@ const user = require('../model/usermodel')
 
 
 const registeruser = asynchandler(async (req,res) => {
-    const {username, firstName, lastName, email, password, userType, gender, country} = req.body
-
-    if(!username || !firstName || !lastName || !email || !password || !userType || !gender || !country){
+    const {username, firstName, lastName, email, password, gender, country} = req.body
+    	
+        
+    if(username == null || firstName == null || lastName == null || email == null || password == null|| gender == null || country == null){
         res.status(400)
+        
         throw new Error('Please add all fields')
+        
     }
 
     //check user exists
@@ -41,7 +44,6 @@ const registeruser = asynchandler(async (req,res) => {
         lastName,
         email,
         password: hashedPassword,
-        userType,
         gender,
         country,
     })
