@@ -31,8 +31,11 @@ function Login() {
         if(isError){
             toast.error(message)
         }
-        if(isSuccess || user && user.isAdmin == true){
-            navigate('/courses')   
+        if(isSuccess || user && user.role == "admin"){
+            navigate('/admin')   
+        }
+        else if(isSuccess || user && user.role == "instructor"){
+            navigate('/instructor')
         }
         else if(isSuccess || user){
             navigate('/')
