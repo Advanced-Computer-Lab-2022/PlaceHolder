@@ -11,7 +11,6 @@ import Spinner from '../components/Spinner'
 
 
 
-
 function Login() {
     const [FormData, setFormData] = useState({
         username: '',
@@ -32,8 +31,13 @@ function Login() {
         if(isError){
             toast.error(message)
         }
-
-        if(isSuccess || user){
+        if(isSuccess || user && user.role == "admin"){
+            navigate('/admin')   
+        }
+        else if(isSuccess || user && user.role == "instructor"){
+            navigate('/instructor')
+        }
+        else if(isSuccess || user){
             navigate('/')
         }
 

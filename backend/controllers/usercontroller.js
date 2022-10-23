@@ -46,6 +46,7 @@ const registeruser = asynchandler(async (req,res) => {
         password: hashedPassword,
         gender,
         country,
+        role : "trainee",
     })
 
     if(user1){
@@ -73,6 +74,7 @@ const loginuser = asynchandler(async (req,res) => {
             _id: user2.id,
             username: username,
             email: user2.email,
+            role: user2.role,
             token: generateToken(user2.id)
         })
     }
