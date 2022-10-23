@@ -7,7 +7,8 @@ import Dashboard from './pages/dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Admin from './pages/Admin';
-
+import Instructor from './pages/Instructor';
+import Trainee from './pages/Trainee';
 function App() {
   return (
     <>
@@ -20,6 +21,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/admin' element={<Admin />} />
+        <Route path='/instructor' element={<Instructor />} />
+        <Route path='/trainee' element={<Trainee />} />
       </Routes>
     </div>
     </Router>

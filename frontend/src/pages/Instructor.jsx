@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux'
 import {toast} from 'react-toastify'
 
 
-function Admin() {
+function Instructor() {
     const navigate = useNavigate()
 
     const {user} = useSelector((state) => state.auth)
@@ -14,7 +14,7 @@ function Admin() {
 
         if(!user){
             navigate('/login')
-        }else if(user.role !== "admin" ){
+        }else if(user.role !== "admin" || user.role !== "instructor" ){
             toast.error('not Authorized!')
             navigate('/'+user.role)
             
@@ -28,8 +28,8 @@ function Admin() {
 
 
 
-    <div>Admin Home Page</div>
+    <div>Instructor Home Page</div>
   )
 }
 
-export default Admin
+export default Instructor
