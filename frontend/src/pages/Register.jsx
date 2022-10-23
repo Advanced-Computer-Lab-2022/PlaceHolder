@@ -15,8 +15,8 @@ import Spinner from '../components/Spinner'
 function Register() {
     const [FormData, setFormData] = useState({
         username: '',
-        firstname: '',
-        lastname: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         password2: '',
@@ -24,7 +24,7 @@ function Register() {
         country: '',
     })
 
-    const {username,firstname,lastname,email,password,password2,gender,country} = FormData
+    const {username,firstName,lastName,email,password,password2,gender,country} = FormData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -46,7 +46,7 @@ function Register() {
 
         }, [user, isError, isSuccess, message, navigate, dispatch])
 
-    const onchange = (e) => {
+    const onChange = (e) => {
         setFormData((prevState)=> ({
             ...prevState,
             [e.target.name]: e.target.value,
@@ -61,8 +61,8 @@ function Register() {
         } else{
             const userData = {
                 username,
-                firstname,
-                lastname,
+                firstName,
+                lastName,
                 email,
                 password,
                 gender,
@@ -90,37 +90,37 @@ function Register() {
     </section>
 
     <section className='form'>
-        <form onSubmit={onSubmit}></form>
-        <form>
+        <form onSubmit={onSubmit}>
+        
             <div className="form-group">
-            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onchange}/>
+            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='firstname' name='firstname' value={firstname} placeholder='Enter your first name' onChange={onchange}/>
+            <input type="text" className="form-control" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='lastname' name='lastname' value={lastname} placeholder='Enter your last name' onChange={onchange}/>
+            <input type="text" className="form-control" id='lastName' name='lastName' value={lastName} placeholder='Enter your last name' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onchange}/>
+            <input type="text" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onchange}/>
+            <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onchange}/>
+            <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onchange}/>
+            <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onchange}/>
+            <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onChange}/>
             </div>
             <div className="form-group">
                 <button type='submit' className='btn btn-block'>Sumbit</button>
             </div>
+        
         </form>
-
     </section>
     
     
