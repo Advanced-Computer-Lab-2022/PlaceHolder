@@ -7,7 +7,7 @@ const user = require('../model/usermodel')
 
 
 
-const registeruserit = asynchandler(async (req,res) => {
+const registeruser = asynchandler(async (req,res) => {
     const {username, firstName, lastName, email, password, userType, gender, country} = req.body
 
     if(!username || !firstName || !lastName || !email || !password || !userType || !gender || !country){
@@ -61,7 +61,7 @@ const registeruserit = asynchandler(async (req,res) => {
 })
 
 
-const loginuserit = asynchandler(async (req,res) => {
+const loginuser = asynchandler(async (req,res) => {
     const {username, password} = req.body
 
     const user2 = await user.findOne({username})
@@ -80,7 +80,7 @@ const loginuserit = asynchandler(async (req,res) => {
     }
 })
 
-const viewuserit = asynchandler(async (req,res) => {
+const viewuser = asynchandler(async (req,res) => {
     const {_id, username, email} = await user.findById(req.user.id)
 
     res.status(200).json({
@@ -91,34 +91,7 @@ const viewuserit = asynchandler(async (req,res) => {
 })
 
 
-const loginuserins = asynchandler(async (req,res) => {
-    const {username, password} = req.body
 
-    const user3 = await user.findOne({username})
-
-    if(user3 && (await bcrypt.compare(password, user3.password))){
-        res.status(201).json({
-            _id: user3.id,
-            username: username,
-            email: user3.email,
-            token: generateToken(user3.id)
-        })
-    }
-    else{
-        res.status(400)
-        throw new Error('Invalid Credentials!')
-    }
-})
-
-const viewuserins = asynchandler(async (req,res) => {
-    const {_id, username, email} = await user.findById(req.user.id)
-
-    res.status(200).json({
-        id: _id,
-        username,
-        email,
-    })
-})
 
 
 
@@ -138,9 +111,8 @@ const generateToken = (id) => {
 }
 
 module.exports = {
-    registeruserit,
-    loginuserit,
-    viewuserit,
-    loginuserins,
-    viewuserins,
+    registeruser,
+    loginuser,
+    viewuser,
+    
 }
