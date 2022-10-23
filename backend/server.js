@@ -16,10 +16,7 @@ app.use(express.urlencoded({extended: false}))
 
 app.use('/',require('./routes/dashroute'))
 app.use('/courses',require('./routes/coursesroute'))
-app.use('/usersit',require('./routes/userroutesit'))
-app.use('/usersins',require('./routes/userroutesit'))
-app.use('/usersct',require('./routes/userroutesit'))
-app.use('/usersadm',require('./routes/userroutesit'))
+app.use('/users',require('./routes/userroutes'))
 
 
 app.listen(port, () => console.log(`Server started on port ${port}` ))
