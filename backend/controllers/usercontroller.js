@@ -74,6 +74,7 @@ const loginuser = asynchandler(async (req,res) => {
             _id: user2.id,
             username: username,
             email: user2.email,
+            isAdmin: user2.isAdmin,
             token: generateToken(user2.id)
         })
     }
