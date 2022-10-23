@@ -46,6 +46,7 @@ const registeruser = asynchandler(async (req,res) => {
         password: hashedPassword,
         gender,
         country,
+        isAdmin : false,
     })
 
     if(user1){
