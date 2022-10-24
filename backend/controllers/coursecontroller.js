@@ -21,8 +21,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         price: req.body.price,
         summary: req.body.summary,
         instructorName: req.body.instructorName,
-        instructorID: req.body.instructorID,
-        courseRating: req.body.courseRating,
+        courseRating: 0,
         totalHours: req.body.totalHours
     })
     res.status(200).json({message: 'Course Added'})

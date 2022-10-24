@@ -10,6 +10,7 @@ import Admin from './pages/Admin';
 import Instructor from './pages/Instructor';
 import Trainee from './pages/Trainee';
 import Courses from './pages/Courses';
+import AddCourse from './pages/AddCourse'
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
         <Route path='/instructor' element={<Instructor />} />
         <Route path='/trainee' element={<Trainee />} />
         <Route path='/courses' element={<Courses />} />
+        <Route path='/addcourse' element={<AddCourse />} />
       </Routes>
     </div>
     </Router>
