@@ -5,6 +5,6 @@ import courseReducer from '../features/courses/courseSlice'
 export const store = configureStore({
   reducer: {
    auth: authReducer,
-   course : courseReducer,
+   courses: courseReducer,
   },
 })

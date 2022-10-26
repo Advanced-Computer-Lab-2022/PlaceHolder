@@ -25,11 +25,35 @@ export const createCourse = createAsyncThunk('course/new', async (courseData, th
     }
 })
 
+//Get All Courses
+export const getCourses = createAsyncThunk(
+  'courses/getAll',
+  async (_, thunkAPI) => {
+    try {
+      
+      return await courseService.getCourses()
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const courseSlice = createSlice({
     name: 'course',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state) => {
+        state.isLoading = false
+        state.isSuccess = false
+        state.isError = false
+        state.message = ''
+        }
     },
     extraReducers: (builder) => {
       builder
@@ -42,6 +66,19 @@ export const courseSlice = createSlice({
           state.courses.push(action.payload)
         })
         .addCase(createCourse.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+        })
+        .addCase(getCourses.pending, (state) => {
+          state.isLoading = true
+        })
+        .addCase(getCourses.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.courses = action.payload
+        })
+        .addCase(getCourses.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload
