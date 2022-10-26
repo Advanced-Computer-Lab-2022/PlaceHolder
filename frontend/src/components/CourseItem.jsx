@@ -6,11 +6,18 @@ function CourseItem({ course }) {
 
   return (
     <div className='goal'>
-      <div>{new Date(course.createdAt).toLocaleString('en-US')}</div>
+      
       <h2>{course.title}</h2>
-      {/* <button onClick={() => dispatch(deleteGoal(goal._id))} className='close'>
-        X
-      </button> */}
+      <img src="https://scriptia.net/wp-content/uploads/2018/06/java-programing.jpg" alt="Girl in a jacket" width="300" height="150"></img>
+      <br></br>
+      Teached By : {course.instructorName}
+      
+      <br></br>
+         
+      Price : ${course.price} 
+      <button  className='view' >
+        View Course
+      </button>
     </div>
   )
 }
