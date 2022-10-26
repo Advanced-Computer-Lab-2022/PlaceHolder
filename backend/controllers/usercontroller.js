@@ -54,6 +54,7 @@ const registeruser = asynchandler(async (req,res) => {
             _id: user1.id,
             username: username,
             email: user1.email,
+            role:user1.role,
             token: generateToken(user1.id)
         })
     }

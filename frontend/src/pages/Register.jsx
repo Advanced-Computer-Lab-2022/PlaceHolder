@@ -39,7 +39,7 @@ function Register() {
             }
 
             if(isSuccess || user){
-                navigate('/')
+                navigate('/' + user.role)
             }
 
             dispatch(reset())

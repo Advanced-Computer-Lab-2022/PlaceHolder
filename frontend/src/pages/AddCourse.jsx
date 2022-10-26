@@ -1,7 +1,7 @@
 import React from 'react'
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useSelector , useDispatch} from 'react-redux'
+import {useSelector } from 'react-redux'
 import {toast} from 'react-toastify'
 import CourseForm from '../components/CourseForm'
 
@@ -15,8 +15,13 @@ function Courses() {
     
 
     useEffect(() => {
-
+      if(!user){
+        navigate('/login')
+    }else if((user.role !== "admin") && (user.role !== "instructor") ){
+        toast.error('not Authorized!')
+        navigate('/'+user.role)
         
+    }
 
     },[user,navigate])
 
