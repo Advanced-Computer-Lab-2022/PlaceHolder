@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Dashboard from './pages/dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminRegister from './pages/AdminRegister';
 import Admin from './pages/Admin';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/admin' element={<Admin />} />
+        <Route path='/adminregister' element={<AdminRegister />} />
       </Routes>
     </div>
     </Router>

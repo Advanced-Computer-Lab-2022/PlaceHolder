@@ -12,7 +12,7 @@ import Spinner from '../components/Spinner'
 
 
 
-function Register() {
+function AdminRegister() {
     const [FormData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -22,14 +22,15 @@ function Register() {
         password2: '',
         gender: '',
         country: '',
+        role: '',
     })
 
-    const {username,firstName,lastName,email,password,password2,gender,country} = FormData
+    const {username,firstName,lastName,email,password,password2,gender,country,role} = FormData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
     const {user,isLoading, isError, isSuccess, message} = useSelector(
+
         (state) => state.auth
     )
 
@@ -58,7 +59,9 @@ function Register() {
 
         if(password !== password2){
             toast.error('Passwords do not match')
-        } else{
+        } 
+        if (role=='admin'||role=='Corporate trainee'||role=='Instructor'){
+       
             const userData = {
                 username,
                 firstName,
@@ -67,11 +70,15 @@ function Register() {
                 password,
                 gender,
                 country,
-                role : 'trainee',
+                role : role,
             }
-
-
             dispatch(register(userData))
+        }else{
+            toast.error('cant register as defined role, please try again.')
+        
+
+
+            
         }
     }
 
@@ -92,7 +99,11 @@ function Register() {
 
     <section className='form'>
         <form onSubmit={onSubmit}>
-        
+
+
+        <div className="form-group">
+            <input type="text" className="form-control" id='role' name='role' value={role} placeholder='Register as' onChange={onChange}/>
+            </div>
             <div className="form-group">
             <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onChange}/>
             </div>
@@ -132,4 +143,4 @@ function Register() {
   )
 }
 
-export default Register
+export default AdminRegister

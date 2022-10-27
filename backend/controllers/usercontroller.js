@@ -8,7 +8,7 @@ const user = require('../model/usermodel')
 
 
 const registeruser = asynchandler(async (req,res) => {
-    const {username, firstName, lastName, email, password, gender, country} = req.body
+    const {username, firstName, lastName, email, password, gender, country,role} = req.body
     	
         
     if(username == null || firstName == null || lastName == null || email == null || password == null|| gender == null || country == null){
@@ -46,7 +46,7 @@ const registeruser = asynchandler(async (req,res) => {
         password: hashedPassword,
         gender,
         country,
-        role : "trainee",
+        role,
     })
 
     if(user1){
