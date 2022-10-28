@@ -29,6 +29,9 @@ function Header() {
             <FaBook/>Courses</Link> 
             &nbsp;
             &nbsp;
+        {/* <Link to ='/search'><FaBook/>Search</Link>
+        &nbsp;
+            &nbsp; */}
         {user && (user.role =="instructor" || user.role =="admin") ? (
              <Link to='/addcourse'>
              <FaBookOpen/> Add Course

@@ -239,15 +239,13 @@ switch (myCurrency) {
 
 function CourseItem({ course }) {
   const {user} = useSelector((state) => state.auth)
-  const myCountry = user.country;
-  //console.log(user.country)
-  const myCurrency = findMyCurrency(user.country)
-  //console.log(myCurrency)
-  console.log(course.price)
-
-  const CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
-  console.log(CourseFinalPrice)
- 
+  var myCurrency = 'USD'
+  var CourseFinalPrice = course.price
+  if(user){
+   myCurrency = findMyCurrency(user.country)
+   CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
+  
+  } 
 
   return (
     <div className='goal'>
@@ -255,11 +253,12 @@ function CourseItem({ course }) {
       <h2>{course.title}</h2>
       <img src="https://scriptia.net/wp-content/uploads/2018/06/java-programing.jpg" alt="Girl in a jacket" width="300" height="150"></img>
       <br></br>
-      Teached By : {course.instructorName}
-      
+      Total Hours : {course.totalHours}
+      <br />
+      Course Rating : {course.courseRating}
       <br></br>
-         
-      Price : {myCurrency}{CourseFinalPrice} 
+        
+      Price : {myCurrency} {CourseFinalPrice} 
       <button  className='view' >
         View Course
       </button>

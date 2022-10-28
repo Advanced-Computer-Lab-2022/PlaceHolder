@@ -11,6 +11,7 @@ import Instructor from './pages/Instructor';
 import Trainee from './pages/Trainee';
 import Courses from './pages/Courses';
 import AddCourse from './pages/AddCourse'
+import SearchCourses from './pages/SearchCourses';
 function App() {
   return (
     <>
@@ -25,8 +26,10 @@ function App() {
         <Route path='/admin' element={<Admin />} />
         <Route path='/instructor' element={<Instructor />} />
         <Route path='/trainee' element={<Trainee />} />
-        <Route path='/courses' element={<Courses />} />
+        <Route path='/courses' element={<SearchCourses />} />
         <Route path='/addcourse' element={<AddCourse />} />
+        {/* <Route path='/courses' element={<SearchCourses />} /> */}
+        
       </Routes>
     </div>
     </Router>

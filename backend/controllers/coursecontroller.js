@@ -44,5 +44,6 @@ const UpdateCourse = asyncHandler(async (req, res) => {
 module.exports = {
     ViewCourses,
     AddCourse,
-    UpdateCourse
+    UpdateCourse,
+    
 }
