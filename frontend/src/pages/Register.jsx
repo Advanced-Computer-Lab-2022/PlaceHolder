@@ -7,6 +7,8 @@ import {FaUser} from 'react-icons/fa'
 import {register, reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
+import CountryData from "../components/CountryData.json";
+import { v4 as uuidv4 } from "uuid";
 
 
 
@@ -14,6 +16,23 @@ import CountrySelector from '../components/CountrySelector'
 
 
 function Register() {
+
+    const [countries,setCountries] = useState(CountryData);
+    //console.log("countries", countries);
+
+    const [searchCountry, setSearchCountry] = useState();
+    //console.log("searchCountry", searchCountry);
+
+    function handleChange(event){
+        setSearchCountry(event.target.value)
+        setFormData((prevState)=> ({
+            ...prevState,
+            country: searchCountry,
+        }))
+
+    }
+
+
     const [FormData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -56,7 +75,7 @@ function Register() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-
+        
         if(password !== password2){
             toast.error('Passwords do not match')
         } else{
@@ -67,10 +86,10 @@ function Register() {
                 email,
                 password,
                 gender,
-                country,
+                country: searchCountry,
             }
 
-
+                console.log(userData)
             dispatch(register(userData))
         }
     }
@@ -115,8 +134,24 @@ function Register() {
             <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/>
             </div>
             <div className="form-group">
-                <CountrySelector/>
-            {/* <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onChange}/> */}
+            <select className="form-control" id='country' name='country' onChange={handleChange} value={searchCountry}>
+
+            <option value="" hidden>
+                 Please Select Country
+                </option>
+            {
+                countries.map((item) => {
+                  return (
+                    <option key={uuidv4()} value={item.country}>
+                      {item.country}
+                    </option>
+                  );
+                })
+            }
+            
+            </select>
+
+
             </div>
             <div className="form-group">
                 <button type='submit' className='btn btn-block'>Sumbit</button>

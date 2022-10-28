@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
     },
     country:{
         type:String,
-        required: [true,'Please add a password']
+        required: [true,'Please add a Country']
     },
     role:{
         type:String,
