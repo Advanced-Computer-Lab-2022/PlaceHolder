@@ -6,6 +6,7 @@ import {toast} from 'react-toastify'
 import {FaUser} from 'react-icons/fa'
 import {register, reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import CountrySelector from '../components/CountrySelector'
 
 
 
@@ -114,7 +115,8 @@ function Register() {
             <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onChange}/>
+                <CountrySelector/>
+            {/* <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onChange}/> */}
             </div>
             <div className="form-group">
                 <button type='submit' className='btn btn-block'>Sumbit</button>
