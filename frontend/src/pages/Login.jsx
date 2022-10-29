@@ -38,7 +38,7 @@ function Login() {
             navigate('/instructor')
         }
         else if(isSuccess || user){
-            navigate('/')
+            navigate('/trainee')
         }
 
         dispatch(reset())

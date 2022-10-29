@@ -107,6 +107,19 @@ h3 {
   border: none;
   background: none;
 }
+.goal .view {
+  position: absolute;
+  
+  right: 1px;
+  bottom: 0px;
+  cursor: pointer;
+  border: solid;
+  border-color: green;
+  background: green;
+  color:white;
+  font-weight:bold;
+}
+
 
 .form,
 .content {
