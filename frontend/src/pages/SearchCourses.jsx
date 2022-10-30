@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useState } from 'react'
 
 
-function Courses() {
+function SearchCourses() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -17,7 +17,12 @@ function Courses() {
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
-    
+    //console.log(courses)
+     const[courses1 , setCourses] = useState(courses);
+     //setCourses(courses)
+     console.log(courses1)
+     
+     //console.log(courses1)
     useEffect(() => {
       if (isError) {
         console.log(message)
@@ -37,7 +42,35 @@ function Courses() {
     }
 
 
-    
+    function filterContent(courses, searchTerm){
+        console.log(courses, searchTerm)
+        const result = courses.filter((course) => course.title.includes(searchTerm))
+        
+        return setCourses(result)
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+   const  handleSearcher = (e) => {
+      const searchTerm = e.currentTarget.value
+      console.log(searchTerm)
+      axios.get('/courses/').then((res) => {
+        if(res.data) {
+          console.log('here')
+          console.log(res.data)
+          filterContent(res.data, searchTerm)
+        }
+      })
+    }
   
 
 
@@ -52,12 +85,14 @@ function Courses() {
         </h1>
         
       </section>
-      
+      <div>
+        <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher}/>
+      </div>
 
       <section className='content'>
-        {(courses.length > 0)   ? (
+        {(courses1.length > 0)   ? (
           <div className='goals'>
-            {courses.map((course) => (
+            {courses1.map((course) => (
               <CourseItem key={course._id} course={course} />
             ))}
           </div>
@@ -71,4 +106,4 @@ function Courses() {
   )
 }
 
-export default Courses
+export default SearchCourses

@@ -4,15 +4,33 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {FaUser} from 'react-icons/fa'
-import {register, reset} from '../features/auth/authSlice'
+import {adduser, reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
-
+import CountrySelector from '../components/CountrySelector'
+import CountryData from "../components/CountryData.json";
+import { v4 as uuidv4 } from "uuid";
 
 
 
 
 
 function AdminRegister() {
+    const [countries,setCountries] = useState(CountryData);
+    //console.log("countries", countries);
+
+    const [searchCountry, setSearchCountry] = useState();
+    //console.log("searchCountry", searchCountry);
+
+    function handleChange(event){
+        setSearchCountry(event.target.value)
+        setFormData((prevState)=> ({
+            ...prevState,
+            country: searchCountry,
+        }))
+
+    }
+
+
     const [FormData, setFormData] = useState({
         username: '',
         firstName: '',
@@ -65,7 +83,7 @@ function AdminRegister() {
         if(password !== password2){
             toast.error('Passwords do not match')
         } 
-        if (role==='admin'||role==='Corporate trainee'||role==='Instructor'){
+        if (role==='admin'||role==='corporate trainee'||role==='instructor'){
        
             const userData = {
                 username,
@@ -74,10 +92,10 @@ function AdminRegister() {
                 email,
                 password,
                 gender,
-                country,
-                role : role,
+                country : searchCountry,
+                role,
             }
-            dispatch(register(userData))
+            dispatch(adduser(userData))
         }else{
             toast.error('cant register as defined role, please try again.')
         
@@ -131,7 +149,24 @@ function AdminRegister() {
             <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='country' name='country' value={country} placeholder='Enter your country' onChange={onChange}/>
+            <select className="form-control" id='country' name='country' onChange={handleChange} value={searchCountry}>
+
+            <option value="" hidden>
+                 Please Select Country
+                </option>
+            {
+                countries.map((item) => {
+                  return (
+                    <option key={uuidv4()} value={item.country}>
+                      {item.country}
+                    </option>
+                  );
+                })
+            }
+            
+            </select>
+
+
             </div>
             <div className="form-group">
                 <button type='submit' className='btn btn-block'>Sumbit</button>
