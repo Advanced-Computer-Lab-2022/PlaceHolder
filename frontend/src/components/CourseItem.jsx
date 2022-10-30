@@ -246,6 +246,11 @@ function CourseItem({ course }) {
    CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
   
   } 
+import { useDispatch } from 'react-redux'
+//import { deleteGoal } from '../features/goals/goalSlice'
+
+function CourseItem({ course }) {
+  const dispatch = useDispatch()
 
   return (
     <div className='goal'>
@@ -259,6 +264,11 @@ function CourseItem({ course }) {
       <br></br>
         
       Price : {myCurrency} {CourseFinalPrice} 
+      Teached By : {course.instructorName}
+      
+      <br></br>
+         
+      Price : ${course.price} 
       <button  className='view' >
         View Course
       </button>

@@ -54,8 +54,6 @@ const registeruser = asynchandler(async (req,res) => {
             _id: user1.id,
             username: username,
             email: user1.email,
-            role:user1.role,
-            country:user1.country,
             token: generateToken(user1.id)
         })
     }
@@ -88,9 +86,13 @@ const loginuser = asynchandler(async (req,res) => {
 })
 
 const viewuser = asynchandler(async (req,res) => {
-    
+    const {_id, username, email} = await user.findById(req.user.id)
 
-    res.status(200).json(req.user)
+    res.status(200).json({
+        id: _id,
+        username,
+        email,
+    })
 })
 
 

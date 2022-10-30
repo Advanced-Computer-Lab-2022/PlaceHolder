@@ -110,7 +110,7 @@ h3 {
 .goal .view {
   position: absolute;
   
-  right: 1px;
+  right: 15px;
   bottom: 0px;
   cursor: pointer;
   border: solid;
