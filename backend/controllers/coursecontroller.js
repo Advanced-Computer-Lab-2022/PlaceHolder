@@ -1,3 +1,4 @@
+const { response } = require('express')
 const asyncHandler = require('express-async-handler')
 
 const Course = require('../model/coursesmodel')
@@ -21,11 +22,19 @@ const AddCourse = asyncHandler(async (req, res) => {
         price: req.body.price,
         summary: req.body.summary,
         instructorName: req.body.instructorName,
-        instructorID: req.body.instructorID,
-        courseRating: req.body.courseRating,
+        courseRating: 0,
         totalHours: req.body.totalHours
     })
-    res.status(200).json({message: 'Course Added'})
+    res.status(200).json({
+        title: req.body.title,
+        subtitles: req.body.subtitles,
+        subject: req.body.subject,
+        price: req.body.price,
+        summary: req.body.summary,
+        instructorName: req.body.instructorName,
+        courseRating: 0,
+        totalHours: req.body.totalHours
+    })
 })
 
 const UpdateCourse = asyncHandler(async (req, res) => {
@@ -33,8 +42,25 @@ const UpdateCourse = asyncHandler(async (req, res) => {
     res.status(200).json(courses)
 })
 
+const ViewCoursePage = asyncHandler(async (req, res) => {
+    try{
+        const courses = await Course.findOne({ course: req.course.title});
+        res.status(200).json(courses);
+        if (!courses){
+            return res.status(400).json({msg : 'Invalid Course Name'})
+        }
+        res.locals.courses = courses;
+        res.json(courses);
+    }
+    catch(err){
+        res.status(500).send("Error");
+    }
+})
+
 module.exports = {
     ViewCourses,
     AddCourse,
-    UpdateCourse
+    UpdateCourse,
+    ViewCoursePage,
+    
 }

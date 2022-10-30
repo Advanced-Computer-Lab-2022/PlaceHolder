@@ -54,6 +54,8 @@ const registeruser = asynchandler(async (req,res) => {
             _id: user1.id,
             username: username,
             email: user1.email,
+            role:user1.role,
+            country:user1.country,
             token: generateToken(user1.id)
         })
     }
@@ -75,6 +77,7 @@ const loginuser = asynchandler(async (req,res) => {
             username: username,
             email: user2.email,
             role: user2.role,
+            country:user2.country,
             token: generateToken(user2.id)
         })
     }

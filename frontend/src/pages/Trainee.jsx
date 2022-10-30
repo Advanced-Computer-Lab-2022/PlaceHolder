@@ -14,7 +14,7 @@ function Trainee() {
 
         if(!user){
             navigate('/login')
-        }else if(user.role !== "admin" || user.role !== "trainee"){
+        }else if((user.role !== "admin") && (user.role !== "trainee")){
             toast.error('not Authorized!')
             navigate('/'+user.role)
             
