@@ -39,7 +39,7 @@ function Register() {
             }
 
             if(isSuccess || user){
-                navigate('/')
+                navigate('/' + user.role)
             }
 
             dispatch(reset())
@@ -67,7 +67,6 @@ function Register() {
                 password,
                 gender,
                 country,
-                role : 'trainee',
             }
 
 

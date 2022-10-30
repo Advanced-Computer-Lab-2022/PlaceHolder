@@ -39,9 +39,14 @@ function AdminRegister() {
                 toast.error(message)
             }
 
-            if(isSuccess || user){
-                navigate('/')
-            }
+        
+             if(!user){
+             navigate('/login')
+            }else if((user.role !== "admin")){
+             toast.error('not Authorized!')
+             navigate('/'+user.role)
+                    
+                }
 
             dispatch(reset())
 
@@ -60,7 +65,7 @@ function AdminRegister() {
         if(password !== password2){
             toast.error('Passwords do not match')
         } 
-        if (role=='admin'||role=='Corporate trainee'||role=='Instructor'){
+        if (role==='admin'||role==='Corporate trainee'||role==='Instructor'){
        
             const userData = {
                 username,

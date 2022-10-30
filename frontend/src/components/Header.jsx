@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus} from 'react-icons/fa'
 
 import {Link , useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
@@ -16,13 +16,41 @@ function Header() {
         navigate('/')
     }
 
+   
+
+
+
   return (
+    
     <header className='header'>
+
         <div className='logo'>
-        <Link to='/'>Courses</Link>
+        <Link to='/courses'>
+            <FaBook/>Courses</Link> 
+            &nbsp;
+            &nbsp;
+        {user && (user.role =="instructor" || user.role =="admin") ? (
+             <Link to='/addcourse'>
+             <FaBookOpen/> Add Course
+         </Link>
+        ): (<></>)}
+            &nbsp;
+            &nbsp;
+        {user && (user.role =="admin") ? (
+             <Link to='/newusers'>
+             <FaUserPlus/> Add New Users
+         </Link>
+        ): (<></>)}
+
+
         </div>
+                
         <ul>
-            {user ? (<li>
+            {user ? (
+            
+            
+            
+            <li>
             <button className='btn' onClick={onLogout}>
                 <FaSignOutAlt/> Logout
                 </button>

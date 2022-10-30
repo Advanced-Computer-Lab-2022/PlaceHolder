@@ -8,7 +8,7 @@ const user = require('../model/usermodel')
 
 
 const registeruser = asynchandler(async (req,res) => {
-    const {username, firstName, lastName, email, password, gender, country,role} = req.body
+    const {username, firstName, lastName, email, password, gender, country} = req.body
     	
         
     if(username == null || firstName == null || lastName == null || email == null || password == null|| gender == null || country == null){
@@ -46,7 +46,7 @@ const registeruser = asynchandler(async (req,res) => {
         password: hashedPassword,
         gender,
         country,
-        role,
+        role : "trainee",
     })
 
     if(user1){
@@ -54,6 +54,7 @@ const registeruser = asynchandler(async (req,res) => {
             _id: user1.id,
             username: username,
             email: user1.email,
+            role:user1.role,
             token: generateToken(user1.id)
         })
     }
@@ -85,13 +86,9 @@ const loginuser = asynchandler(async (req,res) => {
 })
 
 const viewuser = asynchandler(async (req,res) => {
-    const {_id, username, email} = await user.findById(req.user.id)
+    
 
-    res.status(200).json({
-        id: _id,
-        username,
-        email,
-    })
+    res.status(200).json(req.user)
 })
 
 
