@@ -17,7 +17,7 @@ function Courses() {
     useEffect(() => {
       if(!user){
         navigate('/login')
-    }else if((user.role !== "admin") && (user.role !== "instructor") ){
+    }else if(user.role !== "instructor"){
         toast.error('not Authorized!')
         navigate('/'+user.role)
         

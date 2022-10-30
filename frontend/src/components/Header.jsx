@@ -32,7 +32,7 @@ function Header() {
         {/* <Link to ='/search'><FaBook/>Search</Link>
         &nbsp;
             &nbsp; */}
-        {user && (user.role =="instructor" || user.role =="admin") ? (
+        {user && (user.role =="instructor") ? (
              <Link to='/addcourse'>
              <FaBookOpen/> Add Course
          </Link>
@@ -42,6 +42,11 @@ function Header() {
         {user && (user.role =="admin") ? (
              <Link to='/newusers'>
              <FaUserPlus/> Add New Users
+         </Link>
+        ): (<></>)}
+         {user && (user.role =="instructor") ? (
+             <Link to='/viewmyCoursesIns'>
+             <FaBook/> View My Courses
          </Link>
         ): (<></>)}
 

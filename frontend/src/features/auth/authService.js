@@ -13,6 +13,15 @@ const register = async (userData) => {
   return response.data
 }
 
+const adduser = async (userData) => {
+  const response = await axios.post(API_URL + 'new', userData)
+
+
+  return response.data
+}
+
+
+
 // Login user
 const login = async (userData) => {
   const response = await axios.post(API_URL + 'login', userData)
@@ -35,6 +44,7 @@ const authService = {
   register,
   logout,
   login,
+  adduser,
 }
 
 export default authService

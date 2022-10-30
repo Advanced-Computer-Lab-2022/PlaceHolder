@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {FaUser} from 'react-icons/fa'
-import {register, reset} from '../features/auth/authSlice'
+import {adduser, reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
 import CountryData from "../components/CountryData.json";
@@ -14,9 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 
 
 
-
-function Register() {
-
+function AdminRegister() {
     const [countries,setCountries] = useState(CountryData);
     //console.log("countries", countries);
 
@@ -42,14 +40,15 @@ function Register() {
         password2: '',
         gender: '',
         country: '',
+        role: '',
     })
 
-    const {username,firstName,lastName,email,password,password2,gender,country} = FormData
+    const {username,firstName,lastName,email,password,password2,gender,country,role} = FormData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
     const {user,isLoading, isError, isSuccess, message} = useSelector(
+
         (state) => state.auth
     )
 
@@ -58,9 +57,14 @@ function Register() {
                 toast.error(message)
             }
 
-            if(isSuccess || user){
-                navigate('/' + user.role)
-            }
+        
+             if(!user){
+             navigate('/login')
+            }else if((user.role !== "admin")){
+             toast.error('not Authorized!')
+             navigate('/'+user.role)
+                    
+                }
 
             dispatch(reset())
 
@@ -75,10 +79,12 @@ function Register() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        
+
         if(password !== password2){
             toast.error('Passwords do not match')
-        } else{
+        } 
+        if (role==='admin'||role==='corporate trainee'||role==='instructor'){
+       
             const userData = {
                 username,
                 firstName,
@@ -86,12 +92,17 @@ function Register() {
                 email,
                 password,
                 gender,
-                country: searchCountry,
-                role : 'trainee'
+                country : searchCountry,
+                role,
             }
+            dispatch(adduser(userData))
+            navigate('/')
+        }else{
+            toast.error('cant register as defined role, please try again.')
+        
 
-                console.log(userData)
-            dispatch(register(userData))
+
+            
         }
     }
 
@@ -103,18 +114,22 @@ function Register() {
     <>
     <section className='heading'> 
     <h1>
-            <FaUser/> Register
+            <FaUser/> Register a new user
     </h1>
         <p>
-            Please create an account
+            Please Fill All Fields Below
         </p>
     </section>
 
     <section className='form'>
         <form onSubmit={onSubmit}>
-        
+
+
+        <div className="form-group">
+            <input type="text" className="form-control" id='role' name='role' value={role} placeholder='Register as' onChange={onChange}/>
+            </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onChange}/>
+            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your username' onChange={onChange}/>
             </div>
             <div className="form-group">
             <input type="text" className="form-control" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>
@@ -169,4 +184,4 @@ function Register() {
   )
 }
 
-export default Register
+export default AdminRegister

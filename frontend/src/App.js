@@ -12,6 +12,9 @@ import Trainee from './pages/Trainee';
 import Courses from './pages/Courses';
 import AddCourse from './pages/AddCourse'
 import SearchCourses from './pages/SearchCourses';
+import ViewMyCoursesIns from './pages/ViewMyCoursesIns'
+import AdminRegister from './pages/AdminRegister';
+import ViewCourses from './pages/ViewCourses';
 function App() {
   return (
     <>
@@ -28,6 +31,9 @@ function App() {
         <Route path='/trainee' element={<Trainee />} />
         <Route path='/courses' element={<SearchCourses />} />
         <Route path='/addcourse' element={<AddCourse />} />
+        <Route path='/viewmyCoursesIns' element={<ViewMyCoursesIns />} />
+        <Route path='/newusers' element={<AdminRegister />} />
+        <Route path='/viewcourse/:title' element={<ViewCourses />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
         
       </Routes>
