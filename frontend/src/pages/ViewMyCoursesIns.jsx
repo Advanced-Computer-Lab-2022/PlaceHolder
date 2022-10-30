@@ -9,7 +9,7 @@ import axios from 'axios'
 import { useState } from 'react'
 
 
-function SearchCourses() {
+function ViewMyCoursesIns() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -31,7 +31,8 @@ function SearchCourses() {
       
   
       dispatch(getCourses())
-      
+      const newCourses = courses.filter((course) => course.instructorName.includes(user.username))
+      setCourses(newCourses)
       return () => {
         dispatch(reset())
       }
@@ -45,8 +46,9 @@ function SearchCourses() {
     function filterContent(courses, searchTerm){
         console.log(courses, searchTerm)
         const result = courses.filter((course) => course.title.includes(searchTerm))
+        const result2 = result.filter((course) => course.instructorName.includes(user.username))
         
-        return setCourses(result)
+        return setCourses(result2)
         
     }
 
@@ -98,7 +100,7 @@ function SearchCourses() {
           </div>
         ) : (
           <div className='goals'>
-          {courses.map((course) => (
+          {courses1.map((course) => (
             <CourseItem key={course._id} course={course} />
           ))}
         </div>
@@ -110,4 +112,4 @@ function SearchCourses() {
   )
 }
 
-export default SearchCourses
+export default ViewMyCoursesIns

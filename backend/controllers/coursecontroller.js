@@ -8,6 +8,8 @@ const ViewCourses = asyncHandler(async (req, res) => {
 })
 
 
+
+
 const AddCourse = asyncHandler(async (req, res) => {
     if(!req.body.title){
         res.status(400)

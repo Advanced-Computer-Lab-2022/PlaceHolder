@@ -87,6 +87,7 @@ function Register() {
                 password,
                 gender,
                 country: searchCountry,
+                role : 'trainee'
             }
 
                 console.log(userData)

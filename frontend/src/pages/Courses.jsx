@@ -5,6 +5,8 @@ import {toast} from 'react-toastify'
 import CourseItem from '../components/CourseItem'
 import Spinner from '../components/Spinner'
 import { getCourses, reset } from '../features/courses/courseSlice'
+import axios from 'axios'
+import { useState } from 'react'
 
 
 function Courses() {
@@ -24,7 +26,7 @@ function Courses() {
       
   
       dispatch(getCourses())
-  
+      
       return () => {
         dispatch(reset())
       }
@@ -33,20 +35,27 @@ function Courses() {
     if (isLoading) {
       return <Spinner />
     }
+
+
+    
   
 
 
-  return ( <>
+  return ( 
+  
+  
+  <>
+  
       <section className='heading'>
       <h1>
         All Availble Courses
         </h1>
         
       </section>
-
+      
 
       <section className='content'>
-        {courses.length > 0 ? (
+        {(courses.length > 0)   ? (
           <div className='goals'>
             {courses.map((course) => (
               <CourseItem key={course._id} course={course} />

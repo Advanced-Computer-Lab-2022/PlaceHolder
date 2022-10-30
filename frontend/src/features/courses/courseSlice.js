@@ -43,6 +43,26 @@ export const getCourses = createAsyncThunk(
     }
   }
 )
+//Get Courses By Instructor
+export const getCoursesIns = createAsyncThunk(
+  'courses/getAll',
+  async (insData, thunkAPI) => {
+    try {
+      
+      return await courseService.getCoursesIns(insData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+
 
 export const courseSlice = createSlice({
     name: 'course',
