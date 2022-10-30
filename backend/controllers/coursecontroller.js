@@ -1,4 +1,4 @@
-const { response } = require('express')
+const { response, application } = require('express')
 const asyncHandler = require('express-async-handler')
 
 const Course = require('../model/coursesmodel')
@@ -44,11 +44,8 @@ const UpdateCourse = asyncHandler(async (req, res) => {
 
 const ViewCoursePage = asyncHandler(async (req, res) => {
     try{
-        const courses = await Course.findOne({ course: req.course.title});
+        const courses = await Course.findOne({ title: req.params.title});
         res.status(200).json(courses);
-        if (!courses){
-            return res.status(400).json({msg : 'Invalid Course Name'})
-        }
         res.locals.courses = courses;
         res.json(courses);
     }
