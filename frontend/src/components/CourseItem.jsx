@@ -1,4 +1,6 @@
+import { FaUserPlus } from 'react-icons/fa';
 import {  useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 //import { deleteGoal } from '../features/goals/goalSlice'
 
@@ -241,6 +243,7 @@ function CourseItem({ course }) {
   const {user} = useSelector((state) => state.auth)
   var myCurrency = 'USD'
   var CourseFinalPrice = course.price
+  const pathCourse = '/viewcourse/' + course.title
   if(user){
    myCurrency = findMyCurrency(user.country)
    CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
@@ -260,7 +263,9 @@ function CourseItem({ course }) {
         
       Price : {myCurrency} {CourseFinalPrice} 
       <button  className='view' >
-        View Course
+        <Link to={pathCourse}>
+         <FaUserPlus/>View Course
+        </Link>
       </button>
     </div>
   )

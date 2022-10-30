@@ -114,10 +114,10 @@ function AdminRegister() {
     <>
     <section className='heading'> 
     <h1>
-            <FaUser/> Register
+            <FaUser/> Register a new user
     </h1>
         <p>
-            Please create an account
+            Please Fill All Fields Below
         </p>
     </section>
 
@@ -129,7 +129,7 @@ function AdminRegister() {
             <input type="text" className="form-control" id='role' name='role' value={role} placeholder='Register as' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onChange}/>
+            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your username' onChange={onChange}/>
             </div>
             <div className="form-group">
             <input type="text" className="form-control" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>

@@ -32,7 +32,7 @@ function Header() {
         {/* <Link to ='/search'><FaBook/>Search</Link>
         &nbsp;
             &nbsp; */}
-        {user && (user.role =="instructor" || user.role =="admin") ? (
+        {user && (user.role =="instructor") ? (
              <Link to='/addcourse'>
              <FaBookOpen/> Add Course
          </Link>

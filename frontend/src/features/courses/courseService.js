@@ -28,11 +28,19 @@ const getCoursesIns = async () => {
 return response.data
 }
 
+//Get Course Page
+const getCoursePage = async (title) => {
+  const response = await axios.get(API_URL + '/view/' + title)
+
+
+return response.data
+}
 
 const courseService = {
     createCourse,
     getCourses,
-    getCoursesIns
+    getCoursesIns,
+    getCoursePage
 }
 
 export default courseService
