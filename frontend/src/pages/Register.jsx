@@ -9,6 +9,7 @@ import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
 import CountryData from "../components/CountryData.json";
 import { v4 as uuidv4 } from "uuid";
+import e from 'express'
 
 
 
@@ -23,11 +24,23 @@ function Register() {
     const [searchCountry, setSearchCountry] = useState();
     //console.log("searchCountry", searchCountry);
 
-    function handleChange(event){
+    const [searchGender, setSearchGender] = useState();
+
+
+    function handleChangeCountry(event){
         setSearchCountry(event.target.value)
         setFormData((prevState)=> ({
             ...prevState,
             country: searchCountry,
+        }))
+
+    }
+
+    function handleChangeGender(event){
+        setSearchGender(event.target.value)
+        setFormData((prevState)=> ({
+            ...prevState,
+            gender: searchGender,
         }))
 
     }
@@ -132,10 +145,20 @@ function Register() {
             <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onChange}/>
             </div>
             <div className="form-group">
-            <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/>
+            <select className="form-control" id='gender' name='gender' onChange={handleChangeGender} value={searchGender}>
+
+                        <option value="" hidden>
+                        Please Select Gender
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+
+
+            </select>
+            {/* <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/> */}
             </div>
             <div className="form-group">
-            <select className="form-control" id='country' name='country' onChange={handleChange} value={searchCountry}>
+            <select className="form-control" id='country' name='country' onChange={handleChangeCountry} value={searchCountry}>
 
             <option value="" hidden>
                  Please Select Country
