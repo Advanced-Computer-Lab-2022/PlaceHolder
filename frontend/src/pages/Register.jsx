@@ -9,7 +9,7 @@ import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
 import CountryData from "../components/CountryData.json";
 import { v4 as uuidv4 } from "uuid";
-import e from 'express'
+
 
 
 
@@ -73,6 +73,7 @@ function Register() {
 
             if(isSuccess || user){
                 navigate('/' + user.role)
+                toast.success('Logged In !')
             }
 
             dispatch(reset())
@@ -98,7 +99,7 @@ function Register() {
                 lastName,
                 email,
                 password,
-                gender,
+                gender : searchGender,
                 country: searchCountry,
                 role : 'trainee'
             }

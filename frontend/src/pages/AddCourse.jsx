@@ -19,6 +19,7 @@ function Courses() {
     useEffect(() => {
       if(!user){
         navigate('/login')
+        toast.error('Please Log In First!')
     }else if(user.role !== "instructor"){
         toast.error('not Authorized!')
         navigate('/'+user.role)

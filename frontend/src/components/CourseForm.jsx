@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import {createCourse} from '../features/courses/courseSlice'
 import { v4 as uuidv4 } from "uuid";
 import SubjectData from "../components/SubjectData.json";
+import { toast } from 'react-toastify'
 
 
 
@@ -65,6 +66,7 @@ function CourseForm() {
         console.log(user.username)
         setText('')
         navigate('/'+user.role)
+        toast.success("Course Added!")
     }
     const onChange = (e) => {
         setFormData((prevState)=> ({
