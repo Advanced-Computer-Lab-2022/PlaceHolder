@@ -8,12 +8,11 @@ import Spinner from '../components/Spinner'
 import { getCourses, reset } from '../features/courses/courseSlice'
 import axios from 'axios'
 import { useState } from 'react'
-import {FaArrowUp , FaArrowDown} from 'react-icons/fa'
 import { v4 as uuidv4 } from "uuid";
 import SubjectData from "../components/SubjectData.json";
 
 
-function SearchCourses() {
+function ViewMyCoursesIns() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -21,14 +20,15 @@ function SearchCourses() {
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
-
-
-      const [subjects , setSubject] = useState(SubjectData);
-      const [searchSubject, setSearchSubject] = useState();
+    //console.log(courses)
      const[courses1 , setCourses] = useState(courses);
+     //setCourses(courses)
+     console.log(courses1)
      
-     
-     
+     //console.log(courses1)
+
+     const [subjects , setSubject] = useState(SubjectData);
+     const [searchSubject, setSearchSubject] = useState();
     useEffect(() => {
       if (isError) {
         console.log(message)
@@ -37,7 +37,8 @@ function SearchCourses() {
       
   
       dispatch(getCourses())
-      
+      const newCourses = courses.filter((course) => course.instructorName.includes(user.username))
+      setCourses(newCourses)
       return () => {
         dispatch(reset())
       }
@@ -49,127 +50,22 @@ function SearchCourses() {
 
 
     function filterContent1(courses, searchTerm){
-        
-        const result = courses.filter((course) => course.title.includes(searchTerm))
-        
-        return setCourses(result)
-        
-    }
-
-    function filterContent2(courses, searchTerm){
-      
-      const result = courses.filter((course) => course.subject.includes(searchTerm))
+      console.log(courses, searchTerm)
+      const result = courses.filter((course) => course.title.includes(searchTerm))
       
       return setCourses(result)
       
   }
 
-  function filterContent3(courses, searchTerm){
-    
-    const result = courses.filter((course) => course.instructorName.includes(searchTerm))
+  function filterContent2(courses, searchTerm){
+    console.log(courses, searchTerm)
+    const result = courses.filter((course) => course.subject.includes(searchTerm))
     
     return setCourses(result)
     
 }
 
 
-const sort_by = (field, reverse, primer) => {
-
-  const key = primer ?
-    function(x) {
-      return primer(x[field])
-    } :
-    function(x) {
-      return x[field]
-    };
-
-  reverse = !reverse ? 1 : -1;
-
-  return function(a, b) {
-    return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-  }
-}
-
-    
-  const SortPriceAscending = (e) => {
-
-   
-    console.log(courses)
-      let array1 = [
-        ...courses,
-      ]
-      console.log(array1)
-      var sorted = array1.sort(sort_by('price', false, parseInt))
-      console.log(sorted)
-      setCourses(sorted)
-
-
-
-
-
-
-
-  }
-
-  const SortRatingAscending = (e) => {
-
-   
-    console.log(courses)
-      let array1 = [
-        ...courses,
-      ]
-      console.log(array1)
-      var sorted = array1.sort(sort_by('courseRating', false, parseInt))
-      console.log(sorted)
-      setCourses(sorted)
-
-
-
-
-
-
-
-  }
-
-  const SortPriceDescending = (e) => {
-
-   
-    console.log(courses)
-      let array1 = [
-        ...courses,
-      ]
-      console.log(array1)
-      var sorted = array1.sort(sort_by('price', true, parseInt))
-      console.log(sorted)
-      setCourses(sorted)
-
-
-
-
-
-
-
-  }
-
-  const SortRatingDescending = (e) => {
-
-   
-    console.log(courses)
-      let array1 = [
-        ...courses,
-      ]
-      console.log(array1)
-      var sorted = array1.sort(sort_by('courseRating', true, parseInt))
-      console.log(sorted)
-      setCourses(sorted)
-
-
-
-
-
-
-
-  }
 
 
 
@@ -179,17 +75,17 @@ const sort_by = (field, reverse, primer) => {
 
 
 
-   const  handleSearcher1 = (e) => {
+    const  handleSearcher1 = (e) => {
       const searchTerm = e.currentTarget.value
-     
+      console.log(searchTerm)
       axios.get('/courses/').then((res) => {
         if(res.data) {
-          
+          console.log('here')
+          console.log(res.data)
           filterContent1(res.data, searchTerm)
         }
       })
     }
-
 
     const  handleSearcher2 = (e) => {
       setSearchSubject(e.target.value)
@@ -203,19 +99,6 @@ const sort_by = (field, reverse, primer) => {
       })
     }
 
-    const  handleSearcher3 = (e) => {
-      const searchTerm = e.currentTarget.value
-     
-      axios.get('/courses/').then((res) => {
-        if(res.data) {
-          
-          filterContent3(res.data, searchTerm)
-        }
-      })
-
-      
-    }
-  
 
 
   return ( 
@@ -230,22 +113,12 @@ const sort_by = (field, reverse, primer) => {
         
       </section>
       <div>
-          Filter by Price : <button onClick={SortPriceAscending}><FaArrowUp/></button>   <button onClick={SortPriceDescending}><FaArrowDown/></button>
-
-      </div>
-
-      <div>
-          Filter by Rating : <button onClick={SortRatingAscending}><FaArrowUp/></button>   <button onClick={SortRatingDescending}><FaArrowDown/></button>
-
-      </div>
-
-      <div>
         Search By Title:
         <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher1}/>
       </div>
 
       <div>
-        Search By Subject:
+      Search By Subject:
         {/* <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher2}/> */}
         <select className="form-control" id='subject' name='subject' onChange={handleSearcher2} value={searchSubject}>
 
@@ -263,12 +136,10 @@ const sort_by = (field, reverse, primer) => {
                      }          
             
                      </select>
+      
       </div>
 
-      <div>
-        Search By Instructor:
-        <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher3}/>
-      </div>
+      
 
       <section className='content'>
         {(courses1.length > 0)   ? (
@@ -279,7 +150,7 @@ const sort_by = (field, reverse, primer) => {
           </div>
         ) : (
           <div className='goals'>
-          {courses.map((course) => (
+          {courses1.map((course) => (
             <CourseItem key={course._id} course={course} />
           ))}
         </div>
@@ -291,4 +162,4 @@ const sort_by = (field, reverse, primer) => {
   )
 }
 
-export default SearchCourses
+export default ViewMyCoursesIns

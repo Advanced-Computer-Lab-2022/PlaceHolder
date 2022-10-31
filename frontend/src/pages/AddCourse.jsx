@@ -4,6 +4,8 @@ import {useNavigate} from 'react-router-dom'
 import {useSelector } from 'react-redux'
 import {toast} from 'react-toastify'
 import CourseForm from '../components/CourseForm'
+import { v4 as uuidv4 } from "uuid";
+import SubjectData from "../components/CountryData.json";
 
 
 
@@ -17,7 +19,7 @@ function Courses() {
     useEffect(() => {
       if(!user){
         navigate('/login')
-    }else if((user.role !== "admin") && (user.role !== "instructor") ){
+    }else if(user.role !== "instructor"){
         toast.error('not Authorized!')
         navigate('/'+user.role)
         

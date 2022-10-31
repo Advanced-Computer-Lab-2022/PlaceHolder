@@ -8,6 +8,8 @@ const ViewCourses = asyncHandler(async (req, res) => {
 })
 
 
+
+
 const AddCourse = asyncHandler(async (req, res) => {
     if(!req.body.title){
         res.status(400)
@@ -41,9 +43,21 @@ const UpdateCourse = asyncHandler(async (req, res) => {
     res.status(200).json(courses)
 })
 
+const ViewCoursePage = asyncHandler(async (req, res) => {
+    try{
+        const courses = await Course.findOne({ title: req.params.title});
+        res.status(200).json(courses);
+        
+    }
+    catch(err){
+        res.status(500).send("Error");
+    }
+})
+
 module.exports = {
     ViewCourses,
     AddCourse,
     UpdateCourse,
+    ViewCoursePage,
     
 }
