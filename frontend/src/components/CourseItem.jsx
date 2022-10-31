@@ -1,13 +1,13 @@
 import { FaUserPlus } from 'react-icons/fa';
 import {  useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-
+import React from 'react'
 //import { deleteGoal } from '../features/goals/goalSlice'
 
   
 
 function findMyCurrency(myCountry1){
-  console.log(myCountry1)
+  
   switch (myCountry1) {
     case "United Kingdom": return'GBP';
       
@@ -261,7 +261,12 @@ function CourseItem({ course }) {
       Course Rating : {course.courseRating}
       <br></br>
         
-      Price : {myCurrency} {CourseFinalPrice} 
+      Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+          
+        ) : (<>
+          {myCurrency} {CourseFinalPrice}
+          </>
+        )}
       <button  className='view' >
         <Link to={pathCourse}>
          <FaUserPlus/>View Course
