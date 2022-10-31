@@ -5,7 +5,7 @@ const { ViewCourses,
         ViewCoursePage, 
                      } = require('../controllers/coursecontroller')
 
-//const { protect } = require('../middleware/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', ViewCourses)
 router.post('/new',AddCourse)
