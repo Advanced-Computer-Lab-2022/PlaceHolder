@@ -47,6 +47,24 @@ export const adduser = createAsyncThunk(
   }
 )
 
+export const updatetos = createAsyncThunk(
+  'auth/updatetos',
+  async (user, thunkAPI) => {
+    try {
+      console.log("Hre" + user)
+      return await authService.toschange(user)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 
 
 

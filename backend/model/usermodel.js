@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema({
     role:{
         type:String,
         required: [true, '']
+    },
+    toscheck:{
+        type:String,
+        
     }
 },{
     timestamps:true

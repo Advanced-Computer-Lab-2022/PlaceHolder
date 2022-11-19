@@ -13,6 +13,13 @@ const register = async (userData) => {
   return response.data
 }
 
+const toschange = async (userData) => {
+  console.log(userData)
+  const response = await axios.post(API_URL + 'updatetos', userData)
+
+  return response.data
+}
+
 const adduser = async (userData) => {
   const response = await axios.post(API_URL + 'new', userData)
 
@@ -45,6 +52,7 @@ const authService = {
   logout,
   login,
   adduser,
+  toschange
 }
 
 export default authService

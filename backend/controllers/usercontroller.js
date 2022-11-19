@@ -47,6 +47,7 @@ const registeruser = asynchandler(async (req,res) => {
         gender,
         country,
         role,
+        toscheck: "false",
     })
 
     if(user1){
@@ -56,6 +57,7 @@ const registeruser = asynchandler(async (req,res) => {
             email: user1.email,
             role:user1.role,
             country:user1.country,
+            toscheck:user1.toscheck,
             token: generateToken(user1.id)
         })
     }
@@ -78,6 +80,7 @@ const loginuser = asynchandler(async (req,res) => {
             email: user2.email,
             role: user2.role,
             country:user2.country,
+            toscheck:user2.toscheck,
             token: generateToken(user2.id)
         })
     }
@@ -91,6 +94,19 @@ const viewuser = asynchandler(async (req,res) => {
     
 
     res.status(200).json(req.user)
+})
+
+
+const updatetos = asynchandler(async (req,res) => {
+    
+    
+    const obj = JSON.parse(JSON.stringify(req.body));
+    
+    const toscheck1 = { toscheck : "true"};
+    const user3 = await user.findOneAndUpdate(obj,toscheck1)
+    
+    
+    
 })
 
 
@@ -117,5 +133,6 @@ module.exports = {
     registeruser,
     loginuser,
     viewuser,
+    updatetos,
     
 }

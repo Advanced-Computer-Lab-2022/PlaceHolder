@@ -29,8 +29,11 @@ function Login() {
 
     useEffect(() => {
         if(isError){
-            toast.error(message)
+            toast.error(message)    
         }
+        if(user && user.toscheck=='false'){
+            navigate('/tos')
+        }else{
         if(isSuccess || user && user.role == "admin"){
             navigate('/admin')   
         }
@@ -39,6 +42,7 @@ function Login() {
         }
         else if(isSuccess || user){
             navigate('/trainee')
+        }
         }
 
         dispatch(reset())

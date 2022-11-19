@@ -55,9 +55,10 @@ function Register() {
         password2: '',
         gender: '',
         country: '',
+        toscheck: '',
     })
 
-    const {username,firstName,lastName,email,password,password2,gender,country} = FormData
+    const {username,firstName,lastName,email,password,password2,gender,country,toscheck} = FormData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -101,7 +102,8 @@ function Register() {
                 password,
                 gender : searchGender,
                 country: searchCountry,
-                role : 'trainee'
+                role : 'trainee',
+                toscheck: 'false',
             }
 
                 console.log(userData)
