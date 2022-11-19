@@ -183,7 +183,9 @@ You agree that the original English text shall prevail in the case of a dispute.
 </ul>
 <p></p>
     </>
-
+   {(user.role=="instructor") ? (<div>
+    Terms of Instructor
+   </div>):(<></>)}
 
 
     <section className='form'>

@@ -32,7 +32,7 @@ const courseSchema = mongoose.Schema(
                 },
                 }
             ],
-            vidoes : [
+            videos: [
                 {
                     videotitle:{
                         type:String
@@ -41,7 +41,7 @@ const courseSchema = mongoose.Schema(
                         type:String
                     }
                 }
-            ]
+            ],
             
         }
     ],

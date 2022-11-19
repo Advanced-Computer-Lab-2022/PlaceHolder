@@ -15,6 +15,9 @@ const AddCourse = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Please add a Title')
     }
+    console.log(req.body.subtitles)
+    console.log(req.body.subtitles)
+    console.log(req.body.subtitles.videos)
     
     const courses = await Course.create({
         title: req.body.title,
@@ -26,6 +29,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         courseRating: 0,
         totalHours: req.body.totalHours
     })
+    console.log(courses)
     res.status(200).json({
         title: req.body.title,
         subtitles: req.body.subtitles,

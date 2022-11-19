@@ -13,6 +13,7 @@ const initialState = {
 //Create New Course
 export const createCourse = createAsyncThunk('course/new', async (courseData, thunkAPI) => {
     try {
+      console.log(courseData)
         return await courseService.createCourse(courseData)
     } catch (error) {
         const message =
