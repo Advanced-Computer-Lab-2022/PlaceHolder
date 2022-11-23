@@ -29,9 +29,9 @@ return response.data
 }
 
 //Get Course Page
-const getCoursePage = async (userData) => {
-  const title = userData.title
-  const response = await axios.post(API_URL + '/view/' + title,userData)
+const getCoursePage = async (title) => {
+ 
+  const response = await axios.post(API_URL + '/view/' + title)
 
 //console.log(response)
 return response.data

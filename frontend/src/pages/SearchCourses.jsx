@@ -26,6 +26,7 @@ function SearchCourses() {
       const [subjects , setSubject] = useState(SubjectData);
       const [searchSubject, setSearchSubject] = useState();
      const[courses1 , setCourses] = useState(courses);
+     const[refresher,setrefresher] = useState();
      
      
      
@@ -215,10 +216,34 @@ const sort_by = (field, reverse, primer) => {
 
       
     }
-  
+    function refreshe1r(courses){
+      if(courses==null){
+        setrefresher(courses)
+      }
+    }
+    
+   function getlength(courses){
+    let x =0
+    if(courses == null){
+      return 0
+    }else{
+      courses.map((course)=>{
+        x++
+      })
+      return x
+    }
 
 
-  return (
+
+   } 
+
+
+  return (<>
+    
+    {
+      
+      console.log(getlength(courses))
+    }
     <>
     {(courses!=null) ? (<>
   
@@ -276,12 +301,12 @@ const sort_by = (field, reverse, primer) => {
               <CourseItem key={course._id} course={course} />
             ))}
           </div>
-        ) : (
-          <div className='goals'>
-          {courses.map((course) => (
-            <CourseItem key={course._id} course={course} />
-          ))}
-        </div>
+        ) : ((courses!=null) ? (<div className='goals'>
+        {courses.map((course) => (
+          <CourseItem key={course._id} course={course} />
+        ))}
+      </div>) : (<></>)
+          
         )}
       </section>
 
@@ -289,7 +314,7 @@ const sort_by = (field, reverse, primer) => {
     </>) : (<></>)}
   
     </>
-  
+    </>
   )
 }
 

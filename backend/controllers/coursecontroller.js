@@ -51,37 +51,14 @@ const UpdateCourse = asyncHandler(async (req, res) => {
 const ViewCoursePage = asyncHandler(async (req, res) => {
     try{
         const courses = await Course.findOne({ title: req.params.title});
-        const username = req.body.username
-        const user2 = await user.findOne({username})
-        console.log(courses)
-        if(user2.courses == null){
-            res.status(200).json(courses);
-            
-          }else{
-            //console.log(userCourses)
-            user2.courses.map((course)=>{
-              //console.log(course.courseName)
-              if(courses.title==course.courseName){
-                res.status(200).json({
-                    title:courses.title,
-                    subject:courses.subject,
-                    price:courses.price,
-                    summary:courses.summary,
-                    instructorName:courses.instructorName,
-                    courseRating:courses.courseRating,
-                    totalHours:courses.totalHours
-                })
-              }
-            })
-           
-          }
-        
+        res.status(200).json(courses);
         
     }
     catch(err){
         res.status(500).send("Error");
     }
 })
+
 
 module.exports = {
     ViewCourses,

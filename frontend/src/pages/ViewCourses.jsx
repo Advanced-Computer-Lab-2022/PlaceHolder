@@ -17,11 +17,13 @@ function ViewCourses(){
     var tile = title.title
     const navigate = useNavigate()
     const dispatch = useDispatch()
-
+    var flag = false;
+    const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
+
      
     useEffect(() => {
       if (isError) {
@@ -31,12 +33,9 @@ function ViewCourses(){
   
       
       //console.log("Dispatched!")
-      const userData = {
-        username:user.username,
-        title: title.title
-      }
-      
-      dispatch(getCoursePage(userData))
+     
+      dispatch(getCoursePage(title.title))
+      setCourses(courses)
 
       
       return () => {
@@ -49,21 +48,23 @@ function ViewCourses(){
     }
 
     function checkCourse(courses , userCourses){
-      if(userCourses == null){
-        return false
-      }else{
+        if(userCourses == null | courses==null){
+          setCourses(courses)
+        }
         //console.log(userCourses)
         userCourses.map((course)=>{
           //console.log(course.courseName)
           if(courses.title==course.courseName){
             console.log(course.courseName)
             console.log('treueeeeeeeeeee')
-            return true 
+            flag = true;
+           
+            
           }
         })
        
       }
-    }
+    
 
     function RegisterUserCourse(){
       const userData = {
@@ -92,10 +93,16 @@ function ViewCourses(){
     
     
     return (<>
-      
-      {console.log(checkCourse(courses,user.courses))}
       {
-        (courses.title !=null) ? ((checkCourse(courses,user.courses)==true) ? (<>{(courses.title !=null) ? (<div className='goal'>
+        checkCourse(courses,user.courses)
+        
+      }
+      {
+        console.log(flag)
+      }
+      
+      {
+        (courses.title !=null) ? ((flag==true) ? (<>{(courses.title !=null) ? (<div className='goal'>
         <h1>
             Course Title : {courses.title}
         </h1>
