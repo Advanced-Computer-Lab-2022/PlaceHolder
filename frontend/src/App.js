@@ -18,6 +18,7 @@ import AdminRegister from './pages/AdminRegister';
 import ViewCourses from './pages/ViewCourses';
 import Tos from './pages/Tos'
 import ViewMyProfile from './pages/ViewMyProfile';
+import ForgotPassword from './pages/ForgotPassword';
 function App() {
   return (
     <>
@@ -40,7 +41,7 @@ function App() {
         <Route path='/tos' element={<Tos />} />
         <Route path='/me' element={<ViewMyProfile />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
-        
+        <Route path='/forgotpassword' element={<ForgotPassword />} />
       </Routes>
     </div>
     </Router>

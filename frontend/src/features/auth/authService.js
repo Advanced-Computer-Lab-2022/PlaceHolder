@@ -82,6 +82,15 @@ const refreshuser = async (userData) => {
   return response.data
 }
 
+const forgotpass = async (userData) => {
+  const response = await axios.post(API_URL + 'forgotpass', userData)
+ 
+
+ 
+
+  return response.data
+}
+
 // Logout user
 const logout = () => {
   localStorage.removeItem('user')
@@ -97,7 +106,8 @@ const authService = {
   refreshuser,
   updateEmail,
   updateBio,
-  updatePassword
+  updatePassword,
+  forgotpass
 }
 
 export default authService

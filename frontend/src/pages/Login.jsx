@@ -70,6 +70,10 @@ function Login() {
         return <Spinner/>
     }
 
+    function forgotpassword(){
+        navigate('/forgotpassword')
+    } 
+
   return (
     <>
     <section className='heading'> 
@@ -95,6 +99,9 @@ function Login() {
                 <button type='submit' className='btn btn-block'>LogIn</button>
             </div>
         </form>
+            <div>
+                <button onClick={forgotpassword}>Forgot password?</button>
+            </div>
 
     </section>
     
