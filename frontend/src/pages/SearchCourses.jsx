@@ -217,8 +217,9 @@ const sort_by = (field, reverse, primer) => {
       
     }
     function refreshe1r(courses){
-      if(courses==null){
+      if(courses==null || getlength(courses)==1){
         setrefresher(courses)
+        refreshe1r(courses)
       }
     }
     
@@ -240,10 +241,10 @@ const sort_by = (field, reverse, primer) => {
 
   return (<>
     
-    {
+    {/* {
       
-      console.log(getlength(courses))
-    }
+      refreshe1r(courses)
+    } */}
     <>
     {(courses!=null) ? (<>
   
@@ -301,11 +302,11 @@ const sort_by = (field, reverse, primer) => {
               <CourseItem key={course._id} course={course} />
             ))}
           </div>
-        ) : ((courses!=null) ? (<div className='goals'>
+        ) : ((courses!=null) ? ((Array.isArray(courses)?(<div className='goals'>
         {courses.map((course) => (
           <CourseItem key={course._id} course={course} />
         ))}
-      </div>) : (<></>)
+      </div>):(<></>))) : (<></>)
           
         )}
       </section>

@@ -48,7 +48,8 @@ const registeruser = asynchandler(async (req,res) => {
         country,
         role,
         toscheck: "false",
-        courses:[]
+        courses:[],
+        minibio: ''
     })
 
     if(user1){
@@ -60,7 +61,8 @@ const registeruser = asynchandler(async (req,res) => {
             country:user1.country,
             toscheck:user1.toscheck,
             token: generateToken(user1.id),
-            courses:user1.courses
+            courses:user1.courses,
+            minibio:user1.minibio
         })
     }
     else{
@@ -84,7 +86,8 @@ const loginuser = asynchandler(async (req,res) => {
             country:user2.country,
             toscheck:user2.toscheck,
             token: generateToken(user2.id),
-            courses:user2.courses
+            courses:user2.courses,
+            minibio:user2.minibio
         })
     }
     else{
@@ -112,6 +115,58 @@ const updatetos = asynchandler(async (req,res) => {
     
 })
 
+const updateEmail = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const newemail = req.body.email
+    const emailform = { email : newemail}
+    
+   
+    const user3 = await user.findOneAndUpdate({username},emailform)
+    console.log(user3)
+    
+    
+    
+})
+
+const updateBio = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const minibio = req.body.minibio
+    const bioform = { minibio : minibio}
+    console.log(minibio)
+    
+   
+    const user3 = await user.findOneAndUpdate({username},bioform)
+    console.log(user3)
+    
+    
+    
+})
+
+const updatePassword = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const pass = req.body.password
+    
+    
+
+     //Hash Password
+     const salt = await bcrypt.genSalt(10)
+     const hashedPassword = await bcrypt.hash(pass,salt)
+     const passform = {password:hashedPassword}
+    
+   
+    const user3 = await user.findOneAndUpdate({username},passform)
+    console.log(user3)
+    
+    
+    
+})
+
 const refreshuser = asynchandler(async (req,res) => {
     
     
@@ -126,10 +181,11 @@ const refreshuser = asynchandler(async (req,res) => {
         country:user2.country,
         toscheck:user2.toscheck,
         token: generateToken(user2.id),
-        courses:user2.courses
+        courses:user2.courses,
+        minibio:user2.minibio
     })
 
-    console.log(user2)
+    //console.log(user2)
     
     
     
@@ -192,5 +248,8 @@ module.exports = {
     updatetos,
     registerCourse,
     refreshuser,
+    updateEmail,
+    updateBio,
+    updatePassword
     
 }

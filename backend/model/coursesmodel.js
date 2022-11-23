@@ -39,6 +39,9 @@ const courseSchema = mongoose.Schema(
                     },
                     url:{
                         type:String
+                    },
+                    videodescription:{
+                        type:String
                     }
                 }
             ],
@@ -69,6 +72,9 @@ const courseSchema = mongoose.Schema(
     totalHours:{
         type: Number,
         require: true
+    },
+    preview:{
+        type: String,
     }
 }, {
     timestamps: true

@@ -44,7 +44,10 @@ const userSchema = mongoose.Schema({
                 type:String
             }
         }
-    ]
+    ],
+    minibio:{
+        type:String
+    }
 },{
     timestamps:true
 })

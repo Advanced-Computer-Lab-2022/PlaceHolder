@@ -28,6 +28,7 @@ function CourseForm() {
             {
             videotitle: "",
             url: "",
+            videodescription:"",
             id:uuidv4(),
              }
         ],
@@ -54,6 +55,7 @@ function CourseForm() {
 		_SubtitleList[index].videos.push({
 			videotitle: "",
             url: "",
+            videodescription: "",
             id:uuidv4(),
 		})
 		setSubtitleList(_SubtitleList)
@@ -76,6 +78,7 @@ function CourseForm() {
                 {
                 videotitle: "",
                 url: "",
+                videodescription: "",
                 id:uuidv4(),
                  }
             ],
@@ -119,9 +122,10 @@ function CourseForm() {
         instructorName:'',
         courseRating: 0,
         totalHours: '',
+        preview:''
     })
 
-    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours} = FormData
+    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours,preview} = FormData
     const [text,setText] = useState('')
 
     const navigate = useNavigate()
@@ -139,6 +143,7 @@ function CourseForm() {
             instructorName: user.username,
             courseRating: 0,
             totalHours,
+            preview
         }
         
         
@@ -269,6 +274,14 @@ function CourseForm() {
 												handleVideoinSubtitle(subt.id, video.id,e)
 											}
 										/>
+                                        <label htmlFor="videodescription">Video Description</label>
+										<input
+											name="videodescription"
+											type="text"
+											onChange={(e) =>
+												handleVideoinSubtitle(subt.id, video.id,e)
+											}
+										/>
 									</div>
 									
 									<button type='button' onClick={() => addNewVideoinSubtitle(subt.id)}>+</button>
@@ -311,6 +324,8 @@ function CourseForm() {
                      </select>
 
                     {/* <input type='text' name = 'subject' id='subject' value={subject} onChange={onChange}></input> */}
+                    <label htmlFor='text'>Course Preview Video</label>
+                    <input type='text' name = 'preview' id='preview' value={preview} onChange={onChange}></input>
                     <label htmlFor='text'>Course Price</label>
                     <input type='number' name = 'price' id='price' value={price} onChange={onChange}></input>
                     <label htmlFor='text'>Course Summary</label>

@@ -102,10 +102,15 @@ function ViewCourses(){
       }
       
       {
-        (courses.title !=null) ? ((flag==true) ? (<>{(courses.title !=null) ? (<div className='goal'>
+        (courses.title !=null) ? ((flag==true | user.username==courses.instructorName) ? (<>{(courses.title !=null) ? (<div className='goal'>
         <h1>
             Course Title : {courses.title}
         </h1>
+        <div>
+        <iframe width="420" height="315"
+        src={courses.preview}>
+        </iframe>
+        </div>
         {/* <h2>
             Subtitles : {courses.subtitles}
         </h2> */}
@@ -137,7 +142,13 @@ function ViewCourses(){
                   <>
                   <div>
                     Video Title : {v.videotitle}
-                    Video URL : {v.url}
+                    <div>
+                    <iframe width="420" height="315"
+                    src={v.url}>
+                    </iframe>
+                    </div>
+                    
+                    Video Description: {v.videodescription}
                     </div></>
                 )
               })}
@@ -194,7 +205,8 @@ function ViewCourses(){
             Price : {courses.price}
         </b1>
         </div>
-        <button onClick={RegisterUserCourse}>Register To This Course</button>    
+        {(user!=null & (user.role == 'trainee' | user.role == 'corporate trainee' | user.role == 'admin'))?(<button onClick={RegisterUserCourse}>Register To This Course</button>  ):(<></>)}
+          
         
         </>)) : (<></>)
         

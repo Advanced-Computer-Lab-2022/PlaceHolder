@@ -46,6 +46,55 @@ export const adduser = createAsyncThunk(
     }
   }
 )
+export const updateEmail = createAsyncThunk(
+  'auth/updateEmail',
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updateEmail(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+export const updatePassword = createAsyncThunk(
+  'auth/updatePassword',
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updatePassword(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const updateBio = createAsyncThunk(
+  'auth/updateBio',
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updateBio(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
 
 export const updatetos = createAsyncThunk(
   'auth/updatetos',
