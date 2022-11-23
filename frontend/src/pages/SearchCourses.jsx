@@ -218,10 +218,9 @@ const sort_by = (field, reverse, primer) => {
   
 
 
-  return ( 
-  
-  
-  <>
+  return (
+    <>
+    {(courses!=null) ? (<>
   
       <section className='heading'>
       <h1>
@@ -287,7 +286,10 @@ const sort_by = (field, reverse, primer) => {
       </section>
 
     
+    </>) : (<></>)}
+  
     </>
+  
   )
 }
 

@@ -9,7 +9,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 router.get('/', ViewCourses)
 router.post('/new',AddCourse)
-router.get('/view/:title', ViewCoursePage)
+router.post('/view/:title', ViewCoursePage)
 
 
 module.exports = router

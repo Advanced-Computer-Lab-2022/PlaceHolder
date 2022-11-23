@@ -65,6 +65,24 @@ export const updatetos = createAsyncThunk(
   }
 )
 
+export const registerCourse = createAsyncThunk(
+  'auth/registerCourse',
+  async (userData, thunkAPI) => {
+    try {
+      
+      return await authService.registerCourse(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 
 
 
@@ -75,6 +93,20 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
   try {
     
     return await authService.login(user)
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
+// Login user
+export const refreshuser = createAsyncThunk('auth/refresh', async (userData, thunkAPI) => {
+  try {
+    
+    return await authService.refreshuser(userData)
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -124,6 +156,20 @@ export const authSlice = createSlice({
         state.user = action.payload
       })
       .addCase(login.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+        state.user = null
+      })
+      .addCase(refreshuser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(refreshuser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.user = action.payload
+      })
+      .addCase(refreshuser.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

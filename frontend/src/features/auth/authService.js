@@ -27,11 +27,30 @@ const adduser = async (userData) => {
   return response.data
 }
 
+const registerCourse = async (userData) => {
+  const response = await axios.post(API_URL + 'registercourse', userData)
+
+
+  return response.data
+}
+
 
 
 // Login user
 const login = async (userData) => {
   const response = await axios.post(API_URL + 'login', userData)
+ 
+
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data))
+    
+  }
+
+  return response.data
+}
+
+const refreshuser = async (userData) => {
+  const response = await axios.post(API_URL + 'refreshuser', userData)
  
 
   if (response.data) {
@@ -52,7 +71,9 @@ const authService = {
   logout,
   login,
   adduser,
-  toschange
+  toschange,
+  registerCourse,
+  refreshuser
 }
 
 export default authService

@@ -48,6 +48,7 @@ const registeruser = asynchandler(async (req,res) => {
         country,
         role,
         toscheck: "false",
+        courses:[]
     })
 
     if(user1){
@@ -58,7 +59,8 @@ const registeruser = asynchandler(async (req,res) => {
             role:user1.role,
             country:user1.country,
             toscheck:user1.toscheck,
-            token: generateToken(user1.id)
+            token: generateToken(user1.id),
+            courses:user1.courses
         })
     }
     else{
@@ -81,7 +83,8 @@ const loginuser = asynchandler(async (req,res) => {
             role: user2.role,
             country:user2.country,
             toscheck:user2.toscheck,
-            token: generateToken(user2.id)
+            token: generateToken(user2.id),
+            courses:user2.courses
         })
     }
     else{
@@ -105,6 +108,59 @@ const updatetos = asynchandler(async (req,res) => {
     const toscheck1 = { toscheck : "true"};
     const user3 = await user.findOneAndUpdate(obj,toscheck1)
     
+    
+    
+})
+
+const refreshuser = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    
+    const user2 = await user.findOne({username})
+    res.status(201).json({
+        _id: user2.id,
+        username: username,
+        email: user2.email,
+        role: user2.role,
+        country:user2.country,
+        toscheck:user2.toscheck,
+        token: generateToken(user2.id),
+        courses:user2.courses
+    })
+
+    console.log(user2)
+    
+    
+    
+})
+
+const registerCourse = asynchandler(async (req,res) => {
+    
+    
+    const username = JSON.parse(JSON.stringify(req.body.username));
+    const courseName = JSON.parse(JSON.stringify(req.body.courseName))
+    console.log(username)
+    console.log(courseName)
+    const user2 = await user.findOne({username})
+    console.log(user2)
+    let _user2 = {...user2}
+    //console.log(_user2)
+    
+    if(user2.courses == null){
+        user2.courses = {
+            courseName:courseName
+        }
+    }else{
+        user2.courses.push({
+            courseName:courseName
+        })
+    }
+    
+    console.log(user2)
+    
+    const user3 = await user.findOneAndUpdate({username},user2)
+    console.log(user3)
     
     
 })
@@ -134,5 +190,7 @@ module.exports = {
     loginuser,
     viewuser,
     updatetos,
+    registerCourse,
+    refreshuser,
     
 }

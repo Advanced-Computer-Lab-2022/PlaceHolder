@@ -66,10 +66,10 @@ export const getCoursesIns = createAsyncThunk(
 //Get Course Page
 export const getCoursePage = createAsyncThunk(
   'courses/getOne',
-  async (title, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
       
-      return await courseService.getCoursePage(title)
+      return await courseService.getCoursePage(userData)
     } catch (error) {
       const message =
         (error.response &&

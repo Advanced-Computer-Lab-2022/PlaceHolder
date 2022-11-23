@@ -38,7 +38,13 @@ const userSchema = mongoose.Schema({
     toscheck:{
         type:String,
         
-    }
+    },courses:[
+        {
+            courseName:{
+                type:String
+            }
+        }
+    ]
 },{
     timestamps:true
 })

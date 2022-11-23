@@ -9,10 +9,11 @@ import { getCourses, reset, getCoursePage } from '../features/courses/courseSlic
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
+import{refreshuser, registerCourse} from '../features/auth/authSlice'
 
 function ViewCourses(){
     const title = useParams();
-    console.log(title.title)
+    //console.log(title.title)
     var tile = title.title
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -29,8 +30,14 @@ function ViewCourses(){
       // console.log(courses)
   
       
-      console.log("Dispatched!")
-      dispatch(getCoursePage(title.title))
+      //console.log("Dispatched!")
+      const userData = {
+        username:user.username,
+        title: title.title
+      }
+      
+      dispatch(getCoursePage(userData))
+
       
       return () => {
         dispatch(reset())
@@ -41,66 +48,151 @@ function ViewCourses(){
       return <Spinner />
     }
 
+    function checkCourse(courses , userCourses){
+      if(userCourses == null){
+        return false
+      }else{
+        //console.log(userCourses)
+        userCourses.map((course)=>{
+          //console.log(course.courseName)
+          if(courses.title==course.courseName){
+            console.log(course.courseName)
+            console.log('treueeeeeeeeeee')
+            return true 
+          }
+        })
+       
+      }
+    }
+
+    function RegisterUserCourse(){
+      const userData = {
+        username: user.username,
+        courseName:courses.title
+      }
+      const userData2={
+        username: user.username
+      }
+
+      dispatch(registerCourse(userData))
+      dispatch(refreshuser(userData2))
+      navigate('/'+user.role)
+      toast.success("Registered To This Course Successfully!!")
+    }
+    function p1(courses,usercourses){
+      if(checkCourse(courses,usercourses)==true){
+        return {
+          
+        }
+      }else{
+
+      }
+    }
+
     
     
     return (<>
-      {(courses.title !=null) ? (<div className='goal'>
-      <h1>
-          Course Title : {courses.title}
-      </h1>
-      {/* <h2>
-          Subtitles : {courses.subtitles}
-      </h2> */}
-      {courses.subtitles.map((sub)=>{
-        return(<>
-          <div>
-            Subtitle Name : {sub.subt}
-          </div>
-          <div>
-          Subtitle Description : {sub.description}
-          </div>
-          <div>
-            Subtitle Total Time : {sub.totalh}
-          </div>
-          <div>
-            Subtitle Exercises: {sub.exercises.map((q)=>{
-              return(
-                <>
-                <div>
-                  Question : {q.question}
-                </div>
-                </>
-              )
-            })}
-          </div>
-          <div>
-            Subtitle Videos : {sub.videos.map((v)=>{
-              return(
-                <>
-                <div>
-                  Video Title : {v.videotitle}
-                  Video URL : {v.url}
-                  </div></>
-              )
-            })}
-          </div>
-
-          <br></br>
-          </>
-        )
-      })}
-      <b1>
-          Instructor : {courses.instructorName}
-          <br></br>
-          Subject : {courses.subject}
-          <br></br>
-          Course Rating : {courses.courseRating}
-          <br></br>
-          Total Hours : {courses.totalHours}
-          <br></br>
-          Price : {courses.price}
-      </b1>
-      </div>) : (<></>)}
+      
+      {console.log(checkCourse(courses,user.courses))}
+      {
+        (courses.title !=null) ? ((checkCourse(courses,user.courses)==true) ? (<>{(courses.title !=null) ? (<div className='goal'>
+        <h1>
+            Course Title : {courses.title}
+        </h1>
+        {/* <h2>
+            Subtitles : {courses.subtitles}
+        </h2> */}
+        {courses.subtitles.map((sub)=>{
+          return(<>
+            <div>
+              Subtitle Name : {sub.subt}
+            </div>
+            <div>
+            Subtitle Description : {sub.description}
+            </div>
+            <div>
+              Subtitle Total Time : {sub.totalh}
+            </div>
+            <div>
+              Subtitle Exercises: {sub.exercises.map((q)=>{
+                return(
+                  <>
+                  <div>
+                    Question : {q.question}
+                  </div>
+                  </>
+                )
+              })}
+            </div>
+            <div>
+              Subtitle Videos : {sub.videos.map((v)=>{
+                return(
+                  <>
+                  <div>
+                    Video Title : {v.videotitle}
+                    Video URL : {v.url}
+                    </div></>
+                )
+              })}
+            </div>
+  
+            <br></br>
+            </>
+          )
+        })}
+        <b1>
+            Instructor : {courses.instructorName}
+            <br></br>
+            Subject : {courses.subject}
+            <br></br>
+            Course Rating : {courses.courseRating}
+            <br></br>
+            Total Hours : {courses.totalHours}
+            <br></br>
+            Price : {courses.price}
+        </b1>
+        </div>) : (<></>)}</>):(<>
+          <div className='goal'>
+        <h1>
+            Course Title : {courses.title}
+        </h1>
+        {/* <h2>
+            Subtitles : {courses.subtitles}
+        </h2> */}
+        {courses.subtitles.map((sub)=>{
+          return(<>
+            <div>
+              Subtitle Name : {sub.subt}
+            </div>
+            <div>
+            Subtitle Description : {sub.description}
+            </div>
+            <div>
+              Subtitle Total Time : {sub.totalh}
+            </div>
+            
+            <br></br>
+            </>
+          )
+        })}
+        <b1>
+            Instructor : {courses.instructorName}
+            <br></br>
+            Subject : {courses.subject}
+            <br></br>
+            Course Rating : {courses.courseRating}
+            <br></br>
+            Total Hours : {courses.totalHours}
+            <br></br>
+            Price : {courses.price}
+        </b1>
+        </div>
+        <button onClick={RegisterUserCourse}>Register To This Course</button>    
+        
+        </>)) : (<></>)
+        
+      }  
+      
       </>
       )
 }
