@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 
 const Course = require('../model/coursesmodel')
+const user = require('../model/usermodel')
 
 const ViewCourses = asyncHandler(async (req, res) => {
     const courses = await Course.find()
@@ -15,6 +16,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Please add a Title')
     }
+   
     
     const courses = await Course.create({
         title: req.body.title,
@@ -24,8 +26,10 @@ const AddCourse = asyncHandler(async (req, res) => {
         summary: req.body.summary,
         instructorName: req.body.instructorName,
         courseRating: 0,
-        totalHours: req.body.totalHours
+        totalHours: req.body.totalHours,
+        preview:req.body.preview
     })
+    console.log(courses)
     res.status(200).json({
         title: req.body.title,
         subtitles: req.body.subtitles,
@@ -34,7 +38,8 @@ const AddCourse = asyncHandler(async (req, res) => {
         summary: req.body.summary,
         instructorName: req.body.instructorName,
         courseRating: 0,
-        totalHours: req.body.totalHours
+        totalHours: req.body.totalHours,
+        preview:req.body.preview
     })
 })
 
@@ -53,6 +58,7 @@ const ViewCoursePage = asyncHandler(async (req, res) => {
         res.status(500).send("Error");
     }
 })
+
 
 module.exports = {
     ViewCourses,

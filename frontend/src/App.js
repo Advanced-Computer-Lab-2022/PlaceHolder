@@ -16,6 +16,8 @@ import SearchCourses from './pages/SearchCourses';
 import ViewMyCoursesIns from './pages/ViewMyCoursesIns'
 import AdminRegister from './pages/AdminRegister';
 import ViewCourses from './pages/ViewCourses';
+import Tos from './pages/Tos'
+import ViewMyProfile from './pages/ViewMyProfile';
 function App() {
   return (
     <>
@@ -35,6 +37,8 @@ function App() {
         <Route path='/viewmyCoursesIns' element={<ViewMyCoursesIns />} />
         <Route path='/newusers' element={<AdminRegister />} />
         <Route path='/viewcourse/:title' element={<ViewCourses />} />
+        <Route path='/tos' element={<Tos />} />
+        <Route path='/me' element={<ViewMyProfile />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
         
       </Routes>

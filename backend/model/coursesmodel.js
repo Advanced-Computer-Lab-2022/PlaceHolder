@@ -13,10 +13,41 @@ const courseSchema = mongoose.Schema(
         type: String,
         required: true
     },
-    subtitles: {
-        type: String,
-        require: true
-    },
+    subtitles: [
+        {
+            subt:{
+                type:String,
+                
+            },
+            description:{
+                type:String
+            },
+            totalh:{
+                type:Number
+            },
+            exercises: [
+                {
+                question:{
+                    type:String
+                },
+                }
+            ],
+            videos: [
+                {
+                    videotitle:{
+                        type:String
+                    },
+                    url:{
+                        type:String
+                    },
+                    videodescription:{
+                        type:String
+                    }
+                }
+            ],
+            
+        }
+    ],
     subject: {
         type: String,
         require: true
@@ -41,6 +72,9 @@ const courseSchema = mongoose.Schema(
     totalHours:{
         type: Number,
         require: true
+    },
+    preview:{
+        type: String,
     }
 }, {
     timestamps: true

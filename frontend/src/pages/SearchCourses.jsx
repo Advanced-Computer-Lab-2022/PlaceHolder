@@ -26,6 +26,7 @@ function SearchCourses() {
       const [subjects , setSubject] = useState(SubjectData);
       const [searchSubject, setSearchSubject] = useState();
      const[courses1 , setCourses] = useState(courses);
+     const[refresher,setrefresher] = useState();
      
      
      
@@ -215,13 +216,37 @@ const sort_by = (field, reverse, primer) => {
 
       
     }
-  
+    function refreshe1r(courses){
+      if(courses==null || getlength(courses)==1){
+        setrefresher(courses)
+        refreshe1r(courses)
+      }
+    }
+    
+   function getlength(courses){
+    let x =0
+    if(courses == null){
+      return 0
+    }else{
+      courses.map((course)=>{
+        x++
+      })
+      return x
+    }
 
 
-  return ( 
-  
-  
-  <>
+
+   } 
+
+
+  return (<>
+    
+    {/* {
+      
+      refreshe1r(courses)
+    } */}
+    <>
+    {(courses!=null) ? (<>
   
       <section className='heading'>
       <h1>
@@ -277,16 +302,19 @@ const sort_by = (field, reverse, primer) => {
               <CourseItem key={course._id} course={course} />
             ))}
           </div>
-        ) : (
-          <div className='goals'>
-          {courses.map((course) => (
-            <CourseItem key={course._id} course={course} />
-          ))}
-        </div>
+        ) : ((courses!=null) ? ((Array.isArray(courses)?(<div className='goals'>
+        {courses.map((course) => (
+          <CourseItem key={course._id} course={course} />
+        ))}
+      </div>):(<></>))) : (<></>)
+          
         )}
       </section>
 
     
+    </>) : (<></>)}
+  
+    </>
     </>
   )
 }

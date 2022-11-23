@@ -34,6 +34,19 @@ const userSchema = mongoose.Schema({
     role:{
         type:String,
         required: [true, '']
+    },
+    toscheck:{
+        type:String,
+        
+    },courses:[
+        {
+            courseName:{
+                type:String
+            }
+        }
+    ],
+    minibio:{
+        type:String
     }
 },{
     timestamps:true

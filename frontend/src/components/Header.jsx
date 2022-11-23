@@ -49,6 +49,13 @@ function Header() {
              <FaBook/> View My Courses
          </Link>
         ): (<></>)}
+            &nbsp;
+            
+        {(user) ? (
+             <Link to='/me'>
+             <FaUser/> {user.username}
+         </Link>
+        ): (<></>)}
 
 
         </div>

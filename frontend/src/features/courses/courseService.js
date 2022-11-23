@@ -7,7 +7,7 @@ const API_URL = '/courses'
 //Create new Course
 const createCourse = async (courseData) => {
     const response = await axios.post(API_URL + '/new' , courseData)
-
+    //console.log(response)
   
   return response.data
 }
@@ -30,9 +30,10 @@ return response.data
 
 //Get Course Page
 const getCoursePage = async (title) => {
-  const response = await axios.get(API_URL + '/view/' + title)
+ 
+  const response = await axios.post(API_URL + '/view/' + title)
 
-
+//console.log(response)
 return response.data
 }
 

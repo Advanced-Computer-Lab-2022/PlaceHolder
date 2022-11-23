@@ -47,6 +47,9 @@ const registeruser = asynchandler(async (req,res) => {
         gender,
         country,
         role,
+        toscheck: "false",
+        courses:[],
+        minibio: ''
     })
 
     if(user1){
@@ -56,7 +59,10 @@ const registeruser = asynchandler(async (req,res) => {
             email: user1.email,
             role:user1.role,
             country:user1.country,
-            token: generateToken(user1.id)
+            toscheck:user1.toscheck,
+            token: generateToken(user1.id),
+            courses:user1.courses,
+            minibio:user1.minibio
         })
     }
     else{
@@ -78,7 +84,10 @@ const loginuser = asynchandler(async (req,res) => {
             email: user2.email,
             role: user2.role,
             country:user2.country,
-            token: generateToken(user2.id)
+            toscheck:user2.toscheck,
+            token: generateToken(user2.id),
+            courses:user2.courses,
+            minibio:user2.minibio
         })
     }
     else{
@@ -91,6 +100,125 @@ const viewuser = asynchandler(async (req,res) => {
     
 
     res.status(200).json(req.user)
+})
+
+
+const updatetos = asynchandler(async (req,res) => {
+    
+    
+    const obj = JSON.parse(JSON.stringify(req.body));
+    
+    const toscheck1 = { toscheck : "true"};
+    const user3 = await user.findOneAndUpdate(obj,toscheck1)
+    
+    
+    
+})
+
+const updateEmail = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const newemail = req.body.email
+    const emailform = { email : newemail}
+    
+   
+    const user3 = await user.findOneAndUpdate({username},emailform)
+    console.log(user3)
+    
+    
+    
+})
+
+const updateBio = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const minibio = req.body.minibio
+    const bioform = { minibio : minibio}
+    console.log(minibio)
+    
+   
+    const user3 = await user.findOneAndUpdate({username},bioform)
+    console.log(user3)
+    
+    
+    
+})
+
+const updatePassword = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    const pass = req.body.password
+    
+    
+
+     //Hash Password
+     const salt = await bcrypt.genSalt(10)
+     const hashedPassword = await bcrypt.hash(pass,salt)
+     const passform = {password:hashedPassword}
+    
+   
+    const user3 = await user.findOneAndUpdate({username},passform)
+    console.log(user3)
+    
+    
+    
+})
+
+const refreshuser = asynchandler(async (req,res) => {
+    
+    
+    const username = req.body.username
+    
+    const user2 = await user.findOne({username})
+    res.status(201).json({
+        _id: user2.id,
+        username: username,
+        email: user2.email,
+        role: user2.role,
+        country:user2.country,
+        toscheck:user2.toscheck,
+        token: generateToken(user2.id),
+        courses:user2.courses,
+        minibio:user2.minibio
+    })
+
+    //console.log(user2)
+    
+    
+    
+})
+
+const registerCourse = asynchandler(async (req,res) => {
+    
+    
+    const username = JSON.parse(JSON.stringify(req.body.username));
+    const courseName = JSON.parse(JSON.stringify(req.body.courseName))
+    console.log(username)
+    console.log(courseName)
+    const user2 = await user.findOne({username})
+    console.log(user2)
+    let _user2 = {...user2}
+    //console.log(_user2)
+    
+    if(user2.courses == null){
+        user2.courses = {
+            courseName:courseName
+        }
+    }else{
+        user2.courses.push({
+            courseName:courseName
+        })
+    }
+    
+    console.log(user2)
+    
+    const user3 = await user.findOneAndUpdate({username},user2)
+    console.log(user3)
+    
+    
 })
 
 
@@ -117,5 +245,11 @@ module.exports = {
     registeruser,
     loginuser,
     viewuser,
+    updatetos,
+    registerCourse,
+    refreshuser,
+    updateEmail,
+    updateBio,
+    updatePassword
     
 }
