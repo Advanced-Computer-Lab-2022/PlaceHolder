@@ -9,7 +9,8 @@ import { getCourses, reset, getCoursePage } from '../features/courses/courseSlic
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
-import{refreshuser, registerCourse} from '../features/auth/authSlice'
+import{refreshuser, registerCourse,updateRating} from '../features/auth/authSlice'
+import "../components/Styling/Ratings.css"
 
 function ViewCourses(){
     const title = useParams();
@@ -18,12 +19,26 @@ function ViewCourses(){
     const navigate = useNavigate()
     const dispatch = useDispatch()
     var flag = false;
+    var flag1 = false;
     const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
 
+    const [FormData, setFormData] = useState({
+      review: '',
+      rating: 0,
+      
+    })
+
+    const {review ,rating} = FormData
+    const handlereview = (e) => {
+      setFormData((prevState)=> ({
+          ...prevState,
+          [e.target.name]: e.target.value,
+      }))
+     }
      
     useEffect(() => {
       if (isError) {
@@ -33,9 +48,14 @@ function ViewCourses(){
   
       
       //console.log("Dispatched!")
-     
+      const userData2 = {
+        username:user.username
+      }
+      //dispatch(refreshuser(userData2))
       dispatch(getCoursePage(title.title))
+      
       setCourses(courses)
+      
 
       
       return () => {
@@ -64,6 +84,19 @@ function ViewCourses(){
         })
        
       }
+
+     function checkRating(UserRates , instructorName){
+      if(UserRates==null){
+        flag1 = false;
+      }
+      UserRates.map((rate)=>{
+        if(rate.instructorrated == instructorName){
+          
+          flag1 = true;
+        }
+      })
+      
+     } 
     
 
     function RegisterUserCourse(){
@@ -89,7 +122,32 @@ function ViewCourses(){
 
       }
     }
+    const ratesubmit = (e) => {
+      e.preventDefault()
+      const userData = {
+          username:user.username,
+          usernameins:courses.instructorName,
+          review,
+          rating
+      }
+      const userData2 = {
+        username:user.username
+      }
+      console.log(userData)
 
+       dispatch(updateRating(userData))
+       dispatch(refreshuser(userData2))
+       navigate('/viewcourse/'+courses.title)
+       toast.success('Rating Added !')
+  }
+  const handleRating = (e) => {
+    //e.preventDefault()
+    console.log(e.target.value)
+    setFormData((prevState)=> ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+   }))
+  }
     
     
     return (<>
@@ -155,6 +213,26 @@ function ViewCourses(){
             </div>
   
             <br></br>
+            {checkRating(user.ratingssentins,courses.instructorName)}
+            {console.log(flag1)}
+            {(flag1!=true)?(<><div>
+              Rate Instructor : <div class="rate">
+            <input type="radio" id="star5" name="rating" value="5" onChange={handleRating}/>
+            <label for="star5" title="text">5 stars</label>
+            <input type="radio" id="star4" name="rating" value="4" onChange={handleRating}/>
+            <label for="star4" title="text">4 stars</label>
+            <input type="radio" id="star3" name="rating" value="3" onChange={handleRating} />
+            <label for="star3" title="text">3 stars</label>
+            <input type="radio" id="star2" name="rating" value="2" onChange={handleRating}/>
+            <label for="star2" title="text">2 stars</label>
+            <input type="radio" id="star1" name="rating" value="1" onChange={handleRating}/>
+            <label for="star1" title="text">1 star</label>
+            </div>
+              <br></br>
+              Review Instructor : <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
+               <button onClick={ratesubmit}>Rate Instructor</button>
+            </div></>):(<></>)}
+            
             </>
           )
         })}

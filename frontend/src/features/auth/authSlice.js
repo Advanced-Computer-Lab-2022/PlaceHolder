@@ -79,6 +79,23 @@ export const updatePassword = createAsyncThunk(
   }
 )
 
+export const updateRating = createAsyncThunk(
+  'auth/updateRating',
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updateRating(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const forgotpass = createAsyncThunk(
   'auth/forgotpass',
   async (userData, thunkAPI) => {

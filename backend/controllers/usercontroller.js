@@ -50,7 +50,9 @@ const registeruser = asynchandler(async (req,res) => {
         role,
         toscheck: "false",
         courses:[],
-        minibio: ''
+        minibio: '',
+        ratings:[],
+        ratingssentins:[],
     })
 
     if(user1){
@@ -63,7 +65,9 @@ const registeruser = asynchandler(async (req,res) => {
             toscheck:user1.toscheck,
             token: generateToken(user1.id),
             courses:user1.courses,
-            minibio:user1.minibio
+            minibio:user1.minibio,
+            ratings:user1.ratings,
+            ratingssentins:user1.ratingssentins
         })
     }
     else{
@@ -88,7 +92,9 @@ const loginuser = asynchandler(async (req,res) => {
             toscheck:user2.toscheck,
             token: generateToken(user2.id),
             courses:user2.courses,
-            minibio:user2.minibio
+            minibio:user2.minibio,
+            ratings:user2.ratings,
+            ratingssentins:user2.ratingssentins,
         })
     }
     else{
@@ -168,6 +174,67 @@ const updatePassword = asynchandler(async (req,res) => {
     
 })
 
+const updateRating = asynchandler(async (req,res) => {
+    
+    
+    var username = req.body.usernameins
+    const user2 = await user.findOne({username})
+    const rating = req.body.rating
+    const review = req.body.review
+    const usernamerater = req.body.username
+    console.log(username)
+    console.log(rating)
+    console.log(review)
+    console.log(usernamerater)
+    
+    console.log(user2)
+    let _user2 = {...user2}
+    //console.log(_user2)
+    
+    if(user2.ratings == null){
+        user2.ratings = {
+            userwhorated:usernamerater,
+            usersRating:rating,
+            usersreview:review
+        }
+    }else{
+        user2.ratings.push({
+            userwhorated:usernamerater,
+            usersRating:rating,
+            usersreview:review
+        })
+    }
+    const user3 = await user.findOneAndUpdate({username},user2)
+
+
+    username = req.body.username
+    var usernameins = req.body.usernameins
+    const user4 = await user.findOne({username})
+    if(user4.ratingssentins == null){
+        user4.ratingssentins = {
+            instructorrated:usernameins,
+            
+        }
+    }else{
+        user4.ratingssentins.push({
+            instructorrated:usernameins,
+        })
+    }
+    
+    console.log(user2)
+    
+    
+    const user5 = await user.findOneAndUpdate({username},user4)
+    console.log(user3)
+
+     
+    
+   
+    
+    
+    
+})
+
 const refreshuser = asynchandler(async (req,res) => {
     
     
@@ -183,7 +250,9 @@ const refreshuser = asynchandler(async (req,res) => {
         toscheck:user2.toscheck,
         token: generateToken(user2.id),
         courses:user2.courses,
-        minibio:user2.minibio
+        minibio:user2.minibio,
+        ratings:user2.ratings,
+        ratingssentins:user2.ratingssentins,
     })
 
     //console.log(user2)
@@ -352,6 +421,7 @@ module.exports = {
     updatePassword,
     forgotpass,
     resetpass,
-    resetpasspost
+    resetpasspost,
+    updateRating
     
 }

@@ -1,12 +1,14 @@
 import React from 'react'
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {toast} from 'react-toastify'
+import {refreshuser} from '../features/auth/authSlice'
 
 
 function Trainee() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const {user} = useSelector((state) => state.auth)
 
@@ -19,6 +21,10 @@ function Trainee() {
             navigate('/'+user.role)
             
         }
+        const userData2={
+          username: user.username
+        }
+        dispatch(refreshuser(userData2))
 
     },[user,navigate])
 
