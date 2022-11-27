@@ -254,7 +254,7 @@ function CourseItem({ course }) {
     <div className='goal'>
       
       <h2>{course.title}</h2>
-      <img src="https://scriptia.net/wp-content/uploads/2018/06/java-programing.jpg" alt="Girl in a jacket" width="300" height="150"></img>
+      <img className="activator" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
       <br></br>
       Total Hours : {course.totalHours}
       <br />

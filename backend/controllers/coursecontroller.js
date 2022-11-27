@@ -27,7 +27,11 @@ const AddCourse = asyncHandler(async (req, res) => {
         instructorName: req.body.instructorName,
         courseRating: 0,
         totalHours: req.body.totalHours,
-        preview:req.body.preview
+        preview:req.body.preview,
+        thumbnail:req.body.thumbnail,
+        ratings:req.body.ratings,
+        totalratings:0,
+        totalStars:0
     })
     console.log(courses)
     res.status(200).json({
@@ -39,7 +43,11 @@ const AddCourse = asyncHandler(async (req, res) => {
         instructorName: req.body.instructorName,
         courseRating: 0,
         totalHours: req.body.totalHours,
-        preview:req.body.preview
+        preview:req.body.preview,
+        thumbnail:req.body.thumbnail,
+        ratings:req.body.ratings,
+        totalratings:0,
+        totalStars:0
     })
 })
 

@@ -6,6 +6,7 @@ import {createCourse} from '../features/courses/courseSlice'
 import { v4 as uuidv4 } from "uuid";
 import SubjectData from "../components/SubjectData.json";
 import { toast } from 'react-toastify'
+import FileBase64 from 'react-file-base64';
 
 
 
@@ -21,6 +22,11 @@ function CourseForm() {
         exercises:[
             {
             question:"",
+            answerA:"",
+            answerB:"",
+            answerC:"",
+            answerD:"",
+            correctanswer:"",
             id:uuidv4(),
             }
         ],
@@ -43,6 +49,11 @@ function CourseForm() {
 		let _SubtitleList = [...SubtitleList]
 		_SubtitleList[index].exercises.push({
 			question: "",
+            answerA:"",
+            answerB:"",
+            answerC:"",
+            answerD:"",
+            correctanswer:"",
 			id: uuidv4(),
 		})
 		setSubtitleList(_SubtitleList)
@@ -71,6 +82,11 @@ function CourseForm() {
             exercises:[
                 {
                 question:"",
+                answerA:"",
+                answerB:"",
+                answerC:"",
+                answerD:"",
+                correctanswer:"",
                 id:uuidv4(),
                 }
             ],
@@ -122,10 +138,12 @@ function CourseForm() {
         instructorName:'',
         courseRating: 0,
         totalHours: '',
-        preview:''
+        preview:'',
+        thumbnail:'',
+        
     })
 
-    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours,preview} = FormData
+    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours,preview,thumbnail} = FormData
     const [text,setText] = useState('')
 
     const navigate = useNavigate()
@@ -143,7 +161,8 @@ function CourseForm() {
             instructorName: user.username,
             courseRating: 0,
             totalHours,
-            preview
+            preview,
+            thumbnail
         }
         
         
@@ -184,6 +203,7 @@ function CourseForm() {
         e
 		
 	) => {
+        console.log(e.target.value)
 		const subtindex = SubtitleList.findIndex((subt) => subt.id === subtID)
 		let _SubtitleList = [...SubtitleList] 
 		const questionIndex = SubtitleList[subtindex].exercises.findIndex(
@@ -219,7 +239,15 @@ function CourseForm() {
                     <label htmlFor='text'>Course Title</label>
                     <input type='text' name = 'title' id='title' value={title} onChange={onChange}></input>
                     <br></br>
+                    <label htmlFor='text'>Course Preview Video</label>
+                    <input type='text' name = 'preview' id='preview' value={preview} onChange={onChange}></input>
                     <br></br>
+                    <label htmlFor='text'>Course Thumbnail</label>
+                    <FileBase64
+                        type="file"
+                        multiple={false}
+                        onDone={({ base64 }) => setFormData({ ...FormData, thumbnail: base64 })}
+                    />
                     <br></br>
 
 
@@ -249,6 +277,47 @@ function CourseForm() {
 												handleQuestioninExcersise(subt.id, question.id,e)
 											}
 										/>
+                                        <label htmlFor="answerA">Answer A</label>
+										<input
+											name="answerA"
+											type="text"
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerB">Answer B</label>
+										<input
+											name="answerB"
+											type="text"
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerC">Answer C</label>
+										<input
+											name="answerC"
+											type="text"
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerD">Answer D</label>
+										<input
+											name="answerD"
+											type="text"
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="correctanswer">Correct Answer</label>
+										<select name="correctanswer" onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                            </select>
 									</div>
 									
 									<button type='button' onClick={() => addNewQuestioninExcersise(subt.id)}>+</button>
@@ -324,15 +393,14 @@ function CourseForm() {
                      </select>
 
                     {/* <input type='text' name = 'subject' id='subject' value={subject} onChange={onChange}></input> */}
-                    <label htmlFor='text'>Course Preview Video</label>
-                    <input type='text' name = 'preview' id='preview' value={preview} onChange={onChange}></input>
+                    
                     <label htmlFor='text'>Course Price</label>
                     <input type='number' name = 'price' id='price' value={price} onChange={onChange}></input>
                     <label htmlFor='text'>Course Summary</label>
                     <input type='text' name = 'summary' id='summary' value={summary} onChange={onChange}></input>
                     <label htmlFor='text'>Course Total Hours</label>
                     <input type='text' name = 'totalHours' id='totalHours' value={totalHours} onChange={onChange}></input>
-               
+                     
                
                
                

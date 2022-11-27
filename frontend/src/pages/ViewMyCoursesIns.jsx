@@ -140,8 +140,7 @@ function ViewMyCoursesIns() {
       </div>
 
       
-
-      <section className='content'>
+      {(courses1 != null)?(<><section className='content'>
         {(courses1.length > 0)   ? (
           <div className='goals'>
             {courses1.map((course) => (
@@ -155,7 +154,8 @@ function ViewMyCoursesIns() {
           ))}
         </div>
         )}
-      </section>
+      </section></>):(<></>)}               
+      
 
     
     </>

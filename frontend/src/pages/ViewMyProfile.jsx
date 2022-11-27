@@ -147,7 +147,7 @@ function ViewMyProfile() {
                 
                 <button onClick={() => setToggle(!toggle)}>Change My Password</button>
                 <br></br>
-                {toggle && (<div>
+                {!toggle && (<div>
                         New Password : <input type='password' onChange={handlePassword} value={password.password}></input>
                         <br></br>
                         Confirm Password : <input type='password' onChange={handleconfirmpass} value={confirmpass.confirmpass}></input>

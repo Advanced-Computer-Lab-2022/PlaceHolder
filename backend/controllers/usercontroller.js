@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asynchandler = require('express-async-handler')
 const user = require('../model/usermodel')
+const course = require('../model/coursesmodel')
 const nodemailer = require('nodemailer')
 
 
@@ -53,6 +54,7 @@ const registeruser = asynchandler(async (req,res) => {
         minibio: '',
         ratings:[],
         ratingssentins:[],
+        coursesrated:[]
     })
 
     if(user1){
@@ -67,7 +69,8 @@ const registeruser = asynchandler(async (req,res) => {
             courses:user1.courses,
             minibio:user1.minibio,
             ratings:user1.ratings,
-            ratingssentins:user1.ratingssentins
+            ratingssentins:user1.ratingssentins,
+            coursesrated:user1.coursesrated
         })
     }
     else{
@@ -95,6 +98,7 @@ const loginuser = asynchandler(async (req,res) => {
             minibio:user2.minibio,
             ratings:user2.ratings,
             ratingssentins:user2.ratingssentins,
+            coursesrated:user2.coursesrated
         })
     }
     else{
@@ -235,6 +239,78 @@ const updateRating = asynchandler(async (req,res) => {
     
 })
 
+
+const updateRatingCourse = asynchandler(async (req,res) => {
+    
+    
+    const title = req.body.coursename
+    const course1 = await course.findOne({title})
+    var totalRates = Number(course1.totalratings)
+    var totalS = Number(course1.totalStars)
+    const rating = req.body.ratingCourse
+    const review = req.body.reviewCourse
+    const username = req.body.username
+    const user1 = await user.findOne({username})
+    totalRates = totalRates+1
+    totalS = totalS + Number(rating)
+    course1.totalratings = totalRates
+    course1.totalStars = totalS
+    console.log("Title : " + title)
+    console.log("Rating : "+rating)
+    console.log("Review : "+ review)
+    
+    
+    //console.log(_user2)
+    
+    if(user1.coursesrated == null){
+        user1.coursesrated = {
+            coursenamerated:title,
+            
+        }
+    }else{
+        user1.coursesrated.push({
+            coursenamerated:title,
+        })
+    }
+    const user3 = await user.findOneAndUpdate({username},user1)
+
+
+    
+   
+    if(course1.ratings == null){
+        course1.ratings = {
+            userwhorated:username,
+            userRate:rating,
+            userMessage:review
+            
+        }
+    }else{
+        course1.ratings.push({
+            userwhorated:username,
+            userRate:rating,
+            userMessage:review
+        })
+    }
+    
+    console.log("Total Stars : " + totalS)
+    console.log("Total Rates : "+totalRates)
+    course1.courseRating = totalS/totalRates
+    
+    console.log(course1.courseRating)
+    
+    const course2 = await course.findOneAndUpdate({title},course1)
+    //console.log(course2)
+    //console.log(user3)
+
+     
+    
+   
+    
+    
+    
+})
+
+
 const refreshuser = asynchandler(async (req,res) => {
     
     
@@ -253,6 +329,7 @@ const refreshuser = asynchandler(async (req,res) => {
         minibio:user2.minibio,
         ratings:user2.ratings,
         ratingssentins:user2.ratingssentins,
+        coursesrated:user2.coursesrated
     })
 
     //console.log(user2)
@@ -422,6 +499,7 @@ module.exports = {
     forgotpass,
     resetpass,
     resetpasspost,
-    updateRating
+    updateRating,
+    updateRatingCourse
     
 }

@@ -67,6 +67,13 @@ const userSchema = mongoose.Schema({
                 type:String
             }
         }
+    ],
+    coursesrated:[
+        {
+            coursenamerated:{
+                type:String
+            }
+        }
     ]
 },{
     timestamps:true
