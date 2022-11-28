@@ -4,8 +4,27 @@ const Course = require('../model/coursesmodel')
 const user = require('../model/usermodel')
 
 const ViewCourses = asyncHandler(async (req, res) => {
+    
     const courses = await Course.find()
+    
     res.status(200).json(courses)
+})
+
+
+const ViewCoursesIns = asyncHandler(async (req, res) => {
+    const username = req.body.username
+    const courses = await Course.find()
+    var returns = []
+    courses.map((course)=>{
+        if(course.instructorName==username){
+            if(returns==null){
+                returns=course
+            }else{
+                returns.push(course)
+            }
+        }
+    })
+    res.status(200).json(returns)
 })
 
 
@@ -73,5 +92,6 @@ module.exports = {
     AddCourse,
     UpdateCourse,
     ViewCoursePage,
+    ViewCoursesIns
     
 }

@@ -30,13 +30,10 @@ function Courses() {
 
 
   return ( <>
-      <section className='heading'>
-      <h1>
-        Add a new course
-        </h1>
+      
         
-      </section>
-      <CourseForm/>
+      <div className="container"><br></br><CourseForm/></div>
+      
 
 
 

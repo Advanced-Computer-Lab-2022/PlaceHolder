@@ -46,7 +46,7 @@ export const getCourses = createAsyncThunk(
 )
 //Get Courses By Instructor
 export const getCoursesIns = createAsyncThunk(
-  'courses/getAll',
+  'courses/getCourseIns',
   async (insData, thunkAPI) => {
     try {
       
@@ -118,6 +118,19 @@ export const courseSlice = createSlice({
           state.courses = action.payload
         })
         .addCase(getCourses.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+        })
+        .addCase(getCoursesIns.pending, (state) => {
+          state.isLoading = true
+        })
+        .addCase(getCoursesIns.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.courses = action.payload
+        })
+        .addCase(getCoursesIns.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload

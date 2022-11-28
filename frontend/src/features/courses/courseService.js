@@ -21,8 +21,8 @@ return response.data
 }
 
 //Get All Instructor Courses
-const getCoursesIns = async () => {
-  const response = await axios.get(API_URL + '/')
+const getCoursesIns = async (insdata) => {
+  const response = await axios.post(API_URL + '/getinscourses',insdata)
 
 
 return response.data
