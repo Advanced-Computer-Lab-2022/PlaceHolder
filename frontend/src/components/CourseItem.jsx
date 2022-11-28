@@ -1,6 +1,7 @@
 import { FaUserPlus } from 'react-icons/fa';
 import {  useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom'
 import React from 'react'
 //import { deleteGoal } from '../features/goals/goalSlice'
 
@@ -244,16 +245,55 @@ function CourseItem({ course }) {
   var myCurrency = 'USD'
   var CourseFinalPrice = course.price
   const pathCourse = '/viewcourse/' + course.title
+  const navigate = useNavigate()
   if(user){
    myCurrency = findMyCurrency(user.country)
    CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
   
+  }
+  function gotocourse(){
+    navigate(pathCourse)
   } 
 
   return (
-    <div className='goal'>
+    
+      <div class="col">
+          <div class="card shadow-sm">
+          
+          <img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
+
+            <div class="card-body">
+              <p class="card-text">
+              <h2>{course.title}</h2>
+              <br></br>
+              Total Hours : {course.totalHours}
+              <br />
+              Course Rating : {course.courseRating}
+              <br></br>
+              Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+          
+                ) : (<>
+                  {myCurrency} {CourseFinalPrice}
+                  </>
+                )}
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onClick={gotocourse}> 
+                  View Course
+                  </button>
+                  
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        
+        
+        
       
-      <h2>{course.title}</h2>
+      
+      {/* <h2>{course.title}</h2>
       <img className="activator" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
       <br></br>
       Total Hours : {course.totalHours}
@@ -271,7 +311,7 @@ function CourseItem({ course }) {
         <Link to={pathCourse}>
          <FaUserPlus/>View Course
         </Link>
-      </button>
+      </button> */}
     </div>
   )
 }

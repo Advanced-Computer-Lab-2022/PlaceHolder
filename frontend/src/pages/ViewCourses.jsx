@@ -64,7 +64,10 @@ function ViewCourses(){
         console.log(message)
       }
       // console.log(courses)
-  
+      if(!user){
+        toast.error('Please Log In First!')
+        navigate('/login')
+      }else{
       
       //console.log("Dispatched!")
       const userData2 = {
@@ -75,7 +78,7 @@ function ViewCourses(){
       
       setCourses(courses)
       
-
+    }
       
       return () => {
         dispatch(reset())
@@ -305,7 +308,7 @@ function ViewCourses(){
     
     
     return (<>
-      {
+    {(courses.title !=null & user !=null)?(<>{
         checkCourse(courses,user.courses)
         
       }
@@ -491,6 +494,7 @@ function ViewCourses(){
         </>)) : (<></>)
         
       }  
+      </>):(<></>)}
       
       </>
       )

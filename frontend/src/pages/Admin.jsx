@@ -3,6 +3,9 @@ import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {toast} from 'react-toastify'
+import "../components/Styling/Login.css"
+
+
 
 
 function Admin() {
@@ -28,8 +31,7 @@ function Admin() {
 
 
 
-
-    <div>Admin Home Page</div>
+    <div>helo</div>
   )
 }
 

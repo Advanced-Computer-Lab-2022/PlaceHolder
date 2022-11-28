@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route} from
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/js/bootstrap.bundle'
+import 'bootstrap/dist/js/bootstrap.js'
 import Header from './components/Header'; 
 import Dashboard from './pages/dashboard';
 import Login from './pages/Login';
@@ -25,9 +25,9 @@ function App() {
   return (
     <>
     <Router>
-
-    <div className='container'>
-      <Header />
+    <Header />
+    
+      
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/login' element={<Login />} />
@@ -45,7 +45,7 @@ function App() {
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
         <Route path='/forgotpassword' element={<ForgotPassword />} />
       </Routes>
-    </div>
+    
     </Router>
     <ToastContainer/>
     </>

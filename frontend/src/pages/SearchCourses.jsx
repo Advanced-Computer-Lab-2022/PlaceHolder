@@ -295,21 +295,27 @@ const sort_by = (field, reverse, primer) => {
         <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher3}/>
       </div>
 
-      <section className='content'>
-        {(courses1.length > 0)   ? (
-          <div className='goals'>
-            {courses1.map((course) => (
-              <CourseItem key={course._id} course={course} />
-            ))}
-          </div>
-        ) : ((courses!=null) ? ((Array.isArray(courses)?(<div className='goals'>
+      <div class="album py-5 bg-light">
+              <div class="container ">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {(courses1.length > 0)   ? (<>
+          
+                  {courses1.map((course) => (
+                    <CourseItem key={course._id} course={course} />
+                  ))}
+                
+                </>
+        ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
         {courses.map((course) => (
           <CourseItem key={course._id} course={course} />
         ))}
-      </div>):(<></>))) : (<></>)
+      </>):(<></>))) : (<></>)
           
         )}
-      </section>
+        </div>
+              </div>
+          </div>
+      
 
     
     </>) : (<></>)}
