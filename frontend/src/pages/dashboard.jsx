@@ -1,12 +1,9 @@
 import React from 'react'
+import "../components/Styling/Stars.css"
 
 function dashboard() {
   return (
-    <div>
-        <h1>
-            hash
-        </h1>
-    </div>
+    <>helo</>
   )
 }
 

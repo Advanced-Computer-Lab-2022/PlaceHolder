@@ -10,6 +10,9 @@ import axios from 'axios'
 import { useState } from 'react'
 import {FaArrowUp , FaArrowDown} from 'react-icons/fa'
 import { v4 as uuidv4 } from "uuid";
+import "../components/Styling/Stars.css"
+
+
 import SubjectData from "../components/SubjectData.json";
 
 
@@ -25,7 +28,7 @@ function SearchCourses() {
 
       const [subjects , setSubject] = useState(SubjectData);
       const [searchSubject, setSearchSubject] = useState();
-     const[courses1 , setCourses] = useState(courses);
+     const[courses1 , setCourses] = useState();
      const[refresher,setrefresher] = useState();
      
      
@@ -51,17 +54,39 @@ function SearchCourses() {
 
     function filterContent1(courses, searchTerm){
         
-        const result = courses.filter((course) => course.title.includes(searchTerm))
-        
-        return setCourses(result)
+      var result1 = []
+      console.log(searchTerm)
+      if(searchTerm==''){
+        result1 = courses
+      }
+      const result = courses.map((course)=>{
+          if(course.title == searchTerm | course.instructorName == searchTerm){
+            if(result1==null){
+              result1 = course
+            }else{
+              result1.push(course)
+            }
+          }
+      })
+      
+        return setCourses(result1)
         
     }
 
     function filterContent2(courses, searchTerm){
       
-      const result = courses.filter((course) => course.subject.includes(searchTerm))
+      var result1 = []
+      const result = courses.map((course)=>{
+          if(course.subject == searchTerm){
+            if(result1==null){
+              result1 = course
+            }else{
+              result1.push(course)
+            }
+          }
+      })
       
-      return setCourses(result)
+      return setCourses(result1) 
       
   }
 
@@ -71,6 +96,22 @@ function SearchCourses() {
     
     return setCourses(result)
     
+}
+
+function filterContent4(courses, searchTerm){
+  var result1 = []
+  const result = courses.map((course)=>{
+      if(Number(course.courseRating)>=searchTerm){
+        if(result1==null){
+          result1 = course
+        }else{
+          result1.push(course)
+        }
+      }
+  })
+  
+  return setCourses(result1)
+  
 }
 
 
@@ -234,9 +275,21 @@ const sort_by = (field, reverse, primer) => {
       return x
     }
 
+    
+
 
 
    } 
+   const handleRating = (e) =>{
+    const rate = e.currentTarget.value
+   
+    axios.get('/courses/').then((res) => {
+      if(res.data) {
+        
+        filterContent4(res.data, rate)
+      }
+    })
+  }
 
 
   return (<>
@@ -248,7 +301,7 @@ const sort_by = (field, reverse, primer) => {
     <>
     {(courses!=null) ? (<>
   
-      <section className='heading'>
+      {/* <section className='heading'>
       <h1>
         All Availble Courses
         </h1>
@@ -272,7 +325,7 @@ const sort_by = (field, reverse, primer) => {
       <div>
         Search By Subject:
         {/* <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher2}/> */}
-        <select className="form-control" id='subject' name='subject' onChange={handleSearcher2} value={searchSubject}>
+        {/* <select className="form-control" id='subject' name='subject' onChange={handleSearcher2} value={searchSubject}>
 
                     <option value="" hidden>
                          Please Select Subject
@@ -293,28 +346,81 @@ const sort_by = (field, reverse, primer) => {
       <div>
         Search By Instructor:
         <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher3}/>
-      </div>
+      </div> */}
+      <div className="container mt-5">
+         <div className="row">
+            <div className="col-md-2 border">
+                <section>
+                    <section id="filters" data-auto-filter="true">
+                      <h5>Filters</h5>
+                      <section className="mb-4">
+                  <h6 className="font-weight-bold mb-3">Course Rating</h6>
 
-      <div class="album py-5 bg-light">
-              <div class="container ">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {(courses1.length > 0)   ? (<>
-          
-                  {courses1.map((course) => (
+                  <div class="rating"> 
+                  <input type="radio" name="rating" value="5" id="5" onChange={handleRating}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={handleRating}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={handleRating}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={handleRating}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={handleRating}/><label for="1">☆</label>
+                </div>
+                <h6 className="font-weight-bold mb-3">Subject</h6>
+                <select className="form-control" id='subject' name='subject' onChange={handleSearcher2} value={searchSubject}>
+
+                    <option value="" hidden>
+                        Please Select Subject
+                    </option>
+                    {
+                        subjects.map((item) => {
+                        return (
+                            <option key={uuidv4()} value={item.subject}>
+                                {item.subject}
+                    </option>
+                                );
+                                                })
+                    }          
+
+                    </select>
+                    <br></br>
+                    <h6 className="font-weight-bold mb-3">Search</h6>      
+                    <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher1}/>
+                    <br></br>
+                    <h6 className="font-weight-bold mb-3">Price</h6>
+                    
+                </section>
+                    </section>
+                </section>    
+            </div>
+            <div className="col-md-10">
+                      <div class="album py-5 bg-light">
+                        <div class="container ">
+                          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                  {(courses1!=null)   ? (<>
+                            {console.log(courses1)}
+                            {courses1.map((course) => (
+                             
+                              <CourseItem key={course._id} course={course} />
+                            ))}
+                          
+                          </>
+                  ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
+                  {courses.map((course) => (
                     <CourseItem key={course._id} course={course} />
                   ))}
-                
-                </>
-        ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
-        {courses.map((course) => (
-          <CourseItem key={course._id} course={course} />
-        ))}
-      </>):(<></>))) : (<></>)
-          
-        )}
-        </div>
-              </div>
-          </div>
+                </>):(<></>))) : (<></>)
+                    
+                  )}
+                  </div>
+                        </div>
+                    </div>
+
+
+            </div>
+               
+         </div>
+      
+      </div> 
+                     
+      
       
 
     

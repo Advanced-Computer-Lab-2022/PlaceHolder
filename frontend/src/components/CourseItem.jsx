@@ -259,8 +259,8 @@ function CourseItem({ course }) {
     
       <div class="col">
           <div class="card shadow-sm">
+          {(course.thumbnail==null)?(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src="https://i.ibb.co/QD8SrHQ/pngfind-com-learning-png-656188.png" alt='No Thumbnail Avail' />):(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />)}
           
-          <img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
 
             <div class="card-body">
               <p class="card-text">
