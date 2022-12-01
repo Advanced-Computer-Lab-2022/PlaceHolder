@@ -31,7 +31,7 @@ function Admin() {
 
 
 
-    <div>helo</div>
+   <section class="vh-1010 gradient-custom"/>
   )
 }
 

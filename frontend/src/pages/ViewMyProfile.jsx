@@ -118,8 +118,11 @@ function ViewMyProfile() {
         }
      }
   return (<>
-        {(user.email != null)?(<> <div>My Profile</div>
-    <div>
+  <div className='container border'>
+        {(user.email != null)?(<> 
+        
+            <h5 className='text-center'>My Profile</h5>
+            <div>
         User Name : {user.username}
         <br></br>
         {(user.role == "instructor")?(<>Email : <input contentEditable='true' name='email' placeholder={user.email} onChange={handleEmail} value={email.email}></input></>):(<>Email : {user.email}</>)}
@@ -133,31 +136,38 @@ function ViewMyProfile() {
             Biography: <input contentEditable='true' name='minibio' placeholder={user.minibio} onChange={handleminibio} value={minibio.minibio}></input>
 
         </>):(<></>)}
-        <div>
+        
         {(user.role == "instructor" & (user.minibio != minibio.minibio) | (user.email != email.email))?(<>
             <button onClick={savenewinfo}>Save</button>
 
         </>):(<></>)}   
+        
         </div>
+   
 
-    </div>
-</>):(<></>)}
+    
+        </>):(<></>)}
 
             <div>
-                
-                <button onClick={() => setToggle(!toggle)}>Change My Password</button>
+                <br></br>
+                <button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Change My Password</button>
                 <br></br>
                 {!toggle && (<div>
+                    <br></br>
                         New Password : <input type='password' onChange={handlePassword} value={password.password}></input>
+                        <br></br>
                         <br></br>
                         Confirm Password : <input type='password' onChange={handleconfirmpass} value={confirmpass.confirmpass}></input>
                         <br></br>
-                        <button onClick={PasswordSolver}>Save Password</button>
+                        <br></br>
+                        <button type='button' className='btn btn-primary' onClick={PasswordSolver}>Save Password</button>
 
 
 
                 </div>)}
             </div>
+            <br></br>
+    </div>
     </>
   )
 }

@@ -37,6 +37,7 @@ function ViewCourses(){
     const [answers , setanswers] = useState([])
     const [results , setresults] = useState([])
     const [toggle, setToggle] = useState(true)
+    const [currentsub,setcurrentsub] = useState()
 
     const [FormDataCourse,setFormDataCourse] = useState({
       reviewCourse: '',
@@ -113,7 +114,8 @@ function ViewCourses(){
       }
       UserRates.map((rate)=>{
         if(rate.instructorrated == instructorName){
-          
+          console.log(rate.instructorrated)
+          console.log(instructorName)
           flag1 = true;
         }
       })
@@ -305,6 +307,25 @@ function ViewCourses(){
     }
     return "You Got "+correct+" correct out of "+total+" questions!"
   }
+  function displaysubtitle(sub){
+      console.log("asdas")
+      setcurrentsub(sub)
+  }
+
+  function displaycourseinfo(){
+    const sub = {
+      courseinfo:true,
+      title:courses.title,
+      summary:courses.summary,
+      subject:courses.subject,
+      price:courses.price,
+      instructorName:courses.instructorName,
+      courseRating:courses.courseRating,
+      totalHours:courses.totalHours,
+      ratings:courses.ratings,
+    }
+    setcurrentsub(sub)
+  }
     
     
     return (<>
@@ -312,147 +333,163 @@ function ViewCourses(){
         checkCourse(courses,user.courses)
         
       }
+      {checkRating(user.ratingssentins,courses.instructorName)}
+      {checkCourseRating(user.coursesrated,courses.title)}
       {
-        // console.log(flag)
-      }
-      
-      {
-        (courses.title !=null) ? ((flag==true | user.username==courses.instructorName) ? (<>{(courses.title !=null) ? (<div className='goal'>
-        <h1>
-            Course Title : {courses.title}
-        </h1>
-        <div>
-        <iframe width="420" height="315"
-        src={courses.preview}>
-        </iframe>
-        </div>
-        {/* <h2>
-            Subtitles : {courses.subtitles}
-        </h2> */}
+        (courses.title !=null) ? ((flag==true | user.username==courses.instructorName) ? (<>{(courses.title !=null) ? (
+          
+        <>
+          
+          
+          <div className="container-fluid">
+            <div className="row">
+            <div className="col-md-1 ">
+              <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style={{width: 250 }}>
+                  <br></br>
+                  <h5>Course Information</h5>
+                  <br></br>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                            <a onClick={()=>displaycourseinfo()} class="list-group-item list-group-item-action  py-3 lh-tight border  btn btn-primary" aria-current="true">
+                          <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">Course Information</strong>
+                            
+                          </div>
+                          <div class="col-10 mb-1 small"></div>
+                        </a>    
+                    </div>
+                    <br></br>
+                  <h5>Subtitles</h5>
+                  <br></br>
+                  <div class="list-group list-group-flush border-bottom scrollarea">
+        
         {courses.subtitles.map((sub)=>{
-          return(<>
-            <div>
-              Subtitle Name : {sub.subt}
-            </div>
-            <div>
-            Subtitle Description : {sub.description}
-            </div>
-            <div>
-              Subtitle Total Time : {sub.totalh}
-            </div>
-            <br></br>
-            <br></br>
-            <div>
-              Subtitle Exercises:<br></br> {sub.exercises.map((q)=>{
+          return(
+                <a onClick={()=>displaysubtitle(sub)} class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
+                  <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">{sub.subt}</strong>
+                    <small>{sub.totalh} hours</small>
+                  </div>
+                  <div class="col-10 mb-1 small"></div>
+                </a>
+
                 
+              
+          )
+        })}
+        </div>
+            </div>
+            </div>
+            <div className="col-md-11 ">
+            <div className="container">
+              {(currentsub !=null)?(<>{(currentsub.courseinfo != null)?(<>
+                <h5 className='text-center'>{currentsub.title}</h5>
+                <h6>Course Subject : {currentsub.subject}</h6>
+                <h6>Course Instructor : {currentsub.instructorName}</h6>
+                <h6>Course Rating : {currentsub.courseRating} Stars</h6>
+                <h6>Course Total Hours : {currentsub.totalHours}</h6>
+                <h6>Course Price : {currentsub.price} USD</h6>
+                <h6>Course Summary: {currentsub.summary}</h6>
+                
+            {console.log(flag1)}  
+            {(flag1!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
+              Rate Instructor : <div class="rating"> 
+                  <input type="radio" name="rating" value="5" id="5" onChange={handleRating}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={handleRating}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={handleRating}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={handleRating}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={handleRating}/><label for="1">☆</label>
+                </div>
+              
+               <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
+              <br></br>
+              <br></br>
+               <button type='button' className='btn btn-primary' onClick={ratesubmit}>Rate Instructor</button>
+            </div></>):(<></>)}
+             <br></br> 
+            {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
+              Rate Course : <div class="rating"> 
+                  <input type="radio" name="rating" value="5" id="5" onChange={handleCourseRating}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={handleCourseRating}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={handleCourseRating}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={handleCourseRating}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={handleCourseRating}/><label for="1">☆</label>
+                </div>
+              
+             <input placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></input>
+             <br></br>
+             <br></br>
+               <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button>
+            </div></>):(<></>)}      
+
+
+
+              </>):(<>
+              <h5 className='text-center'>{currentsub.subt}</h5>
+              <div className="container border">
+                {currentsub.description}
+              </div>
+              <br></br>
+              {currentsub.videos.map((v)=>{
                 return(
                   <>
                   <div>
-                    Question : {q.question}
-                    <br>
-                    </br>
-                    A :<input type="radio" name={q.question} value="A" onChange={(e) =>handlequestionanswer(sub._id, q._id,e)}></input><label>{q.answerA}</label>
+                    <h5 className='text-center' >Video Title : {v.videotitle}</h5>
+                    <h6 >Video Description: {v.videodescription}</h6>
+                    <div class="embed-responsive embed-responsive-21by9 ">
+                      <iframe class="embed-responsive-item" width={1280} height={1080} src={v.url} allowfullscreen></iframe>
+                    </div>
                     <br></br>
-                    B :<input type="radio" name={q.question} value="B" onChange={(e) =>handlequestionanswer(sub._id, q._id,e)}></input><label>{q.answerB}</label>
                     <br></br>
-                    C :<input type="radio" name={q.question} value="C" onChange={(e) =>handlequestionanswer(sub._id, q._id,e)}></input><label>{q.answerC}</label>
-                    <br></br>
-                    D :<input type="radio" name={q.question} value="D" onChange={(e) =>handlequestionanswer(sub._id, q._id,e)}></input><label>{q.answerD}</label>
-                    <br></br>
-                  </div>
-                  {!toggle && (<div>
-                    {(checkquestionanswer(q.question)=="true")?(<>You Were Right</>):(<>You Were Wrong <br></br>
-                    Correct Answer : {q.correctanswer}</>)}
-                  </div>)}
-                  {console.log(flagsubmit)}
-                  </>
+                    </div>
+                    </>
                 )
               })}
+
+
+                  Subtitle Exercises:<br></br> {currentsub.exercises.map((q)=>{
+                                  
+                                  return(
+                                    <>
+                                    <div className='container border'>
+                                      Question : {q.question}
+                                      <br>
+                                      </br>
+                                      A :<input type="radio" name={q.question} value="A" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerA}</label>
+                                      <br></br>
+                                      B :<input type="radio" name={q.question} value="B" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerB}</label>
+                                      <br></br>
+                                      C :<input type="radio" name={q.question} value="C" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerC}</label>
+                                      <br></br>
+                                      D :<input type="radio" name={q.question} value="D" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerD}</label>
+                                      <br></br>
+                                      {!toggle && (<div>
+                                      {(checkquestionanswer(q.question)=="true")?(<>You Were Right</>):(<>You Were Wrong <br></br>
+                                      Correct Answer : {q.correctanswer}</>)}
+                                    </div>)}
+                                    {console.log(flagsubmit)}
+                                    </div>
+                                    
+                                    </>
+                                  )
+                                })}
+
+              
               <br></br>
               {!toggle && (<div>
                 {rightanswers()}
 
               </div>)}
-              {(user.role=='trainee' | user.role=='corporate trainee')?(<><button onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
+              {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
               
+              
+              
+              
+              </>)}</>):(<></>)}
             </div>
-            <div>
-              <br></br>
-              Subtitle Videos : {sub.videos.map((v)=>{
-                return(
-                  <>
-                  <div>
-                    Video Title : {v.videotitle}
-                    <div>
-                    <iframe width="420" height="315"
-                    src={v.url}>
-                    </iframe>
-                    </div>
-                    
-                    Video Description: {v.videodescription}
-                    </div></>
-                )
-              })}
             </div>
-  
-            <br></br>
-            {checkRating(user.ratingssentins,courses.instructorName)}
-            {/* {console.log(flag1)} */}
-            {(flag1!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div>
-              Rate Instructor : <div class="rate">
-            <input type="radio" id="star5" name="rating" value="5" onChange={handleRating}/>
-            <label for="star5" title="text">5 stars</label>
-            <input type="radio" id="star4" name="rating" value="4" onChange={handleRating}/>
-            <label for="star4" title="text">4 stars</label>
-            <input type="radio" id="star3" name="rating" value="3" onChange={handleRating} />
-            <label for="star3" title="text">3 stars</label>
-            <input type="radio" id="star2" name="rating" value="2" onChange={handleRating}/>
-            <label for="star2" title="text">2 stars</label>
-            <input type="radio" id="star1" name="rating" value="1" onChange={handleRating}/>
-            <label for="star1" title="text">1 star</label>
-            </div>
-              <br></br>
-              Review Instructor : <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
-               <button onClick={ratesubmit}>Rate Instructor</button>
-            </div></>):(<></>)}
-
-
-
-            {checkCourseRating(user.coursesrated,courses.title)}
-           
-            {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div>
-              Rate Course : <div class="rate">
-            <input type="radio" id="star5" name="ratingCourse" value="5" onChange={handleCourseRating}/>
-            <label for="star5" title="text">5 stars</label>
-            <input type="radio" id="star4" name="ratingCourse" value="4" onChange={handleCourseRating}/>
-            <label for="star4" title="text">4 stars</label>
-            <input type="radio" id="star3" name="ratingCourse" value="3" onChange={handleCourseRating} />
-            <label for="star3" title="text">3 stars</label>
-            <input type="radio" id="star2" name="ratingCourse" value="2" onChange={handleCourseRating}/>
-            <label for="star2" title="text">2 stars</label>
-            <input type="radio" id="star1" name="ratingCourse" value="1" onChange={handleCourseRating}/>
-            <label for="star1" title="text">1 star</label>
-            </div>
-              <br></br>
-              Review Course : <input placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></input>
-               <button onClick={ratesubmitCourse}>Rate Course</button>
-            </div></>):(<></>)}
-            
-            </>
-          )
-        })}
-        <b1>
-            Instructor : {courses.instructorName}
-            <br></br>
-            Subject : {courses.subject}
-            <br></br>
-            Course Rating : {courses.courseRating}
-            <br></br>
-            Total Hours : {courses.totalHours}
-            <br></br>
-            Price : {courses.price}
-        </b1>
-        </div>) : (<></>)}</>):(<>
+        </div>
+        </div>
+        </>) : (<></>)}</>):(<>
           <div className='goal'>
         <h1>
             Course Title : {courses.title}
@@ -488,12 +525,14 @@ function ViewCourses(){
             Price : {courses.price}
         </b1>
         </div>
+        
         {(user!=null & (user.role == 'trainee' | user.role == 'corporate trainee' | user.role == 'admin'))?(<button onClick={RegisterUserCourse}>Register To This Course</button>  ):(<></>)}
           
         
         </>)) : (<></>)
         
-      }  
+      }
+        
       </>):(<></>)}
       
       </>
