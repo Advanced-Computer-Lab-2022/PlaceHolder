@@ -1,16 +1,19 @@
 import React from 'react'
 import {useEffect} from 'react'
 import {useNavigate, useSearchParams, useParams} from 'react-router-dom'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar} from 'react-icons/fa'
 import {useSelector , useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
 import CourseItem from '../components/CourseItem'
 import Spinner from '../components/Spinner'
-import { getCourses, reset, getCoursePage } from '../features/courses/courseSlice'
+import { getCourses, reset, getCoursePage, addDiscount } from '../features/courses/courseSlice'
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
 import{refreshuser, registerCourse,updateRating, updateRatingCourse} from '../features/auth/authSlice'
 import "../components/Styling/Ratings.css"
+
+//import DatePicker from '../components/DatePicker'
 
 function ViewCourses(){
     const title = useParams();
@@ -37,12 +40,19 @@ function ViewCourses(){
     const [answers , setanswers] = useState([])
     const [results , setresults] = useState([])
     const [toggle, setToggle] = useState(true)
+    const [toggle1,setToggle1] = useState(true)
     const [currentsub,setcurrentsub] = useState()
 
     const [FormDataCourse,setFormDataCourse] = useState({
       reviewCourse: '',
       ratingCourse: 0,
     })
+
+    const [FormDataDiscount,setFormDataDiscount] = useState({
+      amountOfDiscount: 0,
+      ExpiryDate: '',
+    })
+
 
     const {review ,rating} = FormData
     const {reviewCourse,ratingCourse} = FormDataCourse
@@ -294,7 +304,7 @@ function ViewCourses(){
       }
     }
   }
-
+  
   function rightanswers(){
     let _answers = [...answers]
     var total = 0;
@@ -326,6 +336,27 @@ function ViewCourses(){
     }
     setcurrentsub(sub)
   }
+
+  const addDiscountHandler = (e) => {
+    //e.preventDefault()
+    //console.log(e.target.value)
+    setFormDataDiscount((prevState)=> ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+   }))
+  }
+
+  function submitDiscount(){
+    console.log(FormDataDiscount)
+    const formdata = {
+      title:courses.title,
+      amountOfDiscount:FormDataDiscount.amountOfDiscount,
+      ExpiryDate:FormDataDiscount.ExpiryDate,
+    }
+    dispatch(addDiscount(formdata))
+    toast.success("Discount Added !")
+    navigate('/courses')
+  }
     
     
     return (<>
@@ -341,10 +372,10 @@ function ViewCourses(){
         <>
           
           
-          <div className="container-fluid">
+          <div className="container-fluid border">
             <div className="row">
-            <div className="col-md-1 ">
-              <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style={{width: 250 }}>
+            <div className="col-2">
+              <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border" style={{width: 250 }}>
                   <br></br>
                   <h5>Course Information</h5>
                   <br></br>
@@ -362,25 +393,25 @@ function ViewCourses(){
                   <br></br>
                   <div class="list-group list-group-flush border-bottom scrollarea">
         
-        {courses.subtitles.map((sub)=>{
-          return(
-                <a onClick={()=>displaysubtitle(sub)} class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
-                  <div class="d-flex w-100 align-items-center justify-content-between">
-                    <strong class="mb-1">{sub.subt}</strong>
-                    <small>{sub.totalh} hours</small>
-                  </div>
-                  <div class="col-10 mb-1 small"></div>
-                </a>
+                    {courses.subtitles.map((sub)=>{
+                      return(
+                            <a onClick={()=>displaysubtitle(sub)} class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
+                              <div class="d-flex w-100 align-items-center justify-content-between">
+                                <strong class="mb-1">{sub.subt}</strong>
+                                <small>{sub.totalh} hours</small>
+                              </div>
+                              <div class="col-10 mb-1 small"></div>
+                            </a>
 
-                
-              
-          )
-        })}
+                            
+                          
+                      )
+                    })}
         </div>
             </div>
             </div>
-            <div className="col-md-11 ">
-            <div className="container">
+            <div className="col-10 ">
+            <div className="container border">
               {(currentsub !=null)?(<>{(currentsub.courseinfo != null)?(<>
                 <h5 className='text-center'>{currentsub.title}</h5>
                 <h6>Course Subject : {currentsub.subject}</h6>
@@ -419,10 +450,83 @@ function ViewCourses(){
              <br></br>
              <br></br>
                <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button>
-            </div></>):(<></>)}      
+            </div></>):(<></>)}
 
+            <button type='button' className='btn btn-primary' onClick={() => setToggle1(!toggle1)}>View Course Ratings</button>    
 
+            {(!toggle1 && courses.ratings != null)?(<>
+            {
+                courses.ratings.map((rate)=>{
+                    return(
+                        <>
+                        <div className="row">
+                            <div class="card border-primary" style={{width:1310}} >
+                                <div class="card-header">User : {rate.userwhorated}</div>
+                                    <div class="card-body">
+                                        {(rate.userRate == 1)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div></>):((rate.userRate==2)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div>
+                                        
+                                        </>):((rate.userRate==3)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div>
+                                        </>):((rate.userRate==4)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>   
+                                        </div>
+                                        </>):(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>   
+                                        </div></>))))}
+                                        
+            
+                                        <h5 class="card-title">{rate.userwhorated} said :</h5>
+                                            <p class="card-text">{rate.userMessage}</p>
+                                        </div>
+                                    </div>
+                                </div>  
+                        </>
+                    )
+                })
+            }
+        
+        
+        
+        
+        </>):(<>{(courses.ratings == null)?(<><h2 className='text-center'>No Ratings Availble</h2></>):(<></>)}</>)}      
 
+        <br>
+        </br>
+        <br></br>
+        <div className="container">
+            <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
+            <br></br>
+            <input type="Date" className='form-control' placeholder='YYYY-MM-DD' onChange={(e)=>addDiscountHandler(e)} name='ExpiryDate' />
+            <br></br>
+            <button type='button' className='btn btn-primary' onClick={()=>submitDiscount()}>Add Discount</button>
+          
+             
+          </div>
               </>):(<>
               <h5 className='text-center'>{currentsub.subt}</h5>
               <div className="container border">
@@ -490,45 +594,63 @@ function ViewCourses(){
         </div>
         </div>
         </>) : (<></>)}</>):(<>
-          <div className='goal'>
-        <h1>
-            Course Title : {courses.title}
-        </h1>
-        {/* <h2>
-            Subtitles : {courses.subtitles}
-        </h2> */}
-        {courses.subtitles.map((sub)=>{
-          return(<>
-            <div>
-              Subtitle Name : {sub.subt}
-            </div>
-            <div>
-            Subtitle Description : {sub.description}
-            </div>
-            <div>
-              Subtitle Total Time : {sub.totalh}
-            </div>
+
+
+
+
+          <div className='container-fluid'>
+            <div className="row">
+              <div className="col-md-1">
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style={{width: 250 }}>
+                    <h5>Subtitles</h5>
+                    <br></br>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                  
+                      {courses.subtitles.map((sub)=>{
+                        return(
+                              <a  class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
+                                <div class="d-flex w-100 align-items-center justify-content-between">
+                                  <strong class="mb-1">{sub.subt}</strong>
+                                  <small>{sub.totalh} hours</small>
+                                </div>
+                                <div class="col-10 mb-1 small">{sub.description}</div>
+                              </a>
+
+                              
+                            
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
             
-            <br></br>
-            </>
-          )
-        })}
-        <b1>
-            Instructor : {courses.instructorName}
-            <br></br>
-            Subject : {courses.subject}
-            <br></br>
-            Course Rating : {courses.courseRating}
-            <br></br>
-            Total Hours : {courses.totalHours}
-            <br></br>
-            Price : {courses.price}
-        </b1>
-        </div>
-        
-        {(user!=null & (user.role == 'trainee' | user.role == 'corporate trainee' | user.role == 'admin'))?(<button onClick={RegisterUserCourse}>Register To This Course</button>  ):(<></>)}
           
+                <div className="col-md-11 ">
+                  <div className="container">
+                <h1 className='text-center'>
+                    {courses.title}
+                </h1>
+                  
+                    <b1>
+                        Instructor : {courses.instructorName}
+                        <br></br>
+                        Subject : {courses.subject}
+                        <br></br>
+                        Course Rating : {courses.courseRating}
+                        <br></br>
+                        Total Hours : {courses.totalHours}
+                        <br></br>
+                        Price : {courses.price}
+                    </b1>
+                    <br></br>
+                    {(user!=null & (user.role == 'trainee' | user.role == 'corporate trainee' | user.role == 'admin'))?(<button onClick={RegisterUserCourse} type='button' className='btn btn-primary'>Register To This Course</button>  ):(<></>)}
+                    </div>
+                    </div>
         
+        
+        
+        </div>
+        </div>
         </>)) : (<></>)
         
       }

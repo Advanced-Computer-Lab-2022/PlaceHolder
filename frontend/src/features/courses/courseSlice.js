@@ -44,6 +44,25 @@ export const getCourses = createAsyncThunk(
     }
   }
 )
+
+export const addDiscount = createAsyncThunk(
+  'courses/addDiscount',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.addDiscount(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 //Get Courses By Instructor
 export const getCoursesIns = createAsyncThunk(
   'courses/getCourseIns',

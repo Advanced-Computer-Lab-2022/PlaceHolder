@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar} from 'react-icons/fa'
 import React from 'react'
 import {Link , useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
@@ -58,11 +58,15 @@ function Header() {
                 </a></li>
                         
                     ): (<></>)}
-                {user && (user.role =="instructor") ? (
+                {user && (user.role =="instructor") ? (<>
                     <li><a href='/viewmyCoursesIns'  class="nav-link px-2 text-white"> 
                     <FaBook/> View My Courses
-                </a></li>
-                       
+                    </a></li>
+
+                    <li><a href='/viewmyRatingsIns'  class="nav-link px-2 text-white"> 
+                    <FaStar/> View My Ratings
+                    </a></li>
+                    </>  
                     ): (<></>)}
                           
                     

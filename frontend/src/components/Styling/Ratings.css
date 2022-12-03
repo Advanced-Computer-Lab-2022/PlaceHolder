@@ -38,3 +38,6 @@
     color: #c59b08;
 }
 
+.input-group-append {
+    cursor: pointer;
+  }

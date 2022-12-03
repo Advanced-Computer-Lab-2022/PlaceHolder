@@ -112,7 +112,13 @@ const courseSchema = mongoose.Schema(
     },
     totalStars:{
         type:Number
-    }
+    },
+     amountOfDiscount:{
+         type:Number
+     },
+    ExpiryDate:{
+         type:Date
+    },
 }, {
     timestamps: true
 })

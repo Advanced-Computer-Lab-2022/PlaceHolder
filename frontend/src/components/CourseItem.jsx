@@ -243,12 +243,25 @@ switch (myCurrency) {
 function CourseItem({ course }) {
   const {user} = useSelector((state) => state.auth)
   var myCurrency = 'USD'
+  var Flag = false
+  var DiscountedPrice = 0
   var CourseFinalPrice = course.price
   const pathCourse = '/viewcourse/' + course.title
   const navigate = useNavigate()
+  const ed = new Date(course.ExpiryDate)
+  const nd = new Date()
+  
   if(user){
    myCurrency = findMyCurrency(user.country)
    CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
+   //if(course.amoutOfDiscount != 0 & course.ExpiryDate>Date())
+   if(ed.valueOf()>nd.valueOf()){
+    console.log("Before Discount : "+CourseFinalPrice)
+    DiscountedPrice = CourseFinalPrice - (CourseFinalPrice * (course.amountOfDiscount/100))
+    console.log("After Discount : "+CourseFinalPrice)
+    Flag = true
+  }
+   
   
   }
   function gotocourse(){
@@ -270,12 +283,19 @@ function CourseItem({ course }) {
               <br />
               Course Rating : {course.courseRating}
               <br></br>
-              Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+              {(Flag==true)?(<>
+              Discount : {course.amountOfDiscount}%
+              <br></br>
+              <s>Old Price : {CourseFinalPrice} {myCurrency}</s>
+              <br></br>
+              New Price : {DiscountedPrice} {myCurrency}
+              </>):(<> Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
           
-                ) : (<>
-                  {myCurrency} {CourseFinalPrice}
-                  </>
-                )}
+          ) : (<>
+             {CourseFinalPrice} {myCurrency}
+            </>
+          )}</>)}
+             
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
