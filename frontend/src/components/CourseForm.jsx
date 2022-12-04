@@ -6,6 +6,7 @@ import {createCourse} from '../features/courses/courseSlice'
 import { v4 as uuidv4 } from "uuid";
 import SubjectData from "../components/SubjectData.json";
 import { toast } from 'react-toastify'
+import FileBase64 from 'react-file-base64';
 
 
 
@@ -21,6 +22,11 @@ function CourseForm() {
         exercises:[
             {
             question:"",
+            answerA:"",
+            answerB:"",
+            answerC:"",
+            answerD:"",
+            correctanswer:"",
             id:uuidv4(),
             }
         ],
@@ -43,6 +49,11 @@ function CourseForm() {
 		let _SubtitleList = [...SubtitleList]
 		_SubtitleList[index].exercises.push({
 			question: "",
+            answerA:"",
+            answerB:"",
+            answerC:"",
+            answerD:"",
+            correctanswer:"",
 			id: uuidv4(),
 		})
 		setSubtitleList(_SubtitleList)
@@ -71,6 +82,11 @@ function CourseForm() {
             exercises:[
                 {
                 question:"",
+                answerA:"",
+                answerB:"",
+                answerC:"",
+                answerD:"",
+                correctanswer:"",
                 id:uuidv4(),
                 }
             ],
@@ -122,10 +138,12 @@ function CourseForm() {
         instructorName:'',
         courseRating: 0,
         totalHours: '',
-        preview:''
+        preview:'',
+        thumbnail:'',
+        
     })
 
-    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours,preview} = FormData
+    const {title,subt,description,totalh,question,videotitle,url,subject,price,summary,instructorName,courseRating,totalHours,preview,thumbnail} = FormData
     const [text,setText] = useState('')
 
     const navigate = useNavigate()
@@ -143,7 +161,8 @@ function CourseForm() {
             instructorName: user.username,
             courseRating: 0,
             totalHours,
-            preview
+            preview,
+            thumbnail
         }
         
         
@@ -184,6 +203,7 @@ function CourseForm() {
         e
 		
 	) => {
+        console.log(e.target.value)
 		const subtindex = SubtitleList.findIndex((subt) => subt.id === subtID)
 		let _SubtitleList = [...SubtitleList] 
 		const questionIndex = SubtitleList[subtindex].exercises.findIndex(
@@ -213,161 +233,238 @@ function CourseForm() {
 
 
   return (
-    <section className='form'>
-            <form onSubmit={onSumbit} >
-                <div className="form-group">
-                    <label htmlFor='text'>Course Title</label>
-                    <input type='text' name = 'title' id='title' value={title} onChange={onChange}></input>
-                    <br></br>
-                    <br></br>
-                    <br></br>
+    <>
+    <form onSubmit={onSumbit}>
+  <div class="form-row">
 
+            <div class="form-group col-md-3">
+            <label for="text">Course Title</label>
+            <input type="text" class="form-control" id="title" name='title' placeholder="Course Title"value={title} onChange={onChange}/>
+            </div>
 
-                    <div className="row-section">
-				    {SubtitleList.map((subt) => (
-					<div className="row-section__inner" key={subt.id}>
-						<div className="input-group">
-							<label htmlFor="subt">Subtitle Name</label>
-							<input
-								name="subt"
-								onChange={(e) => handleSubtitleData(subt.id,e)}
-								type="text"
-							/>
-                             <label htmlFor='text'>Subtitle Total Hours</label>
-                    <   input type='text' name = 'totalh' id='totalh'  onChange={(e) => handleSubtitleData(subt.id, e)} ></input> 
-                    <label htmlFor='text'>Subtitle Description </label>
-                    <input type='text' name = 'description' id='description'  onChange={(e) => handleSubtitleData(subt.id, e)} ></input>
-							
+            <div class="form-group col-md-6">
+            <label for="text">Course Preview Video</label>
+            <input type="url" class="form-control" id="preview" name='preview' placeholder="Youtube Url for the course preview"value={preview} onChange={onChange}/>
+            </div>
+
+  
+
+            <div class="form-group col-md-3">
+                <label for="inputAddress">Course Thumbnail</label>
+                        <FileBase64
+                                    
+                                    type="file"
+                                    multiple={false}
+                                    onDone={({ base64 }) => setFormData({ ...FormData, thumbnail: base64 })}
+                        />  
+             </div>
+             <br></br>
+   </div>                 
+  {SubtitleList.map((subt) => (
+                    <div className="container border" key={subt.id}>
+                        <div className="form-row">
+
+                            <div className="form-group col-md-3">
+                                <label htmlFor="subt">Subtitle Name</label>
+                                <input
+                                    name="subt"
+                                    class="form-control"
+                                    onChange={(e) => handleSubtitleData(subt.id,e)}
+                                    type="text"
+                                />
+                            </div>
+
+                            <div className="form-group col-md-3"> 
+                                <label htmlFor='text'>Subtitle Total Hours</label>
+                                <input type='text' name = 'totalh' id='totalh' className='form-control'  onChange={(e) => handleSubtitleData(subt.id, e)} ></input>
+                            </div>
+
+                            <div className="form-group col-md-4">
+                                <label htmlFor='text'>Subtitle Description </label>
+                                <textarea type='text' name = 'description' id='description' className='form-control'  onChange={(e) => handleSubtitleData(subt.id, e)} ></textarea>
+                            </div>
+                            <br></br>
+                        </div>
 							{subt.exercises.map((question) => (
-								<div className="form-row" key={question.id}>
-									<div className="input-group">
+                             <div className="container border"  key={question.id}>
+								<div className="form-row">
+                                    <br></br>
+									<div className="form-group col-md-6">
 										<label htmlFor="question">Question</label>
 										<input
 											name="question"
 											type="text"
+                                            className='form-control'
 											onChange={(e) =>
 												handleQuestioninExcersise(subt.id, question.id,e)
 											}
 										/>
+                                        <label htmlFor="answerA">Answer A</label>
+										<input
+											name="answerA"
+											type="text"
+                                            className='form-control'
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerB">Answer B</label>
+										<input
+											name="answerB"
+											type="text"
+                                            className='form-control'
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerC">Answer C</label>
+										<input
+											name="answerC"
+											type="text"
+                                            className='form-control'
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="answerD">Answer D</label>
+										<input
+											name="answerD"
+											type="text"
+                                            className='form-control'
+											onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}
+										/>
+                                        <label htmlFor="correctanswer">Correct Answer</label>
+										<select name="correctanswer" className='form-control' onChange={(e) =>
+												handleQuestioninExcersise(subt.id, question.id,e)
+											}>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                            </select>
 									</div>
+                                    <br></br>
+									<button type="button" class="btn btn-primary"  onClick={() => addNewQuestioninExcersise(subt.id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                        </svg>
+                                        Add Question
+                                    </button>
 									
-									<button type='button' onClick={() => addNewQuestioninExcersise(subt.id)}>+</button>
 								</div>
+                                <br></br>
+                                
+                                </div>
 							))}
 
                             {subt.videos.map((video) => (
-								<div className="form-row" key={video.id}>
-									<div className="input-group">
-										<label htmlFor="videotitle">Video Title</label>
-										<input
-											name="videotitle"
-											type="text"
-											onChange={(e) =>
-												handleVideoinSubtitle(subt.id, video.id,e)
-											}
-										/>
-                                        <label htmlFor="url">Video Url</label>
-										<input
-											name="url"
-											type="text"
-											onChange={(e) =>
-												handleVideoinSubtitle(subt.id, video.id,e)
-											}
-										/>
-                                        <label htmlFor="videodescription">Video Description</label>
-										<input
-											name="videodescription"
-											type="text"
-											onChange={(e) =>
-												handleVideoinSubtitle(subt.id, video.id,e)
-											}
-										/>
-									</div>
-									
-									<button type='button' onClick={() => addNewVideoinSubtitle(subt.id)}>+</button>
-								</div>
+                                <div className="container border"  key={video.id}>
+                                    <div className="form-row">
+                                        <br></br>
+                                        <div className="form-group col-md-6">
+                                            <label htmlFor="videotitle">Video Title</label>
+                                            <input
+                                                name="videotitle"
+                                                type="text"
+                                                className='form-control'
+                                                onChange={(e) =>
+                                                    handleVideoinSubtitle(subt.id, video.id,e)
+                                                }
+                                            />
+                                            <label htmlFor="url">Video Url</label>
+                                            <input
+                                                name="url"
+                                                type="url"
+                                                className='form-control'
+                                                onChange={(e) =>
+                                                    handleVideoinSubtitle(subt.id, video.id,e)
+                                                }
+                                            />
+                                            <label htmlFor="videodescription">Video Description</label>
+                                            <textarea
+                                                name="videodescription"
+                                                type="text"
+                                                className='form-control'
+                                                onChange={(e) =>
+                                                    handleVideoinSubtitle(subt.id, video.id,e)
+                                                }
+                                            />
+                                            <br></br>
+                                        </div>
+                                        <button type="button" class="btn btn-primary"  onClick={() => addNewVideoinSubtitle(subt.id)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                        </svg>
+                                        Add Video
+                                    </button>
+                                    <br></br>
+                                    </div>
+                                    <br></br>
+                                </div> 
 							))}
                             
 
 
 
 
-						</div>
+						
                         <br></br>
                         <br></br>
                         <br></br>
-					</div>
-                    
-				    ))}
-				    <button type='button' onClick={handleAddSubt}>Add new Subtitle</button> <br />
-				
-			        </div>
-                    <br></br>
-                    <br></br>
-		            
-                    <label htmlFor='text'>Subject</label>
-                    <select className="form-control" id='subject' name='subject' onChange={handleChange} value={searchSubject}>
-
-                    <option value="" hidden>
-                         Please Select Subject
-                    </option>
-                    {
-                        subjects.map((item) => {
-                        return (
-                            <option key={uuidv4()} value={item.subject}>
-                                {item.subject}
-                    </option>
-                                 );
-                                                 })
-                     }          
-            
-                     </select>
-
-                    {/* <input type='text' name = 'subject' id='subject' value={subject} onChange={onChange}></input> */}
-                    <label htmlFor='text'>Course Preview Video</label>
-                    <input type='text' name = 'preview' id='preview' value={preview} onChange={onChange}></input>
-                    <label htmlFor='text'>Course Price</label>
-                    <input type='number' name = 'price' id='price' value={price} onChange={onChange}></input>
-                    <label htmlFor='text'>Course Summary</label>
-                    <input type='text' name = 'summary' id='summary' value={summary} onChange={onChange}></input>
-                    <label htmlFor='text'>Course Total Hours</label>
-                    <input type='text' name = 'totalHours' id='totalHours' value={totalHours} onChange={onChange}></input>
-               
-               
-               
-               
-               
-               
-                
-
-                     <div className="form-group">
-                        <button className="btn btn-block" type='submit' >Add Course</button>
+					
                     </div>
-                    </div>   
-            </form>
+				    ))}
+                    <br></br>
+                    <button type="button" class="btn btn-primary"  onClick={handleAddSubt}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                                        </svg>
+                                        Add Subtitle
+                                    </button>
+				    
+      <div className="form-row">
+        <br></br>
+        <div class="form-group col-md-6">
+            <label htmlFor='text'>Subject</label>
+                        <select className="form-control" id='subject' name='subject' onChange={handleChange} value={searchSubject}>
 
+                        <option value="" hidden>
+                            Please Select Subject
+                        </option>
+                        {
+                            subjects.map((item) => {
+                            return (
+                                <option key={uuidv4()} value={item.subject}>
+                                    {item.subject}
+                        </option>
+                                    );
+                                                    })
+                        }          
+                
+                        </select>
+        </div>
+        <div class="form-group col-md-6">
+                     <label htmlFor='text'>Course Price</label>
+                    <input type='number' name = 'price' id='price' className='form-control' value={price} onChange={onChange}></input>
 
-
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-                    
+        </div>
+        <br></br>
+        <div class="form-group col-md-6">
+                    <label htmlFor='text'>Course Summary</label>
+                    <textarea type='text' name = 'summary' id='summary' className='form-control' value={summary} onChange={onChange}></textarea>   
+        </div>
+        <br></br>                
+        <button type="submit" class="btn btn-primary">Add Course</button>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        
+      </div>                                          
+    </form>
+ </>               
   )
 }
 

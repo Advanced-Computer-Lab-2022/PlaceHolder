@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route} from
 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.js'
 import Header from './components/Header'; 
 import Dashboard from './pages/dashboard';
 import Login from './pages/Login';
@@ -18,13 +20,16 @@ import AdminRegister from './pages/AdminRegister';
 import ViewCourses from './pages/ViewCourses';
 import Tos from './pages/Tos'
 import ViewMyProfile from './pages/ViewMyProfile';
+import ForgotPassword from './pages/ForgotPassword';
+import ViewMyRatingsIns from './pages/ViewMyRatingsIns'
+
 function App() {
   return (
     <>
     <Router>
-
-    <div className='container'>
-      <Header />
+    <Header />
+    
+      
       <Routes>
         <Route path='/' element={<Dashboard />} />
         <Route path='/login' element={<Login />} />
@@ -39,10 +44,11 @@ function App() {
         <Route path='/viewcourse/:title' element={<ViewCourses />} />
         <Route path='/tos' element={<Tos />} />
         <Route path='/me' element={<ViewMyProfile />} />
+        <Route path='/viewmyRatingsIns' element={<ViewMyRatingsIns />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
-        
+        <Route path='/forgotpassword' element={<ForgotPassword />} />
       </Routes>
-    </div>
+    
     </Router>
     <ToastContainer/>
     </>

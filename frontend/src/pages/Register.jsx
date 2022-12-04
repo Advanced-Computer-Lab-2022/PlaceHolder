@@ -117,82 +117,87 @@ function Register() {
 
   return (
     <>
-    <section className='heading'> 
-    <h1>
-            <FaUser/> Register
-    </h1>
-        <p>
-            Please create an account
-        </p>
-    </section>
+     <section class="vh-1010 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" >
+          <div class="card-body p-5 text-center">
 
-    <section className='form'>
-        <form onSubmit={onSubmit}>
-        
-            <div className="form-group">
-            <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your name' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <input type="text" className="form-control" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <input type="text" className="form-control" id='lastName' name='lastName' value={lastName} placeholder='Enter your last name' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <input type="text" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onChange}/>
-            </div>
-            <div className="form-group">
-            <select className="form-control" id='gender' name='gender' onChange={handleChangeGender} value={searchGender}>
+            <div class="mb-md-5 mt-md-4 pb-5">
 
-                        <option value="" hidden>
-                        Please Select Gender
-                        </option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+              <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+              <p class="text-white-50 mb-5">Please fill the following fields</p>
 
+              <div class="form-outline form-white mb-4">
+                <input type="text" id="username" name="username" class="form-control form-control-lg" value={username} placeholder='Enter your name' onChange={onChange}/>
+                
+              </div>
 
-            </select>
-            {/* <input type="text" className="form-control" id='gender' name='gender' value={gender} placeholder='Enter your gender' onChange={onChange}/> */}
-            </div>
-            <div className="form-group">
-            <select className="form-control" id='country' name='country' onChange={handleChangeCountry} value={searchCountry}>
+              <div class="form-outline form-white mb-4">
+              <input type="text" className="form-control form-control-lg" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+                    <input type="text" className="form-control form-control-lg" id='lastName' name='lastName' value={lastName} placeholder='Enter your last name' onChange={onChange}/>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+              <input type="email" className="form-control form-control-lg" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+                <input type="password" id="password" name="password" class="form-control form-control-lg" value={password} placeholder='Enter your password' onChange={onChange}/>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+              <input type="password" className="form-control form-control-lg" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onChange}/>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+              <select className="form-control form-control-lg" id='gender' name='gender' onChange={handleChangeGender} value={searchGender}>
 
-            <option value="" hidden>
-                 Please Select Country
+                <option value="" hidden>
+                Please Select Gender
                 </option>
-            {
-                countries.map((item) => {
-                  return (
-                    <option key={uuidv4()} value={item.country}>
-                      {item.country}
-                    </option>
-                  );
-                })
-            }
-            
-            </select>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
 
 
+                </select>
+                
+              </div>
+              <div class="form-outline form-white mb-4">
+              <select className="form-control" id='country' name='country' onChange={handleChangeCountry} value={searchCountry}>
+
+                <option value="" hidden>
+                    Please Select Country
+                 </option> 
+                    {
+                        countries.map((item) => {
+                        return (
+                            <option key={uuidv4()} value={item.country}>
+                            {item.country}
+                            </option>
+                        );
+                        })
+                    } 
+                    </select>
+              </div> 
+              <button class="btn btn-outline-light btn-lg px-5" type="submit" onClick={onSubmit}>Register</button>     
             </div>
-            <div className="form-group">
-                <button type='submit' className='btn btn-block'>Sumbit</button>
             </div>
-        
-        </form>
-    </section>
-    
-    
-    
-    
-    
+            </div>
+            </div>
+            </div>
+            </div>
+            </section>
     </>
+    
   )
+    
+    
+  
 }
 
 export default Register

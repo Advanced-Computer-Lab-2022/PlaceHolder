@@ -30,6 +30,21 @@ const courseSchema = mongoose.Schema(
                 question:{
                     type:String
                 },
+                answerA:{
+                    type:String
+                },
+                answerB:{
+                    type:String
+                },
+                answerC:{
+                    type:String
+                },
+                answerD:{
+                    type:String
+                },
+                correctanswer:{
+                    type:String
+                }
                 }
             ],
             videos: [
@@ -75,7 +90,35 @@ const courseSchema = mongoose.Schema(
     },
     preview:{
         type: String,
-    }
+    },
+    thumbnail:{
+        type: String
+    },
+    ratings:[
+        {
+            userwhorated:{
+                type:String
+            },
+            userRate:{
+                type:Number
+            },
+            userMessage:{
+                type:String
+            }
+        }
+    ],
+    totalratings:{
+        type:Number
+    },
+    totalStars:{
+        type:Number
+    },
+     amountOfDiscount:{
+         type:Number
+     },
+    ExpiryDate:{
+         type:Date
+    },
 }, {
     timestamps: true
 })

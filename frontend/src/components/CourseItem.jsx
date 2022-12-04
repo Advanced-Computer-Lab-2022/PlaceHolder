@@ -1,6 +1,7 @@
 import { FaUserPlus } from 'react-icons/fa';
 import {  useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom'
 import React from 'react'
 //import { deleteGoal } from '../features/goals/goalSlice'
 
@@ -242,19 +243,78 @@ switch (myCurrency) {
 function CourseItem({ course }) {
   const {user} = useSelector((state) => state.auth)
   var myCurrency = 'USD'
+  var Flag = false
+  var DiscountedPrice = 0
   var CourseFinalPrice = course.price
   const pathCourse = '/viewcourse/' + course.title
+  const navigate = useNavigate()
+  const ed = new Date(course.ExpiryDate)
+  const nd = new Date()
+  
   if(user){
    myCurrency = findMyCurrency(user.country)
    CourseFinalPrice = CoursePriceConvertor(myCurrency,course.price)
+   //if(course.amoutOfDiscount != 0 & course.ExpiryDate>Date())
+   if(ed.valueOf()>nd.valueOf()){
+    console.log("Before Discount : "+CourseFinalPrice)
+    DiscountedPrice = CourseFinalPrice - (CourseFinalPrice * (course.amountOfDiscount/100))
+    console.log("After Discount : "+CourseFinalPrice)
+    Flag = true
+  }
+   
   
+  }
+  function gotocourse(){
+    navigate(pathCourse)
   } 
 
   return (
-    <div className='goal'>
+    
+      <div class="col">
+          <div class="card shadow-sm">
+          {(course.thumbnail==null)?(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src="https://i.ibb.co/QD8SrHQ/pngfind-com-learning-png-656188.png" alt='No Thumbnail Avail' />):(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />)}
+          
+
+            <div class="card-body">
+              <p class="card-text">
+              <h2>{course.title}</h2>
+              <br></br>
+              Total Hours : {course.totalHours}
+              <br />
+              Course Rating : {course.courseRating}
+              <br></br>
+              {(Flag==true)?(<>
+              Discount : {course.amountOfDiscount}%
+              <br></br>
+              <s>Old Price : {CourseFinalPrice} {myCurrency}</s>
+              <br></br>
+              New Price : {DiscountedPrice} {myCurrency}
+              </>):(<> Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+          
+          ) : (<>
+             {CourseFinalPrice} {myCurrency}
+            </>
+          )}</>)}
+             
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onClick={gotocourse}> 
+                  View Course
+                  </button>
+                  
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        
+        
+        
       
-      <h2>{course.title}</h2>
-      <img src="https://scriptia.net/wp-content/uploads/2018/06/java-programing.jpg" alt="Girl in a jacket" width="300" height="150"></img>
+      
+      {/* <h2>{course.title}</h2>
+      <img className="activator" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
       <br></br>
       Total Hours : {course.totalHours}
       <br />
@@ -271,7 +331,7 @@ function CourseItem({ course }) {
         <Link to={pathCourse}>
          <FaUserPlus/>View Course
         </Link>
-      </button>
+      </button> */}
     </div>
   )
 }

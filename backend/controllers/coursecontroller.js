@@ -4,8 +4,27 @@ const Course = require('../model/coursesmodel')
 const user = require('../model/usermodel')
 
 const ViewCourses = asyncHandler(async (req, res) => {
+    
     const courses = await Course.find()
+    
     res.status(200).json(courses)
+})
+
+
+const ViewCoursesIns = asyncHandler(async (req, res) => {
+    const username = req.body.username
+    const courses = await Course.find()
+    var returns = []
+    courses.map((course)=>{
+        if(course.instructorName==username){
+            if(returns==null){
+                returns=course
+            }else{
+                returns.push(course)
+            }
+        }
+    })
+    res.status(200).json(returns)
 })
 
 
@@ -27,7 +46,14 @@ const AddCourse = asyncHandler(async (req, res) => {
         instructorName: req.body.instructorName,
         courseRating: 0,
         totalHours: req.body.totalHours,
-        preview:req.body.preview
+        preview:req.body.preview,
+        thumbnail:req.body.thumbnail,
+        ratings:req.body.ratings,
+        totalratings:0,
+        totalStars:0,
+        amountOfDiscount:0,
+        ExpiryDate:'',
+
     })
     console.log(courses)
     res.status(200).json({
@@ -39,7 +65,13 @@ const AddCourse = asyncHandler(async (req, res) => {
         instructorName: req.body.instructorName,
         courseRating: 0,
         totalHours: req.body.totalHours,
-        preview:req.body.preview
+        preview:req.body.preview,
+        thumbnail:req.body.thumbnail,
+        ratings:req.body.ratings,
+        totalratings:0,
+        totalStars:0,
+        amountOfDiscount:0,
+        ExpiryDate:'',
     })
 })
 
@@ -47,6 +79,21 @@ const UpdateCourse = asyncHandler(async (req, res) => {
     const courses = await Course.find()
     res.status(200).json(courses)
 })
+
+
+const AddDiscount = asyncHandler(async (req, res) => {
+    const {title,ExpiryDate,amountOfDiscount} = req.body
+    const newdiscount = { 
+        ExpiryDate:ExpiryDate,
+        amountOfDiscount:amountOfDiscount
+    }
+    console.log(title)
+    console.log(newdiscount)
+    const courses = await Course.findOneAndUpdate({title},newdiscount)
+    console.log(courses)
+    res.status(200).json(courses)
+})
+
 
 const ViewCoursePage = asyncHandler(async (req, res) => {
     try{
@@ -65,5 +112,7 @@ module.exports = {
     AddCourse,
     UpdateCourse,
     ViewCoursePage,
+    ViewCoursesIns,
+    AddDiscount
     
 }

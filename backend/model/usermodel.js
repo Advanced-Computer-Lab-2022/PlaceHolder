@@ -47,7 +47,34 @@ const userSchema = mongoose.Schema({
     ],
     minibio:{
         type:String
-    }
+    },
+    ratings:[
+        {
+            userwhorated:{
+                type:String
+            },
+            usersRating:{
+                type:Number
+            },
+            usersreview:{
+                type:String
+            }
+        }
+    ],
+    ratingssentins:[
+        {
+            instructorrated:{
+                type:String
+            }
+        }
+    ],
+    coursesrated:[
+        {
+            coursenamerated:{
+                type:String
+            }
+        }
+    ]
 },{
     timestamps:true
 })

@@ -48,6 +48,21 @@ const updatePassword = async (userData) => {
   return response.data
 }
 
+const updateRating = async (userData) => {
+  const response = await axios.post(API_URL + 'updaterating', userData)
+
+
+  return response.data
+}
+
+
+const updateRatingCourse = async (userData) => {
+  const response = await axios.post(API_URL + 'updateratingcourse', userData)
+
+
+  return response.data
+}
+
 const registerCourse = async (userData) => {
   const response = await axios.post(API_URL + 'registercourse', userData)
 
@@ -82,6 +97,15 @@ const refreshuser = async (userData) => {
   return response.data
 }
 
+const forgotpass = async (userData) => {
+  const response = await axios.post(API_URL + 'forgotpass', userData)
+ 
+
+ 
+
+  return response.data
+}
+
 // Logout user
 const logout = () => {
   localStorage.removeItem('user')
@@ -97,7 +121,10 @@ const authService = {
   refreshuser,
   updateEmail,
   updateBio,
-  updatePassword
+  updatePassword,
+  forgotpass,
+  updateRating,
+  updateRatingCourse
 }
 
 export default authService
