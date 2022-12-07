@@ -70,7 +70,7 @@ function viewmyRatingsIns() {
                                         <FaStar className='checked'></FaStar>
                                         <FaStar className='checked'></FaStar>
                                         <FaStar className='checked'></FaStar>
-                                        <FaStar className='checked'></FaStar>   
+                                        <FaStar className=''></FaStar>   
                                     </div>
                                     </>):(<><div>
                                         <FaStar className='checked'></FaStar>

@@ -210,7 +210,7 @@ function ViewCourses(){
 }
   const handleRating = (e) => {
     //e.preventDefault()
-    //console.log(e.target.value)
+    console.log(e.target.value)
     setFormData((prevState)=> ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -219,7 +219,7 @@ function ViewCourses(){
 
   const handleCourseRating = (e) => {
     //e.preventDefault()
-    //console.log(e.target.value)
+    console.log(e.target.value)
     setFormDataCourse((prevState)=> ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -420,15 +420,19 @@ function ViewCourses(){
                 <h6>Course Total Hours : {currentsub.totalHours}</h6>
                 <h6>Course Price : {currentsub.price} USD</h6>
                 <h6>Course Summary: {currentsub.summary}</h6>
+                <div class="embed-responsive embed-responsive-21by9 ">
+                      <iframe class="embed-responsive-item" width={1280} height={1080} src={courses.preview} allowfullscreen></iframe>
+                    </div>
+
                 
             {console.log(flag1)}  
             {(flag1!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
               Rate Instructor : <div class="rating"> 
-                  <input type="radio" name="rating" value="5" id="5" onChange={handleRating}/><label for="5">☆</label> 
-                  <input type="radio" name="rating" value="4" id="4" onChange={handleRating}/><label for="4">☆</label> 
-                  <input type="radio" name="rating" value="3" id="3" onChange={handleRating}/><label for="3">☆</label> 
-                  <input type="radio" name="rating" value="2" id="2" onChange={handleRating}/><label for="2">☆</label> 
-                  <input type="radio" name="rating" value="1" id="1" onChange={handleRating}/><label for="1">☆</label>
+                  <input type="radio" name="rating" value="5" id="5" onChange={(e) => handleRating(e)}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={(e) => handleRating(e)}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={(e) => handleRating(e)}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={(e) => handleRating(e)}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={(e) => handleRating(e)}/><label for="1">☆</label>
                 </div>
               
                <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
@@ -439,11 +443,11 @@ function ViewCourses(){
              <br></br> 
             {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
               Rate Course : <div class="rating"> 
-                  <input type="radio" name="rating" value="5" id="5" onChange={handleCourseRating}/><label for="5">☆</label> 
-                  <input type="radio" name="rating" value="4" id="4" onChange={handleCourseRating}/><label for="4">☆</label> 
-                  <input type="radio" name="rating" value="3" id="3" onChange={handleCourseRating}/><label for="3">☆</label> 
-                  <input type="radio" name="rating" value="2" id="2" onChange={handleCourseRating}/><label for="2">☆</label> 
-                  <input type="radio" name="rating" value="1" id="1" onChange={handleCourseRating}/><label for="1">☆</label>
+                  <input type="radio" name="ratingCourse" value="5" id="5" onChange={(e) =>handleCourseRating(e)}/><label for="5">☆</label> 
+                  <input type="radio" name="ratingCourse" value="4" id="4" onChange={(e) =>handleCourseRating(e)}/><label for="4">☆</label> 
+                  <input type="radio" name="ratingCourse" value="3" id="3" onChange={(e) =>handleCourseRating(e)}/><label for="3">☆</label> 
+                  <input type="radio" name="ratingCourse" value="2" id="2" onChange={(e) =>handleCourseRating(e)}/><label for="2">☆</label> 
+                  <input type="radio" name="ratingCourse" value="1" id="1" onChange={(e) =>handleCourseRating(e)}/><label for="1">☆</label>
                 </div>
               
              <input placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></input>
@@ -457,6 +461,7 @@ function ViewCourses(){
             {(!toggle1 && courses.ratings != null)?(<>
             {
                 courses.ratings.map((rate)=>{
+                  {console.log(rate.userRate)}
                     return(
                         <>
                         <div className="row">
@@ -489,7 +494,7 @@ function ViewCourses(){
                                             <FaStar className='checked'></FaStar>
                                             <FaStar className='checked'></FaStar>
                                             <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>   
+                                            <FaStar className=''></FaStar>   
                                         </div>
                                         </>):(<><div>
                                             <FaStar className='checked'></FaStar>
@@ -519,12 +524,13 @@ function ViewCourses(){
         </br>
         <br></br>
         <div className="container">
-            <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
+          {(user.username == courses.instructorName)?(<> <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
             <br></br>
             <input type="Date" className='form-control' placeholder='YYYY-MM-DD' onChange={(e)=>addDiscountHandler(e)} name='ExpiryDate' />
             <br></br>
             <button type='button' className='btn btn-primary' onClick={()=>submitDiscount()}>Add Discount</button>
-          
+          </>):(<></>)}
+           
              
           </div>
               </>):(<>
