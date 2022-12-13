@@ -10,7 +10,7 @@ import "../components/Styling/Divider.css"
 
 
 
-function viewmyRatingsIns() {
+function ViewmyRatingsIns() {
     const navigate = useNavigate()
 
     const {user} = useSelector((state) => state.auth)
@@ -113,4 +113,4 @@ function viewmyRatingsIns() {
   )
 }
 
-export default viewmyRatingsIns
+export default ViewmyRatingsIns
