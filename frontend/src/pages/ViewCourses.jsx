@@ -318,8 +318,20 @@ function ViewCourses(){
     return "You Got "+correct+" correct out of "+total+" questions!"
   }
   function displaysubtitle(sub){
-      console.log("asdas")
-      setcurrentsub(sub)
+       var a = [...user.courses]
+       var currentsub = 0;
+       a.map((course)=>{
+          if(course.courseName == courses.title){
+            currentsub = course.currentSubtitle
+          }
+       })
+       if(sub.subtNo == currentsub | sub.subtNo < currentsub){
+        setcurrentsub(sub)
+       }else{
+        toast.error("Please Finish Earlier Subtitles First!")
+       }
+      
+      
   }
 
   function displaycourseinfo(){

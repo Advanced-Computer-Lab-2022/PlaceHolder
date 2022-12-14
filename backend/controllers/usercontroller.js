@@ -352,11 +352,13 @@ const registerCourse = asynchandler(async (req,res) => {
     
     if(user2.courses == null){
         user2.courses = {
-            courseName:courseName
+            courseName:courseName,
+            currentSubtitle:1
         }
     }else{
         user2.courses.push({
-            courseName:courseName
+            courseName:courseName,
+            currentSubtitle:1
         })
     }
     

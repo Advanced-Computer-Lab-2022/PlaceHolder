@@ -14,11 +14,12 @@ import FileBase64 from 'react-file-base64';
 
 function CourseForm() {
 
-
+    var i = 1;
     const [SubtitleList, setSubtitleList] = useState([{
         subt: "",
         description: "",
         totalh: "",
+        subtNo:1,
         exercises:[
             {
             question:"",
@@ -74,11 +75,13 @@ function CourseForm() {
 
     //handle add Subt
 	const handleAddSubt = () => {
+        i++;
 		let _SubtitleList = [...SubtitleList]
 		_SubtitleList.push({
             subt: "",
             description: "",
             totalh: "",
+            subtNo:i,
             exercises:[
                 {
                 question:"",

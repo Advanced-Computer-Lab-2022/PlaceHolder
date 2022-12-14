@@ -42,7 +42,10 @@ const userSchema = mongoose.Schema({
         {
             courseName:{
                 type:String
-            }
+            },
+            currentSubtitle:{
+                type:Number
+            },
         }
     ],
     minibio:{

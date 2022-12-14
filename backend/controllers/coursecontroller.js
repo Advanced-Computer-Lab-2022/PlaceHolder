@@ -35,7 +35,12 @@ const AddCourse = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Please add a Title')
     }
-   
+    var totalhs = 0
+    let temp = [...req.body.subtitles]
+    var _temp = temp.map((sub) => {
+        console.log(sub.totalh)
+        totalhs = totalhs + sub.totalh
+    })
     
     const courses = await Course.create({
         title: req.body.title,
@@ -45,7 +50,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         summary: req.body.summary,
         instructorName: req.body.instructorName,
         courseRating: 0,
-        totalHours: req.body.totalHours,
+        totalHours:totalhs,
         preview:req.body.preview,
         thumbnail:req.body.thumbnail,
         ratings:req.body.ratings,
@@ -64,7 +69,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         summary: req.body.summary,
         instructorName: req.body.instructorName,
         courseRating: 0,
-        totalHours: req.body.totalHours,
+        totalHours: totalhs,
         preview:req.body.preview,
         thumbnail:req.body.thumbnail,
         ratings:req.body.ratings,
