@@ -28,6 +28,31 @@ const ViewCoursesIns = asyncHandler(async (req, res) => {
 })
 
 
+const ViewCoursesTrainee = asyncHandler(async (req, res) => {
+    const username = req.body.username
+    const courses = await Course.find()
+    const user1 = await user.findOne({username})
+    var b = [...courses]
+    var a = [...user1.courses]
+    var returns = []
+    b.map((course1)=>{
+        a.map((course) => {
+            if(course.courseName == course1.title){
+                if(returns == null){
+                    returns = course1
+                }else{
+                    returns.push(course1)
+                }
+            }
+        })
+    })
+    
+   
+    console.log(returns)
+    res.status(200).json(returns)
+})
+
+
 
 
 const AddCourse = asyncHandler(async (req, res) => {
@@ -118,6 +143,7 @@ module.exports = {
     UpdateCourse,
     ViewCoursePage,
     ViewCoursesIns,
-    AddDiscount
+    AddDiscount,
+    ViewCoursesTrainee
     
 }

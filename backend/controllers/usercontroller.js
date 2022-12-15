@@ -240,6 +240,26 @@ const updateRating = asynchandler(async (req,res) => {
 })
 
 
+const updateSubtitle = asynchandler(async (req,res) => {
+    const courseTitle = req.body.title
+    const username = req.body.username
+    console.log(courseTitle)
+    console.log(username)
+    const user1 = await user.findOne({username})
+    var a = [...user1.courses]
+    a.map((course)=>{
+        if(course.courseName == courseTitle){
+            console.log(course.currentSubtitle)
+            course.currentSubtitle = course.currentSubtitle + 1
+            console.log(course.currentSubtitle)
+        }
+    })
+    user1.courses = a
+    console.log(user1)
+    const user2 = await user.findOneAndUpdate({username},user1)
+})
+
+
 const updateRatingCourse = asynchandler(async (req,res) => {
     
     
@@ -502,6 +522,7 @@ module.exports = {
     resetpass,
     resetpasspost,
     updateRating,
-    updateRatingCourse
+    updateRatingCourse,
+    updateSubtitle
     
 }

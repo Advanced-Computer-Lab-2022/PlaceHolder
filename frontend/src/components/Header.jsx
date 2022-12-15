@@ -52,6 +52,12 @@ function Header() {
                 </a></li>
                         
                     ): (<></>)}
+                    {user && (user.role =='trainee' | user.role=='corporate trainee') ? (
+                    <li><a href='/viewmyCoursesTrainee' class="nav-link px-2 text-white">
+                    <FaBookOpen/> My Courses
+                </a></li>
+                        
+                    ): (<></>)}
                 {user && (user.role =="admin") ? (
                     <li><a href='/newusers' class="nav-link px-2 text-white">
                      <FaUserPlus/>Add New Users

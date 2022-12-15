@@ -10,7 +10,7 @@ import { getCourses, reset, getCoursePage, addDiscount } from '../features/cours
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
-import{refreshuser, registerCourse,updateRating, updateRatingCourse} from '../features/auth/authSlice'
+import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle} from '../features/auth/authSlice'
 import "../components/Styling/Ratings.css"
 
 //import DatePicker from '../components/DatePicker'
@@ -25,6 +25,8 @@ function ViewCourses(){
     var flag1 = false;
     var flag2 = false;
     var flagsubmit = false;
+    var flag4 = false;
+    var courseprogress = 0;
     const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
     const { courses, isLoading, isError, message } = useSelector(
@@ -41,6 +43,7 @@ function ViewCourses(){
     const [results , setresults] = useState([])
     const [toggle, setToggle] = useState(true)
     const [toggle1,setToggle1] = useState(true)
+    const [notes,setnotes] = useState()
     const [currentsub,setcurrentsub] = useState()
 
     const [FormDataCourse,setFormDataCourse] = useState({
@@ -267,6 +270,8 @@ function ViewCourses(){
     console.log(answers)
     
 	}
+
+
   function submitquestionAnswers(){
     //  let _answers = [...answers]
     //  let _results = [...results]
@@ -369,6 +374,120 @@ function ViewCourses(){
     toast.success("Discount Added !")
     navigate('/courses')
   }
+
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+  
+  async function GetNextSubtitle(){
+    var a = [...user.courses]
+       var currentsub = 0;
+       a.map((course)=>{
+          if(course.courseName == courses.title){
+            currentsub = course.currentSubtitle
+          }
+       })
+       const formData = {
+        title:courses.title,
+        username:user.username
+       }
+       const formData2 = {
+        username:user.username
+       }
+     console.log("Current Subtitle : " + currentsub)
+     dispatch(updateSubtitle(formData))
+     await delay(3000)
+     dispatch(refreshuser(formData2))
+     toast.success("Next Subtitle Unlocked!")
+  }
+
+  function checkifSubtitle(currentsub){
+    var a = [...user.courses]
+    var currentsub1 = 0;
+    a.map((course)=>{
+       if(course.courseName == courses.title){
+         currentsub1 = course.currentSubtitle
+       }
+    })
+    console.log(currentsub1)
+    console.log("Current Sub User: " + currentsub.subtNo)
+    console.log("Sub 2 : "+currentsub1)
+    if(currentsub.subtNo == currentsub1){
+      console.log("adsadasd")
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  function checkifnotlastSub(){
+    var a = [...user.courses]
+    var currentsub1 = 0;
+    var arrayLength=0;
+    a.map((course)=>{
+       if(course.courseName == courses.title){
+         currentsub1 = course.currentSubtitle
+       }
+    })
+    var b = [...courses.subtitles]
+    b.map((course)=>{
+      arrayLength++
+    })
+    
+    if(currentsub1 < arrayLength){
+      return true
+    }else{
+      return false
+    }
+  }
+
+  function checkcourseProgress(){
+    var arrayLength=0;
+    var b = [...courses.subtitles]
+    b.map((course)=>{
+      arrayLength++
+    })
+    var a = [...user.courses]
+    var currentsub1 = 0;
+    a.map((course)=>{
+       if(course.courseName == courses.title){
+         currentsub1 = course.currentSubtitle
+       }
+    })
+    console.log(currentsub1/arrayLength)
+    courseprogress = (currentsub1 / arrayLength)*250
+    
+  }
+
+  function saveTextAsFile(textToWrite, fileNameToSaveAs) {
+    ///console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}); 
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    if (window.webkitURL != null) {
+    // Chrome allows the link to be clicked
+    // without actually adding it to the DOM.
+    downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+    }
+    else {
+    // Firefox requires the link to be added to the DOM
+    // before it can be clicked.
+    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    }
+    setnotes("");
+    downloadLink.click();
+}
+
+function handleNotes(e){
+  e.preventDefault()
+  setnotes(e.target.value)
+  console.log(notes)
+
+}
     
     
     return (<>
@@ -383,12 +502,20 @@ function ViewCourses(){
           
         <>
           
-          
+          {checkcourseProgress()}
           <div className="container-fluid border">
             <div className="row">
             <div className="col-2">
               <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border" style={{width: 250 }}>
                   <br></br>
+                  <h5>Course Progress</h5>
+                  <br></br>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                                            <div class="progress">
+                          <div class="progress-bar" role="progressbar" aria-valuenow="30" style={{width:courseprogress}} aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <br></br>
                   <h5>Course Information</h5>
                   <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
@@ -562,6 +689,12 @@ function ViewCourses(){
                     </div>
                     <br></br>
                     <br></br>
+                    <label for="exampleFormControlInput1" class="form-label">Notes</label>
+                    <textarea class="form-control" id="text1" rows="3" value={notes} onChange={(e) => handleNotes(e)}></textarea>
+                    <br></br>
+                    <button type='button' className='btn btn-primary' onClick={() => saveTextAsFile(notes,'notes.txt')}>Download</button>
+                    <br></br>
+                    <br></br>
                     </div>
                     </>
                 )
@@ -601,8 +734,11 @@ function ViewCourses(){
                 {rightanswers()}
 
               </div>)}
-              {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
               
+              {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
+              {((user.role == 'trainee' |user.role=='corporate trainee') & (checkifSubtitle(currentsub) == true) & (checkifnotlastSub()==true) )?(<>
+              <button type='button' className='btn btn-primary' onClick={()=>GetNextSubtitle()}>Next Subtitle</button>
+              </>):(<></>)}
               
               
               

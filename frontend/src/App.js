@@ -16,6 +16,7 @@ import Courses from './pages/Courses';
 import AddCourse from './pages/AddCourse'
 import SearchCourses from './pages/SearchCourses';
 import ViewMyCoursesIns from './pages/ViewMyCoursesIns'
+import ViewMyCoursesTrainee from './pages/ViewMyCoursesTrainee'
 import AdminRegister from './pages/AdminRegister';
 import ViewCourses from './pages/ViewCourses';
 import Tos from './pages/Tos'
@@ -24,6 +25,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import ViewMyRatingsIns from './pages/ViewMyRatingsIns'
 
 function App() {
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+  
   return (
     <>
     <Router>
@@ -40,6 +45,7 @@ function App() {
         <Route path='/courses' element={<SearchCourses />} />
         <Route path='/addcourse' element={<AddCourse />} />
         <Route path='/viewmyCoursesIns' element={<ViewMyCoursesIns />} />
+        <Route path='/viewmyCoursesTrainee' element={<ViewMyCoursesTrainee />} />
         <Route path='/newusers' element={<AdminRegister />} />
         <Route path='/viewcourse/:title' element={<ViewCourses />} />
         <Route path='/tos' element={<Tos />} />

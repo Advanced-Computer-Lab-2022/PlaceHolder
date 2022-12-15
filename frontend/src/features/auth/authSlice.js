@@ -79,6 +79,23 @@ export const updatePassword = createAsyncThunk(
   }
 )
 
+export const updateSubtitle = createAsyncThunk(
+  'auth/updateSubtitle',
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.updateSubtitle(userData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const updateRating = createAsyncThunk(
   'auth/updateRating',
   async (userData, thunkAPI) => {

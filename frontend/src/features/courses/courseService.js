@@ -28,6 +28,12 @@ const getCoursesIns = async (insdata) => {
 return response.data
 }
 
+const getCoursesTrainee = async (traineeData) => {
+  const response = await axios.post(API_URL + '/gettraineecourses',traineeData)
+
+
+return response.data
+}
 
 const addDiscount = async (data) => {
   const response = await axios.post(API_URL + '/adddiscount',data)
@@ -49,7 +55,8 @@ const courseService = {
     getCourses,
     getCoursesIns,
     getCoursePage,
-    addDiscount
+    addDiscount,
+    getCoursesTrainee
 }
 
 export default courseService
