@@ -26,11 +26,42 @@ export const getAll = createAsyncThunk('report/getAll', async (_, thunkAPI) => {
     }
 })
 
+export const updateSeen = createAsyncThunk('report/updateSeen', async (_, thunkAPI) => {
+  try {
+    //console.log(courseData)
+      return await reportService.updateSeen()
+  } catch (error) {
+      const message =
+      (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
 
 export const createReport = createAsyncThunk('report/create', async (data, thunkAPI) => {
   try {
     //console.log(courseData)
       return await reportService.createReport(data)
+  } catch (error) {
+      const message =
+      (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
+
+export const updateStatus = createAsyncThunk('report/updateStatus', async (data, thunkAPI) => {
+  try {
+    //console.log(courseData)
+      return await reportService.updateStatus(data)
   } catch (error) {
       const message =
       (error.response &&

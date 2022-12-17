@@ -18,11 +18,28 @@ const getAll = async () => {
   return response.data
   }  
 
+  const updateStatus = async (data) => {
+    const response = await axios.post(API_URL + '/updateStatus',data)
+  
+  
+  return response.data
+  } 
+
+  const updateSeen = async () => {
+    const response = await axios.get(API_URL + '/updateSeen',)
+  
+  
+  return response.data
+  } 
+
+
  
 
   const reportService = {
     getAll,
-    createReport
+    createReport,
+    updateStatus,
+    updateSeen
    
 }
 

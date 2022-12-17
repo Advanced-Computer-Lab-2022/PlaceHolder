@@ -15,6 +15,9 @@ const reportSchema = mongoose.Schema({
     },
     msg:{
         type:String
+    },
+    seen:{
+        type:String
     }
     
     

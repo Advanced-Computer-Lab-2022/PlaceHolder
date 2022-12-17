@@ -622,7 +622,7 @@ function SubmitReport(){
       user1:user.username,
       role:user.role,
       type:Report.ReportType,
-      status:'unseen',
+      status:'pending',
       msg:Report.ReportMsg,
     }
     dispatch(createReport(data))
