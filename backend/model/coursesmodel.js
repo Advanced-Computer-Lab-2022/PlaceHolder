@@ -25,6 +25,9 @@ const courseSchema = mongoose.Schema(
             totalh:{
                 type:Number
             },
+            subtNo:{
+                type:Number
+            },
             exercises: [
                 {
                 question:{

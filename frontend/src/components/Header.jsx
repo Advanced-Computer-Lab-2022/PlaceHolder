@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar, FaClipboardList} from 'react-icons/fa'
 import React from 'react'
 import {Link , useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
@@ -52,12 +52,25 @@ function Header() {
                 </a></li>
                         
                     ): (<></>)}
-                {user && (user.role =="admin") ? (
-                    <li><a href='/newusers' class="nav-link px-2 text-white">
-                     <FaUserPlus/>Add New Users
+                    {user && (user.role =='trainee' | user.role=='corporate trainee') ? (
+                    <li><a href='/viewmyCoursesTrainee' class="nav-link px-2 text-white">
+                    <FaBookOpen/> My Courses
                 </a></li>
                         
                     ): (<></>)}
+                {user && (user.role =="admin") ? (<>
+                    <li><a href='/newusers' class="nav-link px-2 text-white">
+                     <FaUserPlus/>Add New Users
+                </a></li>
+
+                    <li><a href='/manageRequests' class="nav-link px-2 text-white">
+                     <FaBook/>Manage Course Requests
+                </a></li>
+
+                <li><a href='/manageReports' class="nav-link px-2 text-white">
+                     <FaClipboardList/>Manage Reports
+                </a></li>   
+                </>): (<></>)}
                 {user && (user.role =="instructor") ? (<>
                     <li><a href='/viewmyCoursesIns'  class="nav-link px-2 text-white"> 
                     <FaBook/> View My Courses
@@ -98,62 +111,7 @@ function Header() {
                     
                     
                 </div>
-                {/* <div className="col" style={mystyle}>
-                    <Link to='/courses'>
-                    <FaBook/>Courses</Link> 
-                    
-                </div> */}
-                {/* <div className="col" style={mystyle}>
-                    {user && (user.role =="instructor") ? (
-                        <Link to='/addcourse'>
-                        <FaBookOpen/> Add Course
-                    </Link>
-                    ): (<></>)}
-                </div> */}
-                {/* <div className="col" style={mystyle}>
-                            {user && (user.role =="admin") ? (
-                        <Link to='/newusers'>
-                        <FaUserPlus/> Add New Users
-                    </Link>
-                    ): (<></>)}
-                </div> */}
-                {/* <div className="col" style={mystyle}>
-                            {user && (user.role =="instructor") ? (
-                        <Link to='/viewmyCoursesIns'>
-                        <FaBook/> View My Courses
-                    </Link>
-                    ): (<></>)}
-                </div>                 */}
-                {/* <div className="col" style={mystyle}>
-                            {(user) ? (
-                        <Link to='/me'>
-                        <FaUser/> {user.username}
-                    </Link>
-                    ): (<></>)}    
-                </div>                 */}
-                {/* <div className="col" style={mystyle}>
-                            {user ? (
-                        
-                        
-                        
-                        
-                        <button className='btn' onClick={onLogout}>
-                            <FaSignOutAlt/> Logout
-                            </button>
-                        
-                    ) : (<>
-                        
-                        <Link to='/login'>
-                            <FaSignInAlt/> Login
-                        </Link>
-                    
-                    
-                        <Link to='/register'>
-                            <FaUser/> Register
-                        </Link>
-                    </>)}
-             
-                </div>                 */}
+                
             
             
             </div>

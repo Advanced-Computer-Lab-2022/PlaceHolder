@@ -42,6 +42,12 @@ const userSchema = mongoose.Schema({
         {
             courseName:{
                 type:String
+            },
+            currentSubtitle:{
+                type:Number
+            },
+            receivedCert:{
+                type:String
             }
         }
     ],
@@ -71,6 +77,16 @@ const userSchema = mongoose.Schema({
     coursesrated:[
         {
             coursenamerated:{
+                type:String
+            }
+        }
+    ],
+    requestedCourse:[
+        {
+            courseName:{
+                type:String
+            },
+            granted:{
                 type:String
             }
         }

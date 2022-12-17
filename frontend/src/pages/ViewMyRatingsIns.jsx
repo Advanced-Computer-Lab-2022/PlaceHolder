@@ -10,7 +10,7 @@ import "../components/Styling/Divider.css"
 
 
 
-function viewmyRatingsIns() {
+function ViewmyRatingsIns() {
     const navigate = useNavigate()
 
     const {user} = useSelector((state) => state.auth)
@@ -70,7 +70,7 @@ function viewmyRatingsIns() {
                                         <FaStar className='checked'></FaStar>
                                         <FaStar className='checked'></FaStar>
                                         <FaStar className='checked'></FaStar>
-                                        <FaStar className='checked'></FaStar>   
+                                        <FaStar className=''></FaStar>   
                                     </div>
                                     </>):(<><div>
                                         <FaStar className='checked'></FaStar>
@@ -113,4 +113,4 @@ function viewmyRatingsIns() {
   )
 }
 
-export default viewmyRatingsIns
+export default ViewmyRatingsIns

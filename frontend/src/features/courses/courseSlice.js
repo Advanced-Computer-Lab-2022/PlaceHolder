@@ -63,6 +63,42 @@ export const addDiscount = createAsyncThunk(
   }
 )
 
+export const getCertficate = createAsyncThunk(
+  'courses/getCertficate',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.getCertficate(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getCertficateEmail = createAsyncThunk(
+  'courses/getCertficateEmail',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.sendEmailCert(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 //Get Courses By Instructor
 export const getCoursesIns = createAsyncThunk(
   'courses/getCourseIns',
@@ -70,6 +106,42 @@ export const getCoursesIns = createAsyncThunk(
     try {
       
       return await courseService.getCoursesIns(insData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const requestAccess = createAsyncThunk(
+  'courses/requestAccess',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.requestAccess(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getCoursesTrainee = createAsyncThunk(
+  'courses/getCourseTrainee',
+  async (traineeData, thunkAPI) => {
+    try {
+      
+      return await courseService.getCoursesTrainee(traineeData)
     } catch (error) {
       const message =
         (error.response &&
@@ -150,6 +222,19 @@ export const courseSlice = createSlice({
           state.courses = action.payload
         })
         .addCase(getCoursesIns.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+        })
+        .addCase(getCoursesTrainee.pending, (state) => {
+          state.isLoading = true
+        })
+        .addCase(getCoursesTrainee.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.courses = action.payload
+        })
+        .addCase(getCoursesTrainee.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload

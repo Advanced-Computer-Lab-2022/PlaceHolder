@@ -16,14 +16,21 @@ import Courses from './pages/Courses';
 import AddCourse from './pages/AddCourse'
 import SearchCourses from './pages/SearchCourses';
 import ViewMyCoursesIns from './pages/ViewMyCoursesIns'
+import ViewMyCoursesTrainee from './pages/ViewMyCoursesTrainee'
 import AdminRegister from './pages/AdminRegister';
 import ViewCourses from './pages/ViewCourses';
 import Tos from './pages/Tos'
 import ViewMyProfile from './pages/ViewMyProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import ViewMyRatingsIns from './pages/ViewMyRatingsIns'
+import ManageCourseRequests from './pages/ManageCourseRequests'
+import ManageReports from './pages/ManageReports'
 
 function App() {
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+  
   return (
     <>
     <Router>
@@ -40,6 +47,7 @@ function App() {
         <Route path='/courses' element={<SearchCourses />} />
         <Route path='/addcourse' element={<AddCourse />} />
         <Route path='/viewmyCoursesIns' element={<ViewMyCoursesIns />} />
+        <Route path='/viewmyCoursesTrainee' element={<ViewMyCoursesTrainee />} />
         <Route path='/newusers' element={<AdminRegister />} />
         <Route path='/viewcourse/:title' element={<ViewCourses />} />
         <Route path='/tos' element={<Tos />} />
@@ -47,6 +55,8 @@ function App() {
         <Route path='/viewmyRatingsIns' element={<ViewMyRatingsIns />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
         <Route path='/forgotpassword' element={<ForgotPassword />} />
+        <Route path='/manageRequests' element={<ManageCourseRequests />} />
+        <Route path='/manageReports' element={<ManageReports />} />
       </Routes>
     
     </Router>
