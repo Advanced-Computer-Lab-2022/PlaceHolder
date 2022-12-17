@@ -22,9 +22,11 @@
     "express-async-handler": "^1.2.0",
     "git": "^0.1.5",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "mongoose": "^6.6.6",
     "nodemailer": "^6.8.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "pdfkit": "^0.13.0"
   },
   "devDependencies": {
     "concurrently": "^7.5.0"

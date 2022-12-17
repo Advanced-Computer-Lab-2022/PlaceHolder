@@ -6,11 +6,12 @@ import {useSelector , useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
 import CourseItem from '../components/CourseItem'
 import Spinner from '../components/Spinner'
-import { getCourses, reset, getCoursePage, addDiscount } from '../features/courses/courseSlice'
+import { getCourses, reset, getCoursePage, addDiscount, getCertficate , getCertficateEmail, requestAccess } from '../features/courses/courseSlice'
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
-import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle} from '../features/auth/authSlice'
+import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle, updateRequests} from '../features/auth/authSlice'
+import {createReport} from '../features/reports/reportSlice'
 import "../components/Styling/Ratings.css"
 
 //import DatePicker from '../components/DatePicker'
@@ -26,9 +27,14 @@ function ViewCourses(){
     var flag2 = false;
     var flagsubmit = false;
     var flag4 = false;
+    var flag5 = false;
+    var flag6 = false;
     var courseprogress = 0;
+    var tries = 1;
+    
     const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
+    const {report} = useSelector((state) => state.report)
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
@@ -55,7 +61,7 @@ function ViewCourses(){
       amountOfDiscount: 0,
       ExpiryDate: '',
     })
-
+    const [Report,setReport] = useState()
 
     const {review ,rating} = FormData
     const {reviewCourse,ratingCourse} = FormDataCourse
@@ -149,7 +155,7 @@ function ViewCourses(){
       
      }
     
-
+     
     function RegisterUserCourse(){
       const userData = {
         username: user.username,
@@ -354,6 +360,14 @@ function ViewCourses(){
     setcurrentsub(sub)
   }
 
+  function displayProblemReport(){
+    const sub = {
+      problemDisplay:true,
+      
+    }
+    setcurrentsub(sub)
+  }
+
   const addDiscountHandler = (e) => {
     //e.preventDefault()
     //console.log(e.target.value)
@@ -380,6 +394,7 @@ function ViewCourses(){
   );
   
   async function GetNextSubtitle(){
+   
     var a = [...user.courses]
        var currentsub = 0;
        a.map((course)=>{
@@ -398,7 +413,17 @@ function ViewCourses(){
      dispatch(updateSubtitle(formData))
      await delay(3000)
      dispatch(refreshuser(formData2))
+
+     
      toast.success("Next Subtitle Unlocked!")
+     var arrayLength=0;
+      var b = [...courses.subtitles]
+      b.map((course)=>{
+        arrayLength++
+      })
+     if(arrayLength == currentsub+1){
+      sendCert();
+     } 
   }
 
   function checkifSubtitle(currentsub){
@@ -473,10 +498,10 @@ function ViewCourses(){
     else {
     // Firefox requires the link to be added to the DOM
     // before it can be clicked.
-    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-    downloadLink.onclick = destroyClickedElement;
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
+    // downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+    // downloadLink.onclick = destroyClickedElement;
+    // downloadLink.style.display = "none";
+    // document.body.appendChild(downloadLink);
     }
     setnotes("");
     downloadLink.click();
@@ -488,6 +513,125 @@ function handleNotes(e){
   console.log(notes)
 
 }
+
+function DownloadCertficate(){
+  const data = {
+    title:courses.title,
+    firstName:user.firstName,
+    lastName:user.lastName
+  }
+
+  dispatch(getCertficate(data))
+  
+  toast.success("Certficate Downloaded!")
+  //navigate('/' + user.role)
+}
+
+function checkifReceived(){
+  var a = [...user.courses]
+    
+    a.map((course)=>{
+       if(course.courseName == courses.title & !flag){
+         if(course.receivedCert=='false'){
+          
+          flag5 = true
+          //console.log(course)
+         }else{
+         flag5 = false
+         }
+       }
+    })
+    console.log("Flag : "+ flag5)
+    console.log(user.courses)
+}
+
+function sendCert(){
+  
+  const data = {
+    email:user.email,
+    username:user.username,
+    title:courses.title,
+    firstName:user.firstName,
+    lastName:user.lastName
+  }
+  const formData = {
+    username:user.username
+  }
+
+  dispatch(getCertficateEmail(data))
+  toast.success("Congratulations on Completing This Course . An Email Containing Your Certficate is sent or you can download it from here")
+  dispatch(refreshuser(formData))
+
+}
+
+function emailer(){
+  
+  checkifReceived()
+  if(checkifnotlastSub()==false){
+    console.log(tries)
+    if(flag5){
+      
+      sendCert()
+    }
+  }
+}
+
+function RequestAccess(){
+  const data = {
+    username:user.username,
+    title:courses.title
+  }
+  const data2 = {
+    username:user.username
+  }
+  dispatch(requestAccess(data))
+  dispatch(updateRequests(data))
+  navigate('/'+user.role)
+  dispatch(refreshuser(data2))
+  toast.success("Request Sent !")
+}
+
+function checkifasked(){
+    var a = [...user.requestedCourse]
+    a.map((course)=>{
+      if(course.courseName == courses.title){
+        flag6 = true
+      }else{
+        flag6 = false
+      }
+    })
+    console.log("Flag 6 :" +flag6)
+}
+
+function handleReport(e){
+  setReport((prevState)=> ({
+    ...prevState,
+    [e.target.name]: e.target.value,
+}))
+
+  console.log(Report)
+}
+
+function SubmitReport(){
+  if(Report.ReportMsg == null){
+    toast.error('Please Fill Out Message Field!')
+  }else if(Report.ReportType == null | Report.ReportType == 'Choose...'){
+    toast.error('Please Select Report Type')
+  }else{
+    const data = {
+      user1:user.username,
+      role:user.role,
+      type:Report.ReportType,
+      status:'unseen',
+      msg:Report.ReportMsg,
+    }
+    dispatch(createReport(data))
+    navigate('/'+user.role)
+    toast.success('Report Submitted ! Please Check Report Status for further updates')
+  }
+  
+}
+
     
     
     return (<>
@@ -501,7 +645,7 @@ function handleNotes(e){
         (courses.title !=null) ? ((flag==true | user.username==courses.instructorName) ? (<>{(courses.title !=null) ? (
           
         <>
-          
+          {emailer()}
           {checkcourseProgress()}
           <div className="container-fluid border">
             <div className="row">
@@ -516,6 +660,13 @@ function handleNotes(e){
                         </div>
                     </div>
                     <br></br>
+                    
+                    {(checkifnotlastSub()==false)?(<>{(checkifReceived()==false)?(<>{sendCert()}</>):(<></>)}<div class="list-group list-group-flush border-bottom scrollarea">
+                                            <button type='button' className='btn btn-primary' onClick={() => DownloadCertficate()}>Download Certficate</button>
+                                            {/* <a type='button' className='btn btn-primary' href={'https://localhost:8000/courses/certf/' + courses.title + '/'  + user.firstName + '/' + user.lastName}>Download Certficate</a> */}
+                    </div>
+                    <br></br></>):(<></>)}
+                    
                   <h5>Course Information</h5>
                   <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
@@ -546,12 +697,48 @@ function handleNotes(e){
                           
                       )
                     })}
-        </div>
+                  </div>
+                  <br>
+                  </br>
+                  <h5>Course Settings</h5>
+                  <div class="list-group list-group-flush border-bottom scrollarea">
+                           
+                          <div class="d-flex w-100 align-items-center justify-content-between">
+                            <button type='button' className='btn btn-danger' onClick={()=>displayProblemReport()}>Report a Problem</button>
+                            
+                            
+                          </div>
+                          <div class="col-10 mb-1 small"></div>
+                           
+                    </div>
+                    <br></br>
             </div>
             </div>
             <div className="col-10 ">
-            <div className="container border">
-              {(currentsub !=null)?(<>{(currentsub.courseinfo != null)?(<>
+            <div className="container">
+              {(currentsub!=null)?(<>{(currentsub.problemDisplay != null)?(<>
+                <h5 className='text-center'>Report A Problem</h5>
+                <form>
+                
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Report Message</label>
+                      <input type="text" class="form-control" name="ReportMsg" placeholder='Write Your Message Here' onChange={(e) => handleReport(e)}/>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="inputState">Report Type</label>
+                      <select id="inputState" class="form-control" name='ReportType' onChange={(e)=> handleReport(e)}>
+                        <option selected>Choose...</option>
+                        <option>Technical</option>
+                        <option>Financial</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <br />
+                    <button type='button' className='btn btn-primary' onClick={() => SubmitReport()}>Submit Report</button>
+                </form>
+              
+              </>):(<></>)}</>):(<></>)}
+              {(currentsub !=null)?(<>{(currentsub.courseinfo != null )?(<>
                 <h5 className='text-center'>{currentsub.title}</h5>
                 <h6>Course Subject : {currentsub.subject}</h6>
                 <h6>Course Instructor : {currentsub.instructorName}</h6>
@@ -673,7 +860,10 @@ function handleNotes(e){
              
           </div>
               </>):(<>
-              <h5 className='text-center'>{currentsub.subt}</h5>
+              {(currentsub.courseinfo == null & currentsub.problemDisplay == null)?(<>
+              
+              
+                <h5 className='text-center'>{currentsub.subt}</h5>
               <div className="container border">
                 {currentsub.description}
               </div>
@@ -685,7 +875,7 @@ function handleNotes(e){
                     <h5 className='text-center' >Video Title : {v.videotitle}</h5>
                     <h6 >Video Description: {v.videodescription}</h6>
                     <div class="embed-responsive embed-responsive-21by9 ">
-                      <iframe class="embed-responsive-item" width={1280} height={1080} src={v.url} allowfullscreen></iframe>
+                      <iframe class="embed-responsive-item" width={1280} height={1080} src={v.url+"?autoplay=1"} allow='autoplay' allowfullscreen></iframe>
                     </div>
                     <br></br>
                     <br></br>
@@ -736,13 +926,32 @@ function handleNotes(e){
               </div>)}
               
               {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
+              <br></br>
+              <br></br>
+              <br></br>
               {((user.role == 'trainee' |user.role=='corporate trainee') & (checkifSubtitle(currentsub) == true) & (checkifnotlastSub()==true) )?(<>
               <button type='button' className='btn btn-primary' onClick={()=>GetNextSubtitle()}>Next Subtitle</button>
               </>):(<></>)}
               
               
               
-              </>)}</>):(<></>)}
+              
+              
+              
+              
+              
+              
+              </>):(<></>)}
+
+
+
+             
+              
+              </>
+              
+              
+              
+              )}</>):(<></>)}
             </div>
             </div>
         </div>
@@ -797,7 +1006,9 @@ function handleNotes(e){
                         Price : {courses.price}
                     </b1>
                     <br></br>
-                    {(user!=null & (user.role == 'trainee' | user.role == 'corporate trainee' | user.role == 'admin'))?(<button onClick={RegisterUserCourse} type='button' className='btn btn-primary'>Register To This Course</button>  ):(<></>)}
+                    {checkifasked()}
+                    {(user!=null & (user.role == 'trainee' ))?(<button onClick={RegisterUserCourse} type='button' className='btn btn-primary'>Register To This Course</button>  ):(<></>)}
+                    {((flag6 & user.role == 'corporate trainee')?(<></>):(<>{(user!=null & (user.role == 'corporate trainee'))?(<button onClick={() =>RequestAccess()} type='button' className='btn btn-primary'>Request Access To This Course</button>):(<></>)}</>))}
                     </div>
                     </div>
         

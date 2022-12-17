@@ -6,6 +6,8 @@ const { ViewCourses,
         ViewCoursesIns,
         AddDiscount,
         ViewCoursesTrainee,
+        GenerateCert,
+        GenerateCertEmail
                      } = require('../controllers/coursecontroller')
 
 const { protect } = require('../middleware/authMiddleware')
@@ -16,5 +18,7 @@ router.post('/view/:title', ViewCoursePage)
 router.post('/getinscourses',ViewCoursesIns)
 router.post('/gettraineecourses',ViewCoursesTrainee)
 router.post('/adddiscount',AddDiscount)
+router.get('/certf/:title/:firstname/:lastname',GenerateCert)
+router.post('/certfEmail',GenerateCertEmail)
 
 module.exports = router

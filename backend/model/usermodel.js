@@ -46,6 +46,9 @@ const userSchema = mongoose.Schema({
             currentSubtitle:{
                 type:Number
             },
+            receivedCert:{
+                type:String
+            }
         }
     ],
     minibio:{
@@ -74,6 +77,16 @@ const userSchema = mongoose.Schema({
     coursesrated:[
         {
             coursenamerated:{
+                type:String
+            }
+        }
+    ],
+    requestedCourse:[
+        {
+            courseName:{
+                type:String
+            },
+            granted:{
                 type:String
             }
         }

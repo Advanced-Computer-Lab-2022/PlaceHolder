@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { saveAs } from 'file-saver';
 
 const API_URL = '/courses'
 
@@ -28,6 +28,15 @@ const getCoursesIns = async (insdata) => {
 return response.data
 }
 
+function download(content, mimeType, filename){
+  const a = document.createElement('a') // Create "a" element
+  const blob = new Blob([content], {type: mimeType}) // Create a blob (file-like object)
+  const url = URL.createObjectURL(blob) // Create an object URL from blob
+  a.setAttribute('href', url) // Set "a" element link
+  a.setAttribute('download', filename) // Set download filename
+  a.click() // Start downloading
+}
+
 const getCoursesTrainee = async (traineeData) => {
   const response = await axios.post(API_URL + '/gettraineecourses',traineeData)
 
@@ -50,13 +59,43 @@ const getCoursePage = async (title) => {
 return response.data
 }
 
+const sendEmailCert = async (data) => {
+ 
+  const response = await axios.post(API_URL + '/certfEmail',data)
+
+//console.log(response)
+return response.data
+}
+
+const requestAccess = async (data) => {
+ 
+  const response = await axios.post('/corp/reqAccess',data)
+
+//console.log(response)
+return response.data
+}
+
+const getCertficate = async (data) => {
+  var title = data.title
+  var firstName = data.firstName
+  var lastName = data.lastName
+  const response = await axios.get(API_URL + '/certf/' + title + '/' + firstName + '/' + lastName, { responseType: 'blob' })
+
+  console.log(response.data)
+  //download(response.data,"application/pdf","Certficate.pdf")
+  return download(response.data,"application/pdf","Certficate.pdf")
+}
+
 const courseService = {
     createCourse,
     getCourses,
     getCoursesIns,
     getCoursePage,
     addDiscount,
-    getCoursesTrainee
+    getCoursesTrainee,
+    getCertficate,
+    sendEmailCert,
+    requestAccess
 }
 
 export default courseService

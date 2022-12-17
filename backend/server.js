@@ -25,6 +25,8 @@ var nodemailer = require("nodemailer");
 app.use('/',require('./routes/dashroute'))
 app.use('/courses',require('./routes/coursesroute'))
 app.use('/users',require('./routes/userroutes'))
+app.use('/corp',require('./routes/corpaccessroutes'))
+app.use('/report',require('./routes/reportroutes'))
 
 
 app.listen(port, () => console.log(`Server started on port ${port}` ))

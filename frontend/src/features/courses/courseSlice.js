@@ -63,6 +63,42 @@ export const addDiscount = createAsyncThunk(
   }
 )
 
+export const getCertficate = createAsyncThunk(
+  'courses/getCertficate',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.getCertficate(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const getCertficateEmail = createAsyncThunk(
+  'courses/getCertficateEmail',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.sendEmailCert(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 //Get Courses By Instructor
 export const getCoursesIns = createAsyncThunk(
   'courses/getCourseIns',
@@ -70,6 +106,24 @@ export const getCoursesIns = createAsyncThunk(
     try {
       
       return await courseService.getCoursesIns(insData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const requestAccess = createAsyncThunk(
+  'courses/requestAccess',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.requestAccess(data)
     } catch (error) {
       const message =
         (error.response &&

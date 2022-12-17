@@ -54,13 +54,16 @@ const registeruser = asynchandler(async (req,res) => {
         minibio: '',
         ratings:[],
         ratingssentins:[],
-        coursesrated:[]
+        coursesrated:[],
+        requestedCourse:[]
     })
 
     if(user1){
         res.status(201).json({
             _id: user1.id,
             username: username,
+            firstName:user1.firstName,
+             lastName:user1.lastName,
             email: user1.email,
             role:user1.role,
             country:user1.country,
@@ -70,7 +73,8 @@ const registeruser = asynchandler(async (req,res) => {
             minibio:user1.minibio,
             ratings:user1.ratings,
             ratingssentins:user1.ratingssentins,
-            coursesrated:user1.coursesrated
+            coursesrated:user1.coursesrated,
+            requestedCourse:user1.requestedCourse
         })
     }
     else{
@@ -89,6 +93,8 @@ const loginuser = asynchandler(async (req,res) => {
         res.status(201).json({
             _id: user2.id,
             username: username,
+            firstName:user2.firstName,
+            lastName:user2.lastName,
             email: user2.email,
             role: user2.role,
             country:user2.country,
@@ -98,7 +104,8 @@ const loginuser = asynchandler(async (req,res) => {
             minibio:user2.minibio,
             ratings:user2.ratings,
             ratingssentins:user2.ratingssentins,
-            coursesrated:user2.coursesrated
+            coursesrated:user2.coursesrated,
+            requestedCourse:user2.requestedCourse
         })
     }
     else{
@@ -259,6 +266,28 @@ const updateSubtitle = asynchandler(async (req,res) => {
     const user2 = await user.findOneAndUpdate({username},user1)
 })
 
+const updateRequests = asynchandler(async (req,res) => {
+    const courseName = req.body.title
+    const username = req.body.username
+    
+    const user1 = await user.findOne({username})
+    var a = [...user1.requestedCourse]
+    if(a.length == 0){
+        a = {
+            courseName:courseName,
+            granted:false
+        }
+    }else{
+    a.push({
+        courseName:courseName,
+            granted:false
+    })
+    }
+    user1.requestedCourse = a
+    
+    const user2 = await user.findOneAndUpdate({username},user1)
+})
+
 
 const updateRatingCourse = asynchandler(async (req,res) => {
     
@@ -340,6 +369,8 @@ const refreshuser = asynchandler(async (req,res) => {
     res.status(201).json({
         _id: user2.id,
         username: username,
+        firstName:user2.firstName,
+        lastName:user2.lastName,
         email: user2.email,
         role: user2.role,
         country:user2.country,
@@ -349,7 +380,8 @@ const refreshuser = asynchandler(async (req,res) => {
         minibio:user2.minibio,
         ratings:user2.ratings,
         ratingssentins:user2.ratingssentins,
-        coursesrated:user2.coursesrated
+        coursesrated:user2.coursesrated,
+        requestedCourse:user2.requestedCourse
     })
 
     //console.log(user2)
@@ -373,12 +405,14 @@ const registerCourse = asynchandler(async (req,res) => {
     if(user2.courses == null){
         user2.courses = {
             courseName:courseName,
-            currentSubtitle:1
+            currentSubtitle:1,
+            receivedCert:"false"
         }
     }else{
         user2.courses.push({
             courseName:courseName,
-            currentSubtitle:1
+            currentSubtitle:1,
+            receivedCert:"false"
         })
     }
     
@@ -523,6 +557,7 @@ module.exports = {
     resetpasspost,
     updateRating,
     updateRatingCourse,
-    updateSubtitle
+    updateSubtitle,
+    updateRequests
     
 }

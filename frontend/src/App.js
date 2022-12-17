@@ -23,6 +23,8 @@ import Tos from './pages/Tos'
 import ViewMyProfile from './pages/ViewMyProfile';
 import ForgotPassword from './pages/ForgotPassword';
 import ViewMyRatingsIns from './pages/ViewMyRatingsIns'
+import ManageCourseRequests from './pages/ManageCourseRequests'
+import ManageReports from './pages/ManageReports'
 
 function App() {
   const delay = ms => new Promise(
@@ -53,6 +55,8 @@ function App() {
         <Route path='/viewmyRatingsIns' element={<ViewMyRatingsIns />} />
         {/* <Route path='/courses' element={<SearchCourses />} /> */}
         <Route path='/forgotpassword' element={<ForgotPassword />} />
+        <Route path='/manageRequests' element={<ManageCourseRequests />} />
+        <Route path='/manageReports' element={<ManageReports />} />
       </Routes>
     
     </Router>

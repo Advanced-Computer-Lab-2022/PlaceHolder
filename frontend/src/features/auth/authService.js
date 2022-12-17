@@ -77,6 +77,12 @@ const registerCourse = async (userData) => {
   return response.data
 }
 
+const updateRequests = async (data) => {
+  const response = await axios.post(API_URL + 'updaterequests', data)
+
+
+  return response.data
+}
 
 
 // Login user
@@ -132,7 +138,8 @@ const authService = {
   forgotpass,
   updateRating,
   updateRatingCourse,
-  updateSubtitle
+  updateSubtitle,
+  updateRequests
 }
 
 export default authService
