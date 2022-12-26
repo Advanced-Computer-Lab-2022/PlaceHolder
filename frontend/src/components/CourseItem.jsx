@@ -295,6 +295,8 @@ function CourseItem({ course }) {
              {CourseFinalPrice} {myCurrency}
             </>
           )}</>)}
+          <br></br>
+              #ofUsers:{course.NumberOfUsers}
              
               </p>
               <div class="d-flex justify-content-between align-items-center">

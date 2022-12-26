@@ -117,7 +117,7 @@ function ManageReports() {
             </div>
             <div className="col-10">
                 <div className="container ">
-                   
+                    
                     
                     
                     {report.map((report) => {

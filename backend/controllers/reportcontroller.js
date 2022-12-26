@@ -15,7 +15,12 @@ const getAll = asynchandler(async (req,res) => {
     res.status(200).json(reports)
 })
 
-
+const getMyReports = asynchandler(async (req,res) => {
+    const userWhoReported = req.body.username
+    const reports = await report.find({userWhoReported})
+    
+    res.status(200).json(reports)
+})
 
 const createReport = asynchandler(async (req,res) => {
     const userWhoReported1 = req.body.user1
@@ -30,7 +35,8 @@ const createReport = asynchandler(async (req,res) => {
         reportType:reportType1,
         status:status1,
         msg:msg1,
-        seen:seen
+        seen:seen,
+        followup:[]
     })
     
     res.status(200).json(reports)
@@ -60,6 +66,30 @@ const updateSeen = asynchandler(async (req,res) => {
 })
 
 
+const updateFollowUpUser = asynchandler(async (req,res) => {
+    const _id = req.body.id
+    const followupUserMessage = req.body.newmsg
+
+    const reports = await report.findOne({_id})
+
+    if(reports.followup == null){
+        reports.followup = {
+            UserMsg:followupUserMessage,
+            AdminReply:''
+        }
+    }else{
+        reports.followup.push({
+            UserMsg:followupUserMessage,
+            AdminReply:''
+        })
+    }
+
+    const reports1 = await report.findOneAndUpdate({_id},{$set:reports})
+    res.status(200).json(reports1)
+
+})
+
+
 
 
 
@@ -74,7 +104,9 @@ module.exports = {
     getAll,
     createReport,
     updateStatus,
-    updateSeen
+    updateSeen,
+    getMyReports,
+    updateFollowUpUser
     
     
 }

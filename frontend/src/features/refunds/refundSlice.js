@@ -1,9 +1,9 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import reportService from './reportService'
+import refundService from './refundService'
 
 
 const initialState = {
-    report: [],
+    refund: [],
     isError: false,
     isSuccess:false,
     isLoading: false,
@@ -11,10 +11,10 @@ const initialState = {
 }
 
 //get All Course Requests
-export const getAll = createAsyncThunk('report/getAll', async (_, thunkAPI) => {
+export const getAll = createAsyncThunk('refunds/getAll', async (_, thunkAPI) => {
     try {
       //console.log(courseData)
-        return await reportService.getAll()
+        return await refundService.getAll()
     } catch (error) {
         const message =
         (error.response &&
@@ -26,11 +26,10 @@ export const getAll = createAsyncThunk('report/getAll', async (_, thunkAPI) => {
     }
 })
 
-
-export const getMyReports = createAsyncThunk('report/getMyReports', async (data, thunkAPI) => {
+export const getMyRefund = createAsyncThunk('refunds/getMyRefund', async (data, thunkAPI) => {
   try {
     //console.log(courseData)
-      return await reportService.getMyReports(data)
+      return await refundService.getMyRefunds(data)
   } catch (error) {
       const message =
       (error.response &&
@@ -43,25 +42,11 @@ export const getMyReports = createAsyncThunk('report/getMyReports', async (data,
 })
 
 
-export const updateSeen = createAsyncThunk('report/updateSeen', async (_, thunkAPI) => {
-  try {
-    //console.log(courseData)
-      return await reportService.updateSeen()
-  } catch (error) {
-      const message =
-      (error.response &&
-        error.response.data &&
-        error.response.data.message) ||
-      error.message ||
-      error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
 
-export const updateFollowUpUser = createAsyncThunk('report/updateFollowUpUser', async (data, thunkAPI) => {
+export const createRefund = createAsyncThunk('refund/create', async (data, thunkAPI) => {
   try {
     //console.log(courseData)
-      return await reportService.updateFollowUpUser(data)
+      return await refundService.createRefund(data)
   } catch (error) {
       const message =
       (error.response &&
@@ -74,26 +59,10 @@ export const updateFollowUpUser = createAsyncThunk('report/updateFollowUpUser', 
 })
 
 
-export const createReport = createAsyncThunk('report/create', async (data, thunkAPI) => {
+export const updateStatus = createAsyncThunk('refund/updateStatus', async (data, thunkAPI) => {
   try {
     //console.log(courseData)
-      return await reportService.createReport(data)
-  } catch (error) {
-      const message =
-      (error.response &&
-        error.response.data &&
-        error.response.data.message) ||
-      error.message ||
-      error.toString()
-    return thunkAPI.rejectWithValue(message)
-  }
-})
-
-
-export const updateStatus = createAsyncThunk('report/updateStatus', async (data, thunkAPI) => {
-  try {
-    //console.log(courseData)
-      return await reportService.updateStatus(data)
+      return await refundService.updateStatus(data)
   } catch (error) {
       const message =
       (error.response &&
@@ -110,11 +79,11 @@ export const updateStatus = createAsyncThunk('report/updateStatus', async (data,
 
 
 
-export const reportSlice = createSlice({
-    name: 'report',
+export const refundSlice = createSlice({
+    name: 'refund',
     initialState,
     reducers: {
-        reset: (state) => {
+        reset1: (state) => {
         state.isLoading = false
         state.isSuccess = false
         state.isError = false
@@ -129,35 +98,35 @@ export const reportSlice = createSlice({
         .addCase(getAll.fulfilled, (state, action) => {
           state.isLoading = false
           state.isSuccess = true
-          state.report = action.payload
+          state.refund = action.payload
         })
         .addCase(getAll.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload
         })
-        .addCase(getMyReports.pending, (state) => {
+        .addCase(getMyRefund.pending, (state) => {
           state.isLoading = true
         })
-        .addCase(getMyReports.fulfilled, (state, action) => {
+        .addCase(getMyRefund.fulfilled, (state, action) => {
           state.isLoading = false
           state.isSuccess = true
-          state.report = action.payload
+          state.refund = action.payload
         })
-        .addCase(getMyReports.rejected, (state, action) => {
+        .addCase(getMyRefund.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload
         })
-        .addCase(createReport.pending, (state) => {
+        .addCase(createRefund.pending, (state) => {
           state.isLoading = true
         })
-        .addCase(createReport.fulfilled, (state, action) => {
+        .addCase(createRefund.fulfilled, (state, action) => {
           state.isLoading = false
           state.isSuccess = true
-          state.report.push(action.payload) 
+          state.refund.push(action.payload) 
         })
-        .addCase(createReport.rejected, (state, action) => {
+        .addCase(createRefund.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload
@@ -169,5 +138,5 @@ export const reportSlice = createSlice({
 
 
 
-export const {reset} = reportSlice.actions
-export default reportSlice.reducer
+export const {reset1} = refundSlice.actions
+export default refundSlice.reducer

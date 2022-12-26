@@ -65,7 +65,7 @@ const AddCourse = asyncHandler(async (req, res) => {
     let temp = [...req.body.subtitles]
     var _temp = temp.map((sub) => {
         console.log(sub.totalh)
-        totalhs = totalhs + sub.totalh
+        totalhs = totalhs + Number(sub.totalh)
     })
     
     const courses = await Course.create({
@@ -84,6 +84,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         totalStars:0,
         amountOfDiscount:0,
         ExpiryDate:'',
+        NumberOfUsers:0
 
     })
     console.log(courses)
@@ -103,6 +104,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         totalStars:0,
         amountOfDiscount:0,
         ExpiryDate:'',
+        NumberOfUsers:0
     })
 })
 

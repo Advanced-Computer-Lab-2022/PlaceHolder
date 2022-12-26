@@ -12,6 +12,7 @@ import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
 import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle, updateRequests} from '../features/auth/authSlice'
 import {createReport} from '../features/reports/reportSlice'
+import {createRefund, getMyRefund , reset1} from '../features/refunds/refundSlice'
 import "../components/Styling/Ratings.css"
 
 //import DatePicker from '../components/DatePicker'
@@ -35,6 +36,7 @@ function ViewCourses(){
     const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
     const {report} = useSelector((state) => state.report)
+    const refund1 = useSelector((state) => state.refund)
     const { courses, isLoading, isError, message } = useSelector(
       (state) => state.courses
     )
@@ -62,6 +64,7 @@ function ViewCourses(){
       ExpiryDate: '',
     })
     const [Report,setReport] = useState()
+    const [Refund,setRefund] = useState()
 
     const {review ,rating} = FormData
     const {reviewCourse,ratingCourse} = FormDataCourse
@@ -95,13 +98,14 @@ function ViewCourses(){
       }
       //dispatch(refreshuser(userData2))
       dispatch(getCoursePage(title.title))
-      
+      dispatch(getMyRefund(userData2))
       setCourses(courses)
       
     }
       
       return () => {
         dispatch(reset())
+        dispatch(reset1())
       }
     }, [user, navigate, isError, message, dispatch])
   
@@ -368,6 +372,15 @@ function ViewCourses(){
     setcurrentsub(sub)
   }
 
+  
+  function displayRefund(){
+    const sub = {
+      refundDisplay:true,
+      
+    }
+    setcurrentsub(sub)
+  }
+
   const addDiscountHandler = (e) => {
     //e.preventDefault()
     //console.log(e.target.value)
@@ -481,6 +494,7 @@ function ViewCourses(){
     })
     console.log(currentsub1/arrayLength)
     courseprogress = (currentsub1 / arrayLength)*250
+    console.log("Course Progress : "+(courseprogress/250)*100)
     
   }
 
@@ -612,6 +626,15 @@ function handleReport(e){
   console.log(Report)
 }
 
+function handleRefund(e){
+  setRefund((prevState)=> ({
+    ...prevState,
+    [e.target.name]: e.target.value,
+}))
+
+  console.log(Report)
+}
+
 function SubmitReport(){
   if(Report.ReportMsg == null){
     toast.error('Please Fill Out Message Field!')
@@ -624,12 +647,40 @@ function SubmitReport(){
       type:Report.ReportType,
       status:'pending',
       msg:Report.ReportMsg,
+      course:courses.title
     }
     dispatch(createReport(data))
     navigate('/'+user.role)
     toast.success('Report Submitted ! Please Check Report Status for further updates')
   }
   
+}
+
+
+function SubmitRefund(){
+  if(Refund.RefundMsg == null){
+    toast.error('Please Fill Out Message Field!')
+  }else if(Refund.RefundType == null | Refund.RefundType == 'Choose...'){
+    toast.error('Please Select Refund Reason')
+  }else{
+    const data = {
+      user1:user.username,
+      role:user.role,
+      type:Refund.RefundType,
+      status:'pending',
+      msg:Refund.RefundMsg,
+      course:courses.title
+    }
+    dispatch(createRefund(data))
+    navigate('/'+user.role)
+    toast.success('Refund Submitted ! Please Check Wallet for further updates')
+  }
+  
+}
+
+function gotopaymentendpoint(){
+  const paymentpath = '/pay/' + courses.title
+  navigate(paymentpath)
 }
 
     
@@ -711,6 +762,20 @@ function SubmitReport(){
                           <div class="col-10 mb-1 small"></div>
                            
                     </div>
+                    {console.log(refund1)}
+                    {(((courseprogress/250)*100)<50 & refund1.refund == null)?(<>
+                      <div class="list-group list-group-flush border-bottom scrollarea">
+                           
+                           <div class="d-flex w-100 align-items-center justify-content-between">
+                             <button type='button' className='btn btn-danger' onClick={()=>displayRefund()}>Request A Refund</button>
+                             
+                             
+                           </div>
+                           <div class="col-10 mb-1 small"></div>
+                            
+                     </div>
+                    </>):(<></>)}
+                    
                     <br></br>
             </div>
             </div>
@@ -735,6 +800,30 @@ function SubmitReport(){
                     </div>
                     <br />
                     <button type='button' className='btn btn-primary' onClick={() => SubmitReport()}>Submit Report</button>
+                </form>
+              
+              </>):(<></>)}</>):(<></>)}
+              {(currentsub!=null)?(<>{(currentsub.refundDisplay != null)?(<>
+                <h5 className='text-center'>Request a refund </h5>
+                <form>
+                
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Request Refund Message</label>
+                      <input type="text" class="form-control" name="RefundMsg" placeholder='Write Your Message Here' onChange={(e) => handleRefund(e)}/>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="inputState">Why do you want to refund?</label>
+                      <select id="inputState" class="form-control" name='RefundType' onChange={(e)=> handleRefund(e)}>
+                        <option selected>Choose...</option>
+                        <option>I dont Like this course content</option>
+                        <option>I dont Like the instructor</option>
+                        <option>I bought the wrong course/ I changed my Mind</option>
+                        <option>Course didnt match the description</option>
+                        <option>This course is too advanced/basic for me</option>
+                      </select>
+                    </div>
+                    <br />
+                    <button type='button' className='btn btn-primary' onClick={() => SubmitRefund()}>Submit Refund</button>
                 </form>
               
               </>):(<></>)}</>):(<></>)}
@@ -860,7 +949,7 @@ function SubmitReport(){
              
           </div>
               </>):(<>
-              {(currentsub.courseinfo == null & currentsub.problemDisplay == null)?(<>
+              {(currentsub.courseinfo == null & currentsub.problemDisplay == null & currentsub.refundDisplay == null)?(<>
               
               
                 <h5 className='text-center'>{currentsub.subt}</h5>
@@ -1007,7 +1096,7 @@ function SubmitReport(){
                     </b1>
                     <br></br>
                     {checkifasked()}
-                    {(user!=null & (user.role == 'trainee' ))?(<button onClick={RegisterUserCourse} type='button' className='btn btn-primary'>Register To This Course</button>  ):(<></>)}
+                    {(user!=null & (user.role == 'trainee' ))?(<button onClick={() => gotopaymentendpoint()} type='button' className='btn btn-primary'>Buy This Course Now!</button>  ):(<></>)}
                     {((flag6 & user.role == 'corporate trainee')?(<></>):(<>{(user!=null & (user.role == 'corporate trainee'))?(<button onClick={() =>RequestAccess()} type='button' className='btn btn-primary'>Request Access To This Course</button>):(<></>)}</>))}
                     </div>
                     </div>

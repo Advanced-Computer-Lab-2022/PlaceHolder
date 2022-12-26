@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar, FaClipboardList} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar, FaClipboardList, FaCashRegister} from 'react-icons/fa'
 import React from 'react'
 import {Link , useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
@@ -46,17 +46,24 @@ function Header() {
                 &nbsp;
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href='/courses' class="nav-link px-2 text-white"><FaBook/>Courses</a></li>
-                {user && (user.role =="instructor") ? (
+                {user && (user.role =="instructor") ? (<>
                     <li><a href='/addcourse' class="nav-link px-2 text-white">
                     <FaBookOpen/> Add Course
                 </a></li>
-                        
+                <li><a href='/viewMyReports' class="nav-link px-2 text-white">
+                            <FaClipboardList/> My Reports
+                            </a></li>
+                        </>
                     ): (<></>)}
                     {user && (user.role =='trainee' | user.role=='corporate trainee') ? (
-                    <li><a href='/viewmyCoursesTrainee' class="nav-link px-2 text-white">
-                    <FaBookOpen/> My Courses
-                </a></li>
-                        
+                        <>
+                            <li><a href='/viewmyCoursesTrainee' class="nav-link px-2 text-white">
+                            <FaBookOpen/> My Courses
+                            </a></li>
+                            <li><a href='/viewMyReports' class="nav-link px-2 text-white">
+                            <FaClipboardList/> My Reports
+                            </a></li>
+                        </>  
                     ): (<></>)}
                 {user && (user.role =="admin") ? (<>
                     <li><a href='/newusers' class="nav-link px-2 text-white">
@@ -70,6 +77,10 @@ function Header() {
                 <li><a href='/manageReports' class="nav-link px-2 text-white">
                      <FaClipboardList/>Manage Reports
                 </a></li>   
+
+                <li><a href='/manageRefunds' class="nav-link px-2 text-white">
+                     <FaCashRegister/>Manage Refunds
+                </a></li>  
                 </>): (<></>)}
                 {user && (user.role =="instructor") ? (<>
                     <li><a href='/viewmyCoursesIns'  class="nav-link px-2 text-white"> 

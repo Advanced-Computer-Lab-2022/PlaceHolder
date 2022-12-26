@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const API_URL = '/users/'
 
+const API_URL_Payments = '/payment/'
+
+
+
 // Register user
 const register = async (userData) => {
   const response = await axios.post(API_URL + 'new', userData)
@@ -26,6 +30,15 @@ const adduser = async (userData) => {
 
   return response.data
 }
+
+const pay = async (data) => {
+  const response = await axios.post(API_URL_Payments + 'stripe-payment', data)
+
+
+  return response.data
+}
+
+
 
 const updateEmail = async (userData) => {
   const response = await axios.post(API_URL + 'updateemail', userData)
@@ -139,7 +152,9 @@ const authService = {
   updateRating,
   updateRatingCourse,
   updateSubtitle,
-  updateRequests
+  updateRequests,
+  pay,
+  
 }
 
 export default authService
