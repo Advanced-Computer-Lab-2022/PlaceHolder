@@ -27,6 +27,8 @@ app.use('/courses',require('./routes/coursesroute'))
 app.use('/users',require('./routes/userroutes'))
 app.use('/corp',require('./routes/corpaccessroutes'))
 app.use('/report',require('./routes/reportroutes'))
+app.use('/payment',require('./routes/paymentroutes'))
+app.use('/refund',require('./routes/refundroutes'))
 
 
 app.listen(port, () => console.log(`Server started on port ${port}` ))

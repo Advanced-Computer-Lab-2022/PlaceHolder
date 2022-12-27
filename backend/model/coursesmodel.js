@@ -122,6 +122,9 @@ const courseSchema = mongoose.Schema(
     ExpiryDate:{
          type:Date
     },
+    NumberOfUsers:{
+        type:Number
+    }
 }, {
     timestamps: true
 })

@@ -64,6 +64,25 @@ export const updateRequests = createAsyncThunk(
   }
 )
 
+export const pay = createAsyncThunk(
+  'auth/pay',
+  async (data, thunkAPI) => {
+    try {
+      return await authService.pay(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+
+
 export const updateEmail = createAsyncThunk(
   'auth/updateEmail',
   async (userData, thunkAPI) => {

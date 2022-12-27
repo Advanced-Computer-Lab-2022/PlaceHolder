@@ -18,7 +18,17 @@ const reportSchema = mongoose.Schema({
     },
     seen:{
         type:String
-    }
+    },
+    followup: [
+        {
+            UserMsg:{
+                type:String
+            },
+            AdminReply:{
+                type:String
+            }
+        }
+    ]
     
     
 },{

@@ -25,6 +25,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import ViewMyRatingsIns from './pages/ViewMyRatingsIns'
 import ManageCourseRequests from './pages/ManageCourseRequests'
 import ManageReports from './pages/ManageReports'
+import SeeMyReports from './pages/SeeMyReports'
+import StripeContainer from './pages/StripeContainer'
+import ManageRefunds from './pages/ManageRefunds'
+import ManageDiscounts from './pages/ManageDiscounts'
 
 function App() {
   const delay = ms => new Promise(
@@ -50,6 +54,7 @@ function App() {
         <Route path='/viewmyCoursesTrainee' element={<ViewMyCoursesTrainee />} />
         <Route path='/newusers' element={<AdminRegister />} />
         <Route path='/viewcourse/:title' element={<ViewCourses />} />
+        <Route path='/pay/:title' element={<StripeContainer />} />
         <Route path='/tos' element={<Tos />} />
         <Route path='/me' element={<ViewMyProfile />} />
         <Route path='/viewmyRatingsIns' element={<ViewMyRatingsIns />} />
@@ -57,6 +62,9 @@ function App() {
         <Route path='/forgotpassword' element={<ForgotPassword />} />
         <Route path='/manageRequests' element={<ManageCourseRequests />} />
         <Route path='/manageReports' element={<ManageReports />} />
+        <Route path='/manageRefunds' element={<ManageRefunds />} />
+        <Route path='/manageDiscounts' element={<ManageDiscounts />} />
+        <Route path='/viewMyReports' element={<SeeMyReports/>} />
       </Routes>
     
     </Router>

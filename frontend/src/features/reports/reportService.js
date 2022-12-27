@@ -11,6 +11,13 @@ const getAll = async () => {
   return response.data
   }
 
+  const getMyReports = async (data) => {
+    const response = await axios.post(API_URL + '/view',data)
+  
+  
+  return response.data
+  }
+
   const createReport = async (data) => {
     const response = await axios.post(API_URL + '/new',data)
   
@@ -24,6 +31,13 @@ const getAll = async () => {
   
   return response.data
   } 
+
+  const updateFollowUpUser = async (data) => {
+    const response = await axios.post(API_URL + '/updateFollowUser',data)
+  
+  
+  return response.data
+  }
 
   const updateSeen = async () => {
     const response = await axios.get(API_URL + '/updateSeen',)
@@ -39,7 +53,9 @@ const getAll = async () => {
     getAll,
     createReport,
     updateStatus,
-    updateSeen
+    updateSeen,
+    getMyReports,
+    updateFollowUpUser
    
 }
 

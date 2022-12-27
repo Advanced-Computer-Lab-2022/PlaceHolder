@@ -3,16 +3,18 @@ import {useEffect,useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
-import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset } from '../features/auth/authSlice'
-
+import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset, pay } from '../features/auth/authSlice'
+import {getMyTransactions} from '../features/payment/paymentSlice'
 
 
 function ViewMyProfile() {
     const[refresher,setrefresher] = useState();
     const navigate = useNavigate()
     var flag = false
+    var counter = 1;
     const dispatch = useDispatch()
     const {user} = useSelector((state) => state.auth)
+    const payment = useSelector((state) => state.payment)
     var email11 = user.email
     const [email,setEmail] = useState({
         email:email11
@@ -27,7 +29,14 @@ function ViewMyProfile() {
         if(!user){
             navigate('/login')
             toast.error('Please Log In First!')
+        }else{
+            var data = {
+                username:user.username
+            }
+            console.log(data)
+            dispatch(getMyTransactions(data))
         }
+        
 
     },[user,navigate])
 
@@ -89,6 +98,7 @@ function ViewMyProfile() {
     }
     }
     const [toggle, setToggle] = useState(true)
+    const [toggle1, setToggle1] = useState(true)
     // function DisplayPasswords(){
     //     flag = true
     //     forceUpdate()
@@ -96,6 +106,9 @@ function ViewMyProfile() {
     // }
     const handleEmail = (e) => {
        setEmail(e.target.value)
+    }
+    function incrementCounter(){
+        counter++;
     }
     const handleminibio = (e) => {
         setminibio(e.target.value)
@@ -134,13 +147,16 @@ function ViewMyProfile() {
         <br></br>
         {(user.role == "instructor")?(<>
             Biography: <input contentEditable='true' name='minibio' placeholder={user.minibio} onChange={handleminibio} value={minibio.minibio}></input>
-
+            
         </>):(<></>)}
         
         {(user.role == "instructor" & (user.minibio != minibio.minibio) | (user.email != email.email))?(<>
             <button onClick={savenewinfo}>Save</button>
-
-        </>):(<></>)}   
+           
+        </>):(<></>)}
+        <br></br>
+        {(user.role == 'trainee' | user.role == 'instructor')?(<>        My Wallet : {Math.trunc(payment.payment.wallet)} {payment.payment.userCurrency}  
+</>):(<></>)}
         
         </div>
    
@@ -151,6 +167,7 @@ function ViewMyProfile() {
             <div>
                 <br></br>
                 <button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Change My Password</button>
+                <br></br>
                 <br></br>
                 {!toggle && (<div>
                     <br></br>
@@ -165,6 +182,46 @@ function ViewMyProfile() {
 
 
                 </div>)}
+                <br></br>
+                {(user.role == 'trainee' | user.role == 'instructor')?(<> 
+                    <button type='button' className='btn btn-primary' onClick={()=> setToggle1(!toggle1)}>View All Transactions</button>
+
+                    {!toggle1 && (<div>
+                    <br></br>
+                       <h5>Transaction History</h5>
+                      < table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Course</th>
+      <th scope="col">Description</th>
+      <th scope="col">Date Of Purchase</th>
+    </tr>
+  </thead>
+  <tbody>
+    {payment.payment.transactions.map((trans)=>{
+        return(<>
+            <tr>
+            <th scope="row">{counter}</th>
+            <td>{trans.paymentAmount}</td>
+            <td><a href={"/viewcourse/"+trans.CoursePaidFor}>{trans.CoursePaidFor}</a></td>
+            <td>{trans.Description}</td>
+            <td>{trans.DateOfPurchase}</td>
+            </tr>
+            {incrementCounter()}
+            </>)
+    })}
+    
+  </tbody>
+</table>
+
+
+
+                </div>)}
+                
+                </>):(<></>)}
+
             </div>
             <br></br>
     </div>

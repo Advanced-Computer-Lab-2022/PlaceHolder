@@ -65,7 +65,7 @@ const AddCourse = asyncHandler(async (req, res) => {
     let temp = [...req.body.subtitles]
     var _temp = temp.map((sub) => {
         console.log(sub.totalh)
-        totalhs = totalhs + sub.totalh
+        totalhs = Number(totalhs) + Number(sub.totalh)
     })
     
     const courses = await Course.create({
@@ -84,6 +84,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         totalStars:0,
         amountOfDiscount:0,
         ExpiryDate:'',
+        NumberOfUsers:0
 
     })
     console.log(courses)
@@ -103,6 +104,7 @@ const AddCourse = asyncHandler(async (req, res) => {
         totalStars:0,
         amountOfDiscount:0,
         ExpiryDate:'',
+        NumberOfUsers:0
     })
 })
 
@@ -123,6 +125,25 @@ const AddDiscount = asyncHandler(async (req, res) => {
     const courses = await Course.findOneAndUpdate({title},newdiscount)
     console.log(courses)
     res.status(200).json(courses)
+})
+
+const AddDiscountMultiple = asyncHandler(async (req, res) => {
+    
+    const courses1 = req.body.courses
+    const ExpiryDate = req.body.date
+    const amountOfDiscount = req.body.discount
+    const newdiscount = { 
+        ExpiryDate:ExpiryDate,
+        amountOfDiscount:amountOfDiscount
+    }
+    console.log(courses1)
+    courses1.map(async (course) => {
+        const courses = await Course.findOneAndUpdate({title:course},newdiscount)
+    })
+    
+    //const courses = await Course.findOneAndUpdate({title},newdiscount)
+   
+    res.status(200).json(courses1)
 })
 
 
@@ -207,6 +228,7 @@ module.exports = {
     AddDiscount,
     ViewCoursesTrainee,
     GenerateCert,
-    GenerateCertEmail
+    GenerateCertEmail,
+    AddDiscountMultiple
     
 }

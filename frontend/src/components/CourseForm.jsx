@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import SubjectData from "../components/SubjectData.json";
 import { toast } from 'react-toastify'
 import FileBase64 from 'react-file-base64';
+import   '../components/JS/Youtube'
 
 
 
@@ -72,6 +73,7 @@ function CourseForm() {
 		})
 		setSubtitleList(_SubtitleList)
 	}
+    
 
     //handle add Subt
 	const handleAddSubt = () => {
@@ -376,6 +378,9 @@ function CourseForm() {
                                                     handleVideoinSubtitle(subt.id, video.id,e)
                                                 }
                                             />
+                                           
+                                                                                        
+                                            <br></br>
                                             <label htmlFor="url">Video Url</label>
                                             <input
                                                 name="url"
