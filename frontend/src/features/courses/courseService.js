@@ -50,6 +50,13 @@ const addDiscount = async (data) => {
 
 return response.data
 }
+
+const addMultipleDiscounts = async (data) => {
+  const response = await axios.post(API_URL + '/adddiscountMult',data)
+
+
+return response.data
+}
 //Get Course Page
 const getCoursePage = async (title) => {
  
@@ -95,7 +102,8 @@ const courseService = {
     getCoursesTrainee,
     getCertficate,
     sendEmailCert,
-    requestAccess
+    requestAccess,
+    addMultipleDiscounts
 }
 
 export default courseService

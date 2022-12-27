@@ -1,6 +1,7 @@
 const asynchandler = require('express-async-handler')
 const Course = require('../model/coursesmodel')
-const payment = require('../model/paymentsModel')
+const payment = require('../model/paymentsModel');
+const user = require('../model/usermodel');
 
 const YOUR_DOMAIN = 'http://localhost:4242';
 
@@ -244,16 +245,27 @@ const checkout = asynchandler(async (req,res) => {
     const country = req.body.country
     const username = req.body.username
     const email = req.body.email
+    var nd = new Date()
+    var flag = false;
+    
 
-
-    console.log(responser)
-    console.log(title)
-    console.log(country)
-    console.log(username)
+    // console.log(responser)
+    // console.log(title)
+    // console.log(country)
+    // console.log(username)
+    
     const courses = await Course.findOne({title})
     const myCurrency = findMyCurrency(country)
-    const newprice = CoursePriceConvertor(myCurrency,courses.price)
-    console.log(courses.price)
+    var newprice = CoursePriceConvertor(myCurrency,courses.price)
+    if(courses.ExpiryDate != null){
+      const ed = new Date(courses.ExpiryDate)
+        if(ed.valueOf()>nd.valueOf()){
+          newprice = newprice - (newprice * (Number(courses.amountOfDiscount)/100))
+        flag = true
+        }
+    }
+    
+    //console.log(courses.price)
 
     const stripe = require("stripe")(process.env.STRIPE_SECRET
       );
@@ -267,35 +279,155 @@ const checkout = asynchandler(async (req,res) => {
           name: responser.card.name,
         })
         .then((customer) => {
-          return stripe.charges.create({
-            amount:parseFloat(newprice) * 100,
-            description: `Payment for ${myCurrency} ${newprice} for Course ${title}`,
-            currency: myCurrency,
-            customer: customer.id,
-          });
+          if(flag){
+            return stripe.charges.create({
+              amount:Math.trunc(parseFloat(newprice))*100 ,
+              description: `Payment for ${myCurrency} ${newprice} for Course ${title} at a discount of ${Number(courses.amountOfDiscount)}% .`,
+              currency: myCurrency,
+              customer: customer.id,
+            });
+          }else{
+            return stripe.charges.create({
+              amount:Math.trunc(parseFloat(newprice))*100 ,
+              description: `Payment for ${myCurrency} ${newprice} for Course ${title} .`,
+              currency: myCurrency,
+              customer: customer.id,
+            });
+          }
+          
         })
-        .then(createTransaction(username,title,newprice,myCurrency))
+        .then(createTransaction(username,title,newprice,myCurrency,flag,courses.amountOfDiscount))
+        .then(createInstructorTransaction(courses.instructorName,courses.title,courses.price,flag,courses.amountOfDiscount))
         .catch((err) => console.log(err));
         
 
 
 })
 
-async function createTransaction(username,title,price,currency){
+async function createInstructorTransaction(instructorName,courseName,coursePrice,flag,discount){
+  const instructor = await user.findOne({username:instructorName})
+  const findInstructorPayments = await payment.findOne({username:instructorName})
+  const instructorCurrency = findMyCurrency(instructor.country)
+  const coursePriceNew = CoursePriceConvertor(instructorCurrency,coursePrice)
+  const nd = new Date()
+  const discountedPrice = Number(coursePriceNew) - (Number(coursePriceNew) * (Number(discount)/100))
+  const discountedPriceTotal = Number(discountedPrice) - (Number(discountedPrice) * 30/100)
+  const coursePriceNewTotal = Number(coursePriceNew) - (Number(coursePriceNew)*30/100)
+  if(findInstructorPayments != null){
+    if(findInstructorPayments.transactions == null){
+      if(flag){
+        findInstructorPayments.transactions = {
+          paymentAmount:Math.trunc(discountedPriceTotal),
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  With Course Discount of ${discount}% :  ${discountedPriceTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+        }
+        findInstructorPayments.wallet = Number(findInstructorPayments.wallet) + Math.trunc(discountedPriceTotal)
+      }else{
+        findInstructorPayments.transactions = {
+          paymentAmount:Math.trunc(coursePriceNewTotal),
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  :  ${coursePriceNewTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+        }
+        findInstructorPayments.wallet = Number(findInstructorPayments.wallet) + Math.trunc(coursePriceNewTotal)
+
+      }
+    }else{
+      if(flag){
+          findInstructorPayments.transactions.push({
+            paymentAmount:discountedPriceTotal,
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  With Course Discount of ${discount}% :  ${discountedPriceTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+          })
+          findInstructorPayments.wallet = Number(findInstructorPayments.wallet) + Math.trunc(discountedPriceTotal)
+
+      }else{
+        findInstructorPayments.transactions.push({
+          paymentAmount:Math.trunc(coursePriceNewTotal),
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  :  ${coursePriceNewTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+        })
+        findInstructorPayments.wallet = Number(findInstructorPayments.wallet) + Math.trunc(coursePriceNewTotal)
+
+      }
+    }
+    const confirmTransaction = await payment.findOneAndUpdate({username:instructorName},{$set:findInstructorPayments})
+
+  }else{
+    if(flag){
+      const confirmTransaction = await payment.create({
+        username:instructorName,
+        transactions:[{
+          paymentAmount:Math.trunc(discountedPriceTotal),
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  With Course Discount of ${discount}% :  ${discountedPriceTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+        }],
+        wallet:Math.trunc(discountedPriceTotal),
+        userCurrency:instructorCurrency
+    })
+
+    }else{
+      const confirmTransaction = await payment.create({
+        username:instructorName,
+        transactions:[{
+          paymentAmount:Math.trunc(coursePriceNewTotal),
+          CoursePaidFor:courseName,
+          Description:`Someone Bought your course you receive 70% of price and company takes 30% Total Received  :  ${coursePriceNewTotal} ${instructorCurrency}`,
+          DateOfPurchase:nd,
+          CurrencyOfPurchase:instructorCurrency
+        }],
+        wallet:Math.trunc(coursePriceNewTotal),
+        userCurrency:instructorCurrency
+    })
+    }
+  }
+
+}
+
+async function createTransaction(username,title,price,currency,flag,discount){
 
     const findPayer = await payment.findOne({username})
     const date = new Date()
 
     if(findPayer != null){
         if(findPayer.transactions ==null){
-            findPayer.transactions = {
+            if(flag){
+              findPayer.transactions = {
+                paymentAmount:price,
+                CoursePaidFor:title,
+                Description:  `Payment for ${currency} ${price} for Course ${title} with a discount of ${discount}%`,
+                DateOfPurchase: date,
+                CurrencyOfPurchase:currency
+            }
+            }else{
+              findPayer.transactions = {
                 paymentAmount:price,
                 CoursePaidFor:title,
                 Description:  `Payment for ${currency} ${price} for Course ${title}`,
                 DateOfPurchase: date,
                 CurrencyOfPurchase:currency
             }
+            }
+           
         }else{
+          if(flag){
+            findPayer.transactions.push({
+              paymentAmount:price,
+              CoursePaidFor:title,
+              Description:  `Payment for ${currency} ${price} for Course ${title} with a discount of ${discount}%`,
+              DateOfPurchase: date,
+              CurrencyOfPurchase:currency
+          })
+          }else{
             findPayer.transactions.push({
                 paymentAmount:price,
                 CoursePaidFor:title,
@@ -303,9 +435,24 @@ async function createTransaction(username,title,price,currency){
                 DateOfPurchase: date,
                 CurrencyOfPurchase:currency
             })
+          }
         }
         const confirmTransaction = await payment.findOneAndUpdate({username},{$set:findPayer})
     }else{
+        if(flag){
+          const confirmTransaction = await payment.create({
+            username:username,
+            transactions:[{
+                paymentAmount:price,
+                CoursePaidFor:title,
+                Description:  `Payment for ${currency} ${price} for Course ${title} with a discount of ${discount}%`,
+                DateOfPurchase: date,
+                CurrencyOfPurchase:currency
+            }],
+            wallet:0,
+            userCurrency:currency
+        })
+        }else{
         const confirmTransaction = await payment.create({
             username:username,
             transactions:[{
@@ -315,13 +462,21 @@ async function createTransaction(username,title,price,currency){
                 DateOfPurchase: date,
                 CurrencyOfPurchase:currency
             }],
-            wallet:0
+            wallet:0,
+            userCurrency:currency
         })
+      }
     }
     
 }
 
-
+const getMyTransactions = asynchandler(async (req,res) => {
+  const username = req.body.username
+  console.log(username)
+  const refunds = await payment.findOne({username})
+  console.log(refunds)
+  res.status(200).json(refunds)
+})
 
 
 
@@ -329,6 +484,8 @@ async function createTransaction(username,title,price,currency){
 module.exports = {
     
     checkout,
+    createTransaction,
+    getMyTransactions
     
     
     

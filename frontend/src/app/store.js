@@ -4,6 +4,7 @@ import courseReducer from '../features/courses/courseSlice'
 import corpReqReducer from '../features/corpReq/corpReqSlice'
 import reportReducer from '../features/reports/reportSlice'
 import refundReducer from '../features/refunds/refundSlice'
+import paymentReducer from '../features/payment/paymentSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
    courses: courseReducer,
    corp:corpReqReducer,
    report:reportReducer,
-   refund:refundReducer
+   refund:refundReducer,
+   payment:paymentReducer
   },
 })

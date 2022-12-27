@@ -25,6 +25,9 @@ const paymentSchema = mongoose.Schema({
     ],
     wallet:{
         type:Number
+    },
+    userCurrency:{
+        type:String
     }
     
     

@@ -63,6 +63,24 @@ export const addDiscount = createAsyncThunk(
   }
 )
 
+export const addMultipleDiscount = createAsyncThunk(
+  'courses/addDiscountMult',
+  async (data, thunkAPI) => {
+    try {
+      
+      return await courseService.addMultipleDiscounts(data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const getCertficate = createAsyncThunk(
   'courses/getCertficate',
   async (data, thunkAPI) => {

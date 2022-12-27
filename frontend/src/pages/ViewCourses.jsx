@@ -763,7 +763,7 @@ function gotopaymentendpoint(){
                            
                     </div>
                     {console.log(refund1)}
-                    {(((courseprogress/250)*100)<50 & refund1.refund == null)?(<>
+                    {(((courseprogress/250)*100)<50 & refund1.refund == null & user.role == 'trainee')?(<>
                       <div class="list-group list-group-flush border-bottom scrollarea">
                            
                            <div class="d-flex w-100 align-items-center justify-content-between">

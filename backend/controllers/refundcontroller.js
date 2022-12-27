@@ -48,19 +48,35 @@ const createRefund = asynchandler(async (req,res) => {
 
 const updateStatus = asynchandler(async (req,res) => {
     const userWhoRefunded = req.body.user1
-    const course = req.body.course
+    const course3 = req.body.course
     const date = new Date()
     var temp3 = null;
+    const course1 = await course.findOne({title:course3})
+    const findInstructorPayments = await payment.findOne({username:course1.instructorName})
     const user2 = await user.findOne({username:userWhoRefunded})
-    var newCourses = user2.courses.filter(course1 => !(course1.courseName == course))
+    var newCourses = user2.courses.filter(course1 => !(course1.courseName == course3))
     user2.courses = newCourses
     const user3 = await user.findOneAndUpdate({username:userWhoRefunded},user2)
     const refunds = await refund.findOneAndRemove({userWhoRefunded})
     const payments = await payment.findOne({username:userWhoRefunded})
     console.log(payments)
     var temp = null;
+    var temp2 = null;
+    findInstructorPayments.transactions.map((trans)=>{
+        if(trans.CoursePaidFor == course3 & Number(trans.paymentAmount) != null){
+            temp2 = trans
+        }
+    })
+    findInstructorPayments.transactions.push({
+        paymentAmount:-1*Number(temp2.paymentAmount),
+        CoursePaidFor:course3,
+        Description:`Your Course : ${course3} was refunded for ${Math.trunc(Number(temp2.paymentAmount))} was removed from your balance`,
+        DateofPurchase:date,
+        CurrencyOfPurchase:temp2.CurrencyOfPurchase
+    })
+    findInstructorPayments.wallet = Number(findInstructorPayments.wallet) - Math.trunc(Number(temp2.paymentAmount))
     payments.transactions.map((trans) =>{
-        if(trans.CoursePaidFor == course & Number(trans.paymentAmount) != null ){
+        if(trans.CoursePaidFor == course3 & Number(trans.paymentAmount) != null ){
             temp = trans
         }
     })
@@ -68,12 +84,13 @@ const updateStatus = asynchandler(async (req,res) => {
     
     payments.transactions.push({
         paymentAmout:-1,
-        CoursePaidFor:course,
-        Description:`Refund For Course : ${course} , Amount Refunded To Wallet ${Number(temp.paymentAmount)}`,
+        CoursePaidFor:course3,
+        Description:`Refund For Course : ${course3} , Amount Refunded To Wallet ${Number(temp.paymentAmount)}`,
         DateofPurchase: date,
         CurrencyOfPurchase:temp.CurrencyOfPurchase
     })
     console.log(payments)
+    const payments2 = await payment.findOneAndUpdate({username:course1.instructorName},findInstructorPayments)
     const payments1 = await payment.findOneAndUpdate({username:userWhoRefunded},payments)
     res.status(200).json(payments1)
 })
