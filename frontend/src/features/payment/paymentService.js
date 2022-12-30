@@ -11,6 +11,13 @@ const getMyTransactions = async (data) => {
   return response.data
   }
 
+const payByWallet  = async (data) => {
+  const response = await axios.post(API_URL + '/payWallet',data)
+
+
+return response.data
+}
+
   
 
  
@@ -21,7 +28,8 @@ const getMyTransactions = async (data) => {
  
 
   const paymentService = {
-    getMyTransactions
+    getMyTransactions,
+    payByWallet
     
    
 }

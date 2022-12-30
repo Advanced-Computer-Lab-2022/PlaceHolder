@@ -120,10 +120,10 @@ const AddDiscount = asyncHandler(async (req, res) => {
         ExpiryDate:ExpiryDate,
         amountOfDiscount:amountOfDiscount
     }
-    console.log(title)
-    console.log(newdiscount)
+    //console.log(title)
+    //console.log(newdiscount)
     const courses = await Course.findOneAndUpdate({title},newdiscount)
-    console.log(courses)
+    //console.log(courses)
     res.status(200).json(courses)
 })
 
@@ -184,7 +184,7 @@ const GenerateCertEmail = asyncHandler(async (req, res) => {
     const username = req.body.username
     //console.log(LastName)
     const user1 = await user.findOne({username})
-    console.log(user1)
+    //console.log(user1)
     const link = 'http://localhost:8000/courses/certf/' + title+'/'+firstName+'/'+LastName
     var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -215,7 +215,7 @@ const GenerateCertEmail = asyncHandler(async (req, res) => {
     })
     user1.courses = a
     const user2 = await user.findOneAndUpdate({email},user1)
-    console.log(user2)
+    //console.log(user2)
     
 })
 

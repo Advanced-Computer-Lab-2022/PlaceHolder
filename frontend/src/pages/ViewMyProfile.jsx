@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
-import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset, pay } from '../features/auth/authSlice'
+import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset12, pay } from '../features/auth/authSlice'
 import {getMyTransactions} from '../features/payment/paymentSlice'
 
 
@@ -122,7 +122,7 @@ function ViewMyProfile() {
             }
             dispatch(updatePassword(userData))
             dispatch(logout())
-            dispatch(reset())
+            dispatch(reset12())
             navigate('/')
             toast.success('Password Updated Please Log In Again With New Password!!')
             

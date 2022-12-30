@@ -352,10 +352,15 @@ const sort_by = (field, reverse, primer) => {
     <>
     {(courses!=null) ? (<>
   
-    
-      <div className="container mt-5">
+      <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-3 text-white animated slideInRight">Courses</h1>
+            
+        </div>
+    </div>
+      <div className="container-fluid">
          <div className="row">
-            <div className="col-md-2 border">
+            <div className="col-2">
                 <section>
                     <section id="filters" data-auto-filter="true">
                       <h5>Filters</h5>
@@ -438,29 +443,32 @@ const sort_by = (field, reverse, primer) => {
                     </section>
                 </section>    
             </div>
-            <div className="col-md-10">
-                      <div class="album py-5 bg-light">
-                        <div class="container ">
-                          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                  {(courses1!=null)   ? (<>
-                            {console.log(courses1)}
-                            {courses1.map((course) => (
-                             
-                              <CourseItem key={course._id} course={course} />
-                            ))}
+            
+            <div className="col-10">
+            <div class="row row-cols-2 row-cols-md-2 g-4">
                           
-                          </>
-                  ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
-                  {courses.map((course) => (
-                    <CourseItem key={course._id} course={course} />
-                  ))}
-                </>):(<></>))) : (<></>)
-                    
-                  )}
-                  </div>
-                        </div>
-                    </div>
+            
+                      {(courses1!=null)   ? (<>
+            {console.log(courses1)}
+            {courses1.map((course) => (
+            
+              <CourseItem key={course._id} course={course} />
+            ))}
 
+          </>
+          ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
+          {courses.map((course) => (
+          <CourseItem key={course._id} course={course} />
+          ))}
+          </>):(<></>))) : (<></>)
+
+          )}
+   
+  
+    
+  
+ 
+</div>
 
             </div>
                

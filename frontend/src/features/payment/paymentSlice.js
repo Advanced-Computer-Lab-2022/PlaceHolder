@@ -26,6 +26,21 @@ export const getMyTransactions = createAsyncThunk('payments/getMyTranscations', 
   }
 })
 
+export const payByWallet = createAsyncThunk('payments/payBywallet', async (data, thunkAPI) => {
+  try {
+    //console.log(courseData)
+      return await paymentService.payByWallet(data)
+  } catch (error) {
+      const message =
+      (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString()
+    return thunkAPI.rejectWithValue(message)
+  }
+})
+
 
 
 

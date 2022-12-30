@@ -24,7 +24,7 @@ function Trainee() {
         const userData2={
           username: user.username
         }
-        dispatch(refreshuser(userData2))
+        // dispatch(refreshuser(userData2))
 
     },[user,navigate])
 

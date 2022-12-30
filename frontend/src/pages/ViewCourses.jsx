@@ -10,7 +10,7 @@ import { getCourses, reset, getCoursePage, addDiscount, getCertficate , getCertf
 import axios from 'axios'
 import { useState } from 'react'
 import CourseForm from '../components/CourseForm'
-import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle, updateRequests} from '../features/auth/authSlice'
+import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubtitle, updateRequests,reset12 } from '../features/auth/authSlice'
 import {createReport} from '../features/reports/reportSlice'
 import {createRefund, getMyRefund , reset1} from '../features/refunds/refundSlice'
 import "../components/Styling/Ratings.css"
@@ -23,6 +23,7 @@ function ViewCourses(){
     var tile = title.title
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    var flagRefresh = false;
     var flag = false;
     var flag1 = false;
     var flag2 = false;
@@ -101,17 +102,257 @@ function ViewCourses(){
       dispatch(getMyRefund(userData2))
       setCourses(courses)
       
+      dispatch(refreshuser(userData2))
+      
+      
+      
+      
     }
       
       return () => {
         dispatch(reset())
         dispatch(reset1())
+        dispatch(reset12())
+        
       }
-    }, [user, navigate, isError, message, dispatch])
+    }, [])
   
     if (isLoading) {
       return <Spinner />
     }
+    
+function findMyCurrency(myCountry1){
+  
+  switch (myCountry1) {
+    case "United Kingdom": return'GBP';
+      
+    case "United States": return'USD';
+      
+      
+  
+    case "South Korea": return'KRW';
+      
+      
+  
+    case "Spain": return'EUR';
+      
+      
+  
+    case "Sweden": return'SEK';
+      
+      
+  
+    case "Switzerland": return'CHF';
+      
+      
+  
+    case "Thailand": return'THB';
+      
+      
+  
+    case "Turkey": return'TRY';
+      
+      
+  
+    case "United Arab Emirates": return'AED';
+      
+      
+  
+    case "Russia": return'RUB';
+      
+      
+  
+    case "Saudi Arabia": return'SAR';
+      
+      
+  
+    case "Scotland": return'GBP';
+      
+      
+  
+    case "Singapore": return'SGD';
+      
+      
+  
+    case "South Africa": return'ZAR';
+      
+      
+  
+    case "Netherlands": return'EUR';
+      
+      
+  
+    case "New Zealand": return'NZD';
+      
+      
+  
+    case "Pakistan": return'PKR';
+      
+      
+  
+    case "Philippines": return'PHP';
+      
+      
+  
+    case "Qatar": return'QAR';
+      
+      
+  
+    case "France": return'EUR';
+      
+      
+  
+    case "Germany": return'EUR';
+      
+      
+  
+    case "India": return'INR';
+      
+      
+  
+    case "Italy": return'EUR';
+      
+      
+  
+    case "Japan": return'JPY';
+      
+      
+  
+    case "Malaysia": return'MYR';
+      
+      
+  
+    case "Mexico": return'MXN';
+      
+      
+  
+    case "Australia": return'AUD';
+      
+      
+  
+    case "Bangladesh": return'BDT';
+      
+      
+  
+    case "Belgium": return'EUR';
+      
+      
+  
+    case "Brazil": return'BRL';
+      
+      
+  
+    case "Canada": return'CAD';
+      
+      
+  
+    case "China": return'CNY';
+      
+      
+  
+    case "Denmark": return'DKK';
+      
+      
+  
+    case 'Egypt': return'EGP';
+      
+      
+  }
+}
+function CoursePriceConvertor(myCurrency  , CoursePrice){
+
+switch (myCurrency) {
+  case 'KRW': return(1,424.07 * CoursePrice) ;
+    
+    
+  case 'THB': return(37.96 * CoursePrice) ;
+    
+    
+  case 'CHF': return CoursePrice ;
+    
+    
+  case 'SEK': return (10.96 * CoursePrice) ;
+    
+    
+  case 'AED':return (3.67 * CoursePrice) 
+    
+    
+  case 'TRY': return  (18.61 * CoursePrice )
+    
+    
+  case 'RUB': return (61.53 * CoursePrice )
+    
+    
+  case 'SAR': return ( 3.76 * CoursePrice )
+    
+    
+  case 'GBP':return  (0.86 * CoursePrice )
+    
+    
+  case 'PKR':return  ( 221.88 * CoursePrice )
+    
+    
+  case 'NZD':return  (1.72 * CoursePrice )
+    
+    
+  case 'ZAR': return  (18.11 * CoursePrice )
+    
+    
+  case 'SGD':return   (1.41 * CoursePrice )
+    
+    
+  case 'INR':return (82.36 * CoursePrice )
+    
+  case 'QAR':return  (3.64 * CoursePrice )
+    
+    
+  case 'PHP':return  58.02 * CoursePrice 
+    
+    
+  case 'CAD':return  1.36 * CoursePrice 
+    
+    
+  case 'BRL':return  5.34 * CoursePrice 
+    
+    
+  case 'BDT':return  101.38 * CoursePrice 
+    
+    
+  case 'AUD':return  1.56 * CoursePrice 
+    
+    
+  case 'MXN':return  19.83 *  CoursePrice 
+    
+    
+  case 'MYR':return  4.72 * CoursePrice 
+    
+    
+  case 'JPY':return  147.41 * CoursePrice 
+    
+    
+  case 'EGP':return  23.15 * CoursePrice 
+    
+    
+  
+  case 'DKK':return  7.47 * CoursePrice 
+    
+    
+  
+  case 'CNY':return  7.25 *  CoursePrice 
+    
+    
+  
+  case 'EUR':return  CoursePrice 
+    
+    
+  
+  case 'USD':return  CoursePrice 
+    
+    
+  
+  
+}
+}
 
     function checkCourse(courses , userCourses){
         if(userCourses == null | courses==null){
@@ -360,6 +601,8 @@ function ViewCourses(){
       courseRating:courses.courseRating,
       totalHours:courses.totalHours,
       ratings:courses.ratings,
+      totalratings:courses.totalratings
+      
     }
     setcurrentsub(sub)
   }
@@ -377,6 +620,33 @@ function ViewCourses(){
     const sub = {
       refundDisplay:true,
       
+    }
+    setcurrentsub(sub)
+  }
+
+  function displayRateACourse(){
+    const sub = {
+      displayRateACourse1:true
+    }
+    setcurrentsub(sub)
+  }
+
+  function displayRateAnInstructor(){
+    const sub = {
+      displayRateIns:true
+    }
+    setcurrentsub(sub)
+  }
+  function displayDiscount(){
+    const sub = {
+      displaydiscount:true
+    }
+    setcurrentsub(sub)
+  }
+
+  function displayViewRatigns(){
+    const sub = {
+      displayViewRating:true
     }
     setcurrentsub(sub)
   }
@@ -692,27 +962,31 @@ function gotopaymentendpoint(){
       }
       {checkRating(user.ratingssentins,courses.instructorName)}
       {checkCourseRating(user.coursesrated,courses.title)}
+      {console.log("Flag 2" + flag2)}
       {
         (courses.title !=null) ? ((flag==true | user.username==courses.instructorName) ? (<>{(courses.title !=null) ? (
           
         <>
           {emailer()}
           {checkcourseProgress()}
-          <div className="container-fluid border">
+          <div className="container-fluid no-padding" style={{padding:4}}>
             <div className="row">
             <div className="col-2">
-              <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border" style={{width: 250 }}>
+              
+              <div class="flex-column align-items-stretch flex-shrink-0 bg-white " >
                   <br></br>
-                  <h5>Course Progress</h5>
+                  <h5>Your Progress</h5>
                   <br></br>
-                    <div class="list-group list-group-flush border-bottom scrollarea">
+                  
+                    <div class="list-group list-group-flush  scrollarea" >
                                             <div class="progress">
                           <div class="progress-bar" role="progressbar" aria-valuenow="30" style={{width:courseprogress}} aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
+                    &nbsp;
                     <br></br>
                     
-                    {(checkifnotlastSub()==false)?(<>{(checkifReceived()==false)?(<>{sendCert()}</>):(<></>)}<div class="list-group list-group-flush border-bottom scrollarea">
+                    {(checkifnotlastSub()==false)?(<>{(checkifReceived()==false)?(<>{sendCert()}</>):(<></>)}<div class="list-group list-group-flush  scrollarea">
                                             <button type='button' className='btn btn-primary' onClick={() => DownloadCertficate()}>Download Certficate</button>
                                             {/* <a type='button' className='btn btn-primary' href={'https://localhost:8000/courses/certf/' + courses.title + '/'  + user.firstName + '/' + user.lastName}>Download Certficate</a> */}
                     </div>
@@ -721,7 +995,7 @@ function gotopaymentendpoint(){
                   <h5>Course Information</h5>
                   <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
-                            <a onClick={()=>displaycourseinfo()} class="list-group-item list-group-item-action  py-3 lh-tight border  btn btn-primary" aria-current="true">
+                            <a onClick={()=>displaycourseinfo()} class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
                           <div class="d-flex w-100 align-items-center justify-content-between">
                             <strong class="mb-1">Course Information</strong>
                             
@@ -752,35 +1026,172 @@ function gotopaymentendpoint(){
                   <br>
                   </br>
                   <h5>Course Settings</h5>
-                  <div class="list-group list-group-flush border-bottom scrollarea">
+                  <div className="btn-group-vertical">
+                    
+          {(user.username == courses.instructorName)?(<>
+            <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayDiscount()}>Add Discount</button>
+
+           </>):(<></>)}
+                    
+             
+          
+                  {(flag1!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<>
+                    <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayRateAnInstructor()}>Rate Instructor</button>
+                             
+                             
                            
-                          <div class="d-flex w-100 align-items-center justify-content-between">
-                            <button type='button' className='btn btn-danger' onClick={()=>displayProblemReport()}>Report a Problem</button>
+                  </>):(<></>)}
+                  <br></br>
+                  {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<>
+                    <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayRateACourse()}>Rate Course</button>
+                             
+                             
+                          
+                  </>):(<></>)}
+                  <br></br>
+                 <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayViewRatigns()}>View Course Ratings</button>
+                           <br></br>
+                  
+                  <button type='button' className='btn btn-danger  btn-block' onClick={()=>displayProblemReport()}>Report a Problem</button>
                             
                             
-                          </div>
-                          <div class="col-10 mb-1 small"></div>
-                           
-                    </div>
-                    {console.log(refund1)}
+                          
+                    <br></br>
+                    
                     {(((courseprogress/250)*100)<50 & refund1.refund == null & user.role == 'trainee')?(<>
-                      <div class="list-group list-group-flush border-bottom scrollarea">
+                      
                            
-                           <div class="d-flex w-100 align-items-center justify-content-between">
+                           
                              <button type='button' className='btn btn-danger' onClick={()=>displayRefund()}>Request A Refund</button>
                              
                              
-                           </div>
-                           <div class="col-10 mb-1 small"></div>
+                           
+                           
                             
-                     </div>
+                     
                     </>):(<></>)}
-                    
+                    </div>
                     <br></br>
             </div>
+            
             </div>
-            <div className="col-10 ">
+            <div className="col-10">
             <div className="container">
+            {(currentsub!=null)?(<>{(currentsub.displaydiscount != null)?(<>
+            <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
+            <br></br>
+            <input type="Date" className='form-control' placeholder='YYYY-MM-DD' onChange={(e)=>addDiscountHandler(e)} name='ExpiryDate' />
+            <br></br>
+            <button type='button' className='btn btn-primary' onClick={()=>submitDiscount()}>Add Discount</button>
+              </>):(<></>)}</>):(<></>)}
+            {(currentsub!=null)?(<>{(currentsub.displayViewRating != null)?(<>
+              {(courses.ratings != null)?(<>
+            {
+                courses.ratings.map((rate)=>{
+                  
+                    return(
+                        <>
+                        <div className="row">
+                            <div class="card border-primary" style={{width:1310}} >
+                                <div class="card-header">User : {rate.userwhorated}</div>
+                                    <div class="card-body">
+                                      {(rate.userRate == 0)?(<>
+                                        <><div>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div></>
+                                      </>):(<>{(rate.userRate == 1)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div></>):((rate.userRate==2)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div>
+                                        
+                                        </>):((rate.userRate==3)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div>
+                                        </>):((rate.userRate==4)?(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className=''></FaStar>   
+                                        </div>
+                                        </>):(<><div>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>
+                                            <FaStar className='checked'></FaStar>   
+                                        </div></>))))}</>)}
+                                        
+                                        
+            
+                                        <h5 class="card-title">{rate.userwhorated} said :</h5>
+                                            <p class="card-text">{rate.userMessage}</p>
+                                        </div>
+                                    </div>
+                                </div>  
+                        </>
+                    )
+                })
+            }
+        
+        
+        
+        
+        </>):(<div><h2 className='text-center'>No Ratings Availble</h2></div>)}
+              
+              </>):(<></>)}</>):(<></>)}
+            {(currentsub!=null)?(<>{(currentsub.displayRateIns != null)?(<><div>
+              Rate Instructor : <div class="rating"> 
+                  <input type="radio" name="rating" value="5" id="5" onChange={(e) => handleRating(e)}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={(e) => handleRating(e)}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={(e) => handleRating(e)}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={(e) => handleRating(e)}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={(e) => handleRating(e)}/><label for="1">☆</label>
+                </div>
+              
+               <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
+              <br></br>
+              <br></br>
+               <button type='button' className='btn btn-primary' onClick={ratesubmit}>Rate Instructor</button>
+            </div>
+              
+              </>):(<></>)}</>):(<></>)}
+            {(currentsub!=null)?(<>{(currentsub.displayRateACourse1 != null)?(<><div>
+              <h4>Rate Course :</h4> 
+              <br></br>
+              <h5>Please rate this course </h5>
+              <div class="rating"> 
+                  <input type="radio" name="ratingCourse" value="5" id="5" onChange={(e) =>handleCourseRating(e)}/><label for="5">☆</label> 
+                  <input type="radio" name="ratingCourse" value="4" id="4" onChange={(e) =>handleCourseRating(e)}/><label for="4">☆</label> 
+                  <input type="radio" name="ratingCourse" value="3" id="3" onChange={(e) =>handleCourseRating(e)}/><label for="3">☆</label> 
+                  <input type="radio" name="ratingCourse" value="2" id="2" onChange={(e) =>handleCourseRating(e)}/><label for="2">☆</label> 
+                  <input type="radio" name="ratingCourse" value="1" id="1" onChange={(e) =>handleCourseRating(e)}/><label for="1">☆</label>
+                </div>
+              
+             <textarea placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></textarea>
+             <br></br>
+             <br></br>
+               <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button>
+            </div>
+              
+              </>):(<></>)}</>):(<></>)}
               {(currentsub!=null)?(<>{(currentsub.problemDisplay != null)?(<>
                 <h5 className='text-center'>Report A Problem</h5>
                 <form>
@@ -828,167 +1239,174 @@ function gotopaymentendpoint(){
               
               </>):(<></>)}</>):(<></>)}
               {(currentsub !=null)?(<>{(currentsub.courseinfo != null )?(<>
-                <h5 className='text-center'>{currentsub.title}</h5>
-                <h6>Course Subject : {currentsub.subject}</h6>
-                <h6>Course Instructor : {currentsub.instructorName}</h6>
-                <h6>Course Rating : {currentsub.courseRating} Stars</h6>
-                <h6>Course Total Hours : {currentsub.totalHours}</h6>
-                <h6>Course Price : {currentsub.price} USD</h6>
-                <h6>Course Summary: {currentsub.summary}</h6>
-                <div class="embed-responsive embed-responsive-21by9 ">
-                      <iframe class="embed-responsive-item" width={1280} height={1080} src={courses.preview} allowfullscreen></iframe>
+              <div className="row">
+                
+              <h2 className='text-center'><br></br>{currentsub.title}<br></br></h2>
+              
+              <div className="col-6">
+              <div class="embed-responsive embed-responsive-16by9 ">
+                      <iframe class="embed-responsive-item" width={600} height={600}  src={courses.preview} allowfullscreen></iframe>
                     </div>
+              </div>
+              <div className="col-6 ">
+              <img className="card-img-top" style={{ width: '100%', height: 300 }} src={courses.thumbnail} alt='No Thumbnail Avail' />
+                <br></br>
+                <br></br>
+                <p className='h6'>{currentsub.summary}</p>
+                <span class="badge rounded-pill bg-primary text-dark"><b>{currentsub.subject}</b></span>
+                <br></br>
+                <br></br>
+
+                <h6>Teached By : {currentsub.instructorName}</h6>
+                
+                {(Math.round(currentsub.courseRating)==0)?(<>
+                <><div>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({0})</small>   
+                                    </div></>
+              </>):(<>
+              
+                {(Math.floor(currentsub.courseRating) == 1)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({currentsub.totalratings})</small>   
+                                    </div></>):(Math.floor(currentsub.courseRating)==2)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({currentsub.totalratings})</small>     
+                                    </div>
+                                    
+                                    </>):((Math.floor(currentsub.courseRating)==3)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar> 
+                                        <small>({currentsub.totalratings})</small>    
+                                    </div>
+                                    </>):(((Math.floor(currentsub.courseRating)==4)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>  
+                                        <small>({currentsub.totalratings})</small>   
+                                    </div>
+                                    </>):(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>  
+                                        <small>({currentsub.totalratings})</small>   
+                                    </div></>))))}
+              </>)}
+              <br></br>
+                <h6>Course Length : {currentsub.totalHours} Hours</h6>
+                <br></br>
 
                 
-            {console.log(flag1)}  
-            {(flag1!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
-              Rate Instructor : <div class="rating"> 
-                  <input type="radio" name="rating" value="5" id="5" onChange={(e) => handleRating(e)}/><label for="5">☆</label> 
-                  <input type="radio" name="rating" value="4" id="4" onChange={(e) => handleRating(e)}/><label for="4">☆</label> 
-                  <input type="radio" name="rating" value="3" id="3" onChange={(e) => handleRating(e)}/><label for="3">☆</label> 
-                  <input type="radio" name="rating" value="2" id="2" onChange={(e) => handleRating(e)}/><label for="2">☆</label> 
-                  <input type="radio" name="rating" value="1" id="1" onChange={(e) => handleRating(e)}/><label for="1">☆</label>
-                </div>
-              
-               <input placeholder={'Review '+courses.instructorName+"'s Work "} name="review" onChange={handlereview}></input>
-              <br></br>
-              <br></br>
-               <button type='button' className='btn btn-primary' onClick={ratesubmit}>Rate Instructor</button>
-            </div></>):(<></>)}
-             <br></br> 
-            {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<><div className='container border'>
-              Rate Course : <div class="rating"> 
-                  <input type="radio" name="ratingCourse" value="5" id="5" onChange={(e) =>handleCourseRating(e)}/><label for="5">☆</label> 
-                  <input type="radio" name="ratingCourse" value="4" id="4" onChange={(e) =>handleCourseRating(e)}/><label for="4">☆</label> 
-                  <input type="radio" name="ratingCourse" value="3" id="3" onChange={(e) =>handleCourseRating(e)}/><label for="3">☆</label> 
-                  <input type="radio" name="ratingCourse" value="2" id="2" onChange={(e) =>handleCourseRating(e)}/><label for="2">☆</label> 
-                  <input type="radio" name="ratingCourse" value="1" id="1" onChange={(e) =>handleCourseRating(e)}/><label for="1">☆</label>
-                </div>
-              
-             <input placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></input>
-             <br></br>
-             <br></br>
-               <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button>
-            </div></>):(<></>)}
+                
+              </div>
+              </div>
+             
+                
 
-            <button type='button' className='btn btn-primary' onClick={() => setToggle1(!toggle1)}>View Course Ratings</button>    
-
-            {(!toggle1 && courses.ratings != null)?(<>
-            {
-                courses.ratings.map((rate)=>{
-                  {console.log(rate.userRate)}
-                    return(
-                        <>
-                        <div className="row">
-                            <div class="card border-primary" style={{width:1310}} >
-                                <div class="card-header">User : {rate.userwhorated}</div>
-                                    <div class="card-body">
-                                        {(rate.userRate == 1)?(<><div>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>   
-                                        </div></>):((rate.userRate==2)?(<><div>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>   
-                                        </div>
-                                        
-                                        </>):((rate.userRate==3)?(<><div>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className=''></FaStar>
-                                            <FaStar className=''></FaStar>   
-                                        </div>
-                                        </>):((rate.userRate==4)?(<><div>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className=''></FaStar>   
-                                        </div>
-                                        </>):(<><div>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>
-                                            <FaStar className='checked'></FaStar>   
-                                        </div></>))))}
-                                        
+                
+             
             
-                                        <h5 class="card-title">{rate.userwhorated} said :</h5>
-                                            <p class="card-text">{rate.userMessage}</p>
-                                        </div>
-                                    </div>
-                                </div>  
-                        </>
-                    )
-                })
-            }
-        
-        
-        
-        
-        </>):(<>{(courses.ratings == null)?(<><h2 className='text-center'>No Ratings Availble</h2></>):(<></>)}</>)}      
+             <br></br> 
+            
+
+
+                  
 
         <br>
         </br>
         <br></br>
-        <div className="container">
-          {(user.username == courses.instructorName)?(<> <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
-            <br></br>
-            <input type="Date" className='form-control' placeholder='YYYY-MM-DD' onChange={(e)=>addDiscountHandler(e)} name='ExpiryDate' />
-            <br></br>
-            <button type='button' className='btn btn-primary' onClick={()=>submitDiscount()}>Add Discount</button>
-          </>):(<></>)}
-           
-             
-          </div>
+        
               </>):(<>
-              {(currentsub.courseinfo == null & currentsub.problemDisplay == null & currentsub.refundDisplay == null)?(<>
+              {(currentsub.courseinfo == null & currentsub.problemDisplay == null & currentsub.refundDisplay == null & currentsub.displayRateACourse1 == null & currentsub.displayRateIns == null & currentsub.displayViewRating == null & currentsub.displaydiscount == null)?(<>
               
-              
-                <h5 className='text-center'>{currentsub.subt}</h5>
-              <div className="container border">
-                {currentsub.description}
-              </div>
-              <br></br>
-              {currentsub.videos.map((v)=>{
+                
+                <h3 className='text-center'><br></br>{currentsub.subt}</h3>
+              <div className="container ">
+                <div className="row">
+                  <div className="col">
+                    <h4 className='text-center'>Subtitle Description</h4>
+                    <h5>{currentsub.description}</h5>
+                  </div>
+                  <div className="col">
+                    <h4 className='text-center'>
+                    {currentsub.videos.map((v) => {
+                        return(<>
+                        {v.videotitle}
+                        </>)
+                      })}
+                    </h4>
+                    <h5>
+                      {currentsub.videos.map((v) => {
+                        return(<>
+                        {v.videodescription}
+                        </>)
+                      })}
+                    </h5>
+                  </div>
+                </div>
+                <br></br>
+                <hr />
+                <br></br>
+                <div className="row">
+                  <div className="col-10 " style={{padding:0}}>
+                  {currentsub.videos.map((v)=>{
                 return(
                   <>
                   <div>
-                    <h5 className='text-center' >Video Title : {v.videotitle}</h5>
-                    <h6 >Video Description: {v.videodescription}</h6>
+                    
                     <div class="embed-responsive embed-responsive-21by9 ">
-                      <iframe class="embed-responsive-item" width={1280} height={1080} src={v.url+"?autoplay=1"} allow='autoplay' allowfullscreen></iframe>
+                      <iframe class="embed-responsive-item" width={1035} height={700} src={v.url+"?autoplay=1"} allow='' allowfullscreen></iframe>
                     </div>
                     <br></br>
-                    <br></br>
-                    <label for="exampleFormControlInput1" class="form-label">Notes</label>
-                    <textarea class="form-control" id="text1" rows="3" value={notes} onChange={(e) => handleNotes(e)}></textarea>
-                    <br></br>
-                    <button type='button' className='btn btn-primary' onClick={() => saveTextAsFile(notes,'notes.txt')}>Download</button>
-                    <br></br>
-                    <br></br>
+                    
                     </div>
                     </>
                 )
               })}
-
-
-                  Subtitle Exercises:<br></br> {currentsub.exercises.map((q)=>{
+                  </div>
+                  <div className="col-2 " style={{padding:0}}>
+                  <label for="exampleFormControlInput1" className="form-label text-center"><b className='text-center'> Notes</b></label>
+                    <textarea class="form-control" id="text1" rows="27" value={notes} onChange={(e) => handleNotes(e)}></textarea>
+                    <br></br>
+                    <button type='button' className='btn btn-primary' onClick={() => saveTextAsFile(notes,'notes.txt')}>Download notes</button>
+                  </div>
+                
+                </div>
+                <div className="row">
+                <h3><b>Subtitle Exercises</b></h3><br></br> {currentsub.exercises.map((q,index)=>{
                                   
                                   return(
                                     <>
-                                    <div className='container border'>
-                                      Question : {q.question}
-                                      <br>
-                                      </br>
-                                      A :<input type="radio" name={q.question} value="A" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerA}</label>
+                                    <br></br>
+                                    <div className='row mb-3'>
+                                      <br></br>
+                                      <div className="card">
+                                        
+                                        <div className="card-title">
+                                          <br></br>
+                                        <h5><b>Question {index} :</b></h5><br></br> <h5><b>{q.question}</b></h5>
+                                        </div>
+                                        <div className="card-body">
+                                        A :<input type="radio" name={q.question} value="A" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerA}</label>
                                       <br></br>
                                       B :<input type="radio" name={q.question} value="B" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerB}</label>
                                       <br></br>
@@ -996,16 +1414,28 @@ function gotopaymentendpoint(){
                                       <br></br>
                                       D :<input type="radio" name={q.question} value="D" onChange={(e) =>handlequestionanswer(currentsub._id, q._id,e)}></input><label>{q.answerD}</label>
                                       <br></br>
+                                      
+                                        </div>
+                                        
+                                      </div>
+                                      <br></br>
+                                      <br></br>
+                                      <br></br>
+                                      <br></br>
+                                     
+                                      
                                       {!toggle && (<div>
                                       {(checkquestionanswer(q.question)=="true")?(<>You Were Right</>):(<>You Were Wrong <br></br>
                                       Correct Answer : {q.correctanswer}</>)}
                                     </div>)}
-                                    {console.log(flagsubmit)}
-                                    </div>
                                     
+                                    </div>
+                                    <br></br>
                                     </>
                                   )
+                                  
                                 })}
+                                <br></br>
 
               
               <br></br>
@@ -1013,16 +1443,29 @@ function gotopaymentendpoint(){
                 {rightanswers()}
 
               </div>)}
+              <br></br>
               
-              {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
+              
+              
+
+
+                </div>
+                <br></br>
+                {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
               <br></br>
               <br></br>
               <br></br>
-              {((user.role == 'trainee' |user.role=='corporate trainee') & (checkifSubtitle(currentsub) == true) & (checkifnotlastSub()==true) )?(<>
-              <button type='button' className='btn btn-primary' onClick={()=>GetNextSubtitle()}>Next Subtitle</button>
+              <div className="row">
+              {(!toggle & (user.role == 'trainee' |user.role=='corporate trainee') & (checkifSubtitle(currentsub) == true) & (checkifnotlastSub()==true) )?(<>
+              <button type='button' className='btn btn-primary justify-content-center' onClick={()=>GetNextSubtitle()}>Next Subtitle</button>
               </>):(<></>)}
-              
-              
+              </div>
+              </div>
+              <br></br>
+             
+
+
+                  
               
               
               
@@ -1050,10 +1493,11 @@ function gotopaymentendpoint(){
 
 
 
-          <div className='container-fluid'>
+          <div className='container-fluid border'>
             <div className="row">
-              <div className="col-md-1">
-                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style={{width: 250 }}>
+              <div className="col-md-1" >
+                <br />
+                <div class="d-flex flex-column align-items-left flex-shrink-0 bg-white " style={{width: 250 }}>
                     <h5>Subtitles</h5>
                     <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
@@ -1079,10 +1523,16 @@ function gotopaymentendpoint(){
           
                 <div className="col-md-11 ">
                   <div className="container">
-                <h1 className='text-center'>
-                    {courses.title}
-                </h1>
-                  
+                    
+                    <br />
+                    <h1 className='text-center'>
+                        {courses.title}
+                    </h1>
+                    <div className="col-4">
+                      aa
+                    </div>
+                    <div className="col-8">
+
                     <b1>
                         Instructor : {courses.instructorName}
                         <br></br>
@@ -1094,6 +1544,8 @@ function gotopaymentendpoint(){
                         <br></br>
                         Price : {courses.price}
                     </b1>
+                    </div>
+                    
                     <br></br>
                     {checkifasked()}
                     {(user!=null & (user.role == 'trainee' ))?(<button onClick={() => gotopaymentendpoint()} type='button' className='btn btn-primary'>Buy This Course Now!</button>  ):(<></>)}

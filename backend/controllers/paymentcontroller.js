@@ -472,10 +472,48 @@ async function createTransaction(username,title,price,currency,flag,discount){
 
 const getMyTransactions = asynchandler(async (req,res) => {
   const username = req.body.username
-  console.log(username)
+  //console.log(username)
   const refunds = await payment.findOne({username})
-  console.log(refunds)
+  //console.log(refunds)
   res.status(200).json(refunds)
+})
+
+const payByWallet = asynchandler(async (req,res) => {
+  const username = req.body.username
+  const price = req.body.price
+  const discount = req.body.discount
+  const title = req.body.title
+  const instructorName = req.body.ins
+  const org = req.body.org
+  const amount = req.body.amount
+
+  const nd = new Date()
+  
+  const payer = await payment.findOne({username})
+  
+  payer.wallet = Number(payer.wallet) - Number(price)
+  if(payer.transactions == null){
+    payer.transactions = {
+                paymentAmount:price,
+                CoursePaidFor:title,
+                Description:  `Payment for ${payer.userCurrency} ${price} for Course ${title}`,
+                DateOfPurchase: nd,
+                CurrencyOfPurchase:payer.userCurrency
+    }
+  }else{
+    payer.transactions.push({
+                paymentAmount:price,
+                CoursePaidFor:title,
+                Description:  `Payment for ${payer.userCurrency} ${price} for Course ${title}`,
+                DateOfPurchase: nd,
+                CurrencyOfPurchase:payer.userCurrency
+    })
+  }
+  console.log("Payer : "+payer)
+  const payer1 = await payment.findOneAndUpdate({username},payer)
+  createInstructorTransaction(instructorName,title,org,discount,amount)
+  
+  res.status(200).json(payer1)
 })
 
 
@@ -485,7 +523,8 @@ module.exports = {
     
     checkout,
     createTransaction,
-    getMyTransactions
+    getMyTransactions,
+    payByWallet
     
     
     

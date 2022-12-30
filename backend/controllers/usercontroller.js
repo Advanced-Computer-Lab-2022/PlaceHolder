@@ -395,10 +395,10 @@ const registerCourse = asynchandler(async (req,res) => {
     
     const username = JSON.parse(JSON.stringify(req.body.username));
     const courseName = JSON.parse(JSON.stringify(req.body.courseName))
-    console.log(username)
-    console.log(courseName)
+    //console.log(username)
+    //console.log(courseName)
     const user2 = await user.findOne({username})
-    console.log(user2)
+    //console.log(user2)
     let _user2 = {...user2}
     //console.log(_user2)
     
@@ -416,14 +416,14 @@ const registerCourse = asynchandler(async (req,res) => {
         })
     }
     
-    console.log(user2)
+    //console.log(user2)
     
     const user3 = await user.findOneAndUpdate({username},user2)
     const title = courseName
     const course1 = await course.findOne({title})
     course1.NumberOfUsers = Number(course1.NumberOfUsers) + 1
     const course2 = await course.findOneAndUpdate({title},{$set:course1})
-    console.log(user3)
+   // console.log(user3)
     
     
 })
