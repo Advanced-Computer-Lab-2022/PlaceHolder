@@ -1,6 +1,6 @@
 # LearnMore.com Online Learning Platform
 
-LearnMore.com is an online learning platform developed during the ACL course in the Guc in 2022 . The Main purpose of this website is for students to buy courses and take them online just like udemy and coursera and others. 
+LearnMore.com is an online learning platform developed during the ACL course in the GUC in 2022 . The Main purpose of this website is for students to buy courses and take them online just like udemy and coursera and others. 
 
 ## Motivation
 
