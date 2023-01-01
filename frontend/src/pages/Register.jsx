@@ -73,7 +73,7 @@ function Register() {
             }
 
             if(isSuccess || user){
-                navigate('/' + user.role)
+                navigate('/')
                 toast.success('Logged In !')
             }
 

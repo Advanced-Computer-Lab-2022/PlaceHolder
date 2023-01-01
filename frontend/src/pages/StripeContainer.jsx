@@ -261,6 +261,9 @@ function StripeContainer() {
   const nd = new Date()
   var ed = null;
   useEffect(() => {
+    if(!user | !user.role == 'trainee'){
+      navigate('/')
+    }
 
     if (!window.document.getElementById("stripe-script")) {
       var s = window.document.createElement("script");

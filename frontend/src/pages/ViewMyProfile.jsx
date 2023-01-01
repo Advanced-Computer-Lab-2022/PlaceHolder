@@ -5,6 +5,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
 import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset12, pay } from '../features/auth/authSlice'
 import {getMyTransactions} from '../features/payment/paymentSlice'
+import logo from "../components/img/user1.png"
 
 
 function ViewMyProfile() {
@@ -91,7 +92,7 @@ function ViewMyProfile() {
             dispatch(refreshuser(usernameData))
             toast.success('Bio Changed')
         }
-        navigate('/'+user.role)
+        navigate('/')
         if(!changed){
             toast.success('No Data Changed!')
         }
@@ -132,21 +133,26 @@ function ViewMyProfile() {
      }
   return (<>
   <div className='container border'>
+    <br></br>
+  <h3 className='text-center'><b>My Profile</b> </h3>
         {(user.email != null)?(<> 
+        <div className="row">
+            <div className="col-6">
+                <img src={logo} className="img-thumbnail rounded-0" width={250} height={250}/>
+                <br></br>
+                <h4 className=''> <b>{user.firstName}  {user.lastName}</b></h4>
+                <h5><b>@{user.username}</b></h5>
+            </div>
+            <div className="col-6">
+            {(user.role == "instructor")?(<> <h4><b>Email : </b></h4>  <input contentEditable='true' name='email' placeholder={user.email} onChange={handleEmail} value={email.email}></input></>):(<><h4><b>Email : {user.email} </b></h4> </>)}
         
-            <h5 className='text-center'>My Profile</h5>
-            <div>
-        User Name : {user.username}
         <br></br>
-        {(user.role == "instructor")?(<>Email : <input contentEditable='true' name='email' placeholder={user.email} onChange={handleEmail} value={email.email}></input></>):(<>Email : {user.email}</>)}
-        
+       <h4><b>Country : {user.country}</b></h4>  
         <br></br>
-        Country : {user.country}
-        <br></br>
-        Profile Type : {user.role}
+        <h4><b>Profile Type : {user.role}</b></h4>
         <br></br>
         {(user.role == "instructor")?(<>
-            Biography: <input contentEditable='true' name='minibio' placeholder={user.minibio} onChange={handleminibio} value={minibio.minibio}></input>
+           <h4><b>Biography:</b></h4>  <input contentEditable='true' name='minibio' placeholder={user.minibio} onChange={handleminibio} value={minibio.minibio}></input>
             
         </>):(<></>)}
         
@@ -155,12 +161,12 @@ function ViewMyProfile() {
            
         </>):(<></>)}
         <br></br>
-        {(user.role == 'trainee' | user.role == 'instructor')?(<>        My Wallet : {Math.trunc(payment.payment.wallet)} {payment.payment.userCurrency}  
+        {((user.role == 'trainee' | user.role == 'instructor' ) & payment.payment != null)?(<>       <h4><b>My Wallet : {Math.trunc(payment.payment.wallet)} {payment.payment.userCurrency}</b></h4>   
 </>):(<></>)}
         
         </div>
    
-
+        </div>
     
         </>):(<></>)}
 
@@ -183,6 +189,12 @@ function ViewMyProfile() {
 
                 </div>)}
                 <br></br>
+            </div>
+           
+            <div>
+        
+        <br></br>
+        
                 {(user.role == 'trainee' | user.role == 'instructor')?(<> 
                     <button type='button' className='btn btn-primary' onClick={()=> setToggle1(!toggle1)}>View All Transactions</button>
 

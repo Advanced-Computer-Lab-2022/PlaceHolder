@@ -191,6 +191,24 @@ export const getCoursePage = createAsyncThunk(
   }
 )
 
+//get Most Popular
+export const getMostPop = createAsyncThunk(
+  'courses/getmostpop',
+  async (_, thunkAPI) => {
+    try {
+      
+      return await courseService.getMostPop()
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
 
 export const courseSlice = createSlice({
     name: 'course',
@@ -227,6 +245,19 @@ export const courseSlice = createSlice({
           state.courses = action.payload
         })
         .addCase(getCourses.rejected, (state, action) => {
+          state.isLoading = false
+          state.isError = true
+          state.message = action.payload
+        })
+        .addCase(getMostPop.pending, (state) => {
+          state.isLoading = true
+        })
+        .addCase(getMostPop.fulfilled, (state, action) => {
+          state.isLoading = false
+          state.isSuccess = true
+          state.courses = action.payload
+        })
+        .addCase(getMostPop.rejected, (state, action) => {
           state.isLoading = false
           state.isError = true
           state.message = action.payload

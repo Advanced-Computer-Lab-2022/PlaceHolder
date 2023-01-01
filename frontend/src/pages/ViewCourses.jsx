@@ -14,6 +14,7 @@ import{refreshuser, registerCourse,updateRating, updateRatingCourse, updateSubti
 import {createReport} from '../features/reports/reportSlice'
 import {createRefund, getMyRefund , reset1} from '../features/refunds/refundSlice'
 import "../components/Styling/Ratings.css"
+import "../components/Styling/EmbedResponsive.css"
 
 //import DatePicker from '../components/DatePicker'
 
@@ -33,6 +34,7 @@ function ViewCourses(){
     var flag6 = false;
     var courseprogress = 0;
     var tries = 1;
+    var WeAreonSub = 1;
     
     const[courses1 , setCourses] = useState();
     const {user} = useSelector((state) => state.auth)
@@ -412,7 +414,7 @@ switch (myCurrency) {
 
       dispatch(registerCourse(userData))
       dispatch(refreshuser(userData2))
-      navigate('/'+user.role)
+      navigate('/')
       toast.success("Registered To This Course Successfully!!")
     }
     function p1(courses,usercourses){
@@ -439,7 +441,7 @@ switch (myCurrency) {
 
        dispatch(updateRating(userData))
        
-       navigate('/'+user.role)
+       navigate('/')
        toast.success('Rating Added !')
   }
 
@@ -459,7 +461,7 @@ switch (myCurrency) {
 
      dispatch(updateRatingCourse(userData))
      
-     navigate('/'+user.role)
+     navigate('/')
      toast.success('Rating Added !')
 }
   const handleRating = (e) => {
@@ -544,9 +546,12 @@ switch (myCurrency) {
     
 
   }  
-  function checkquestionanswer(question){
+  function checkquestionanswer(subno,question){
+
     console.log(question)
     let _answers = [...answers]
+    //const subtindex = courses.subtitles.findIndex((subt) => subt._id === subid)
+    if(subno == WeAreonSub){
     for(var i =0;i<_answers.length;i++){
       if(_answers[i].question==question){
         //console.log("YESSSSSSSSSS")
@@ -560,7 +565,11 @@ switch (myCurrency) {
       }
     }
   }
-  
+  }
+  function submitAnswersChecker(){
+    setToggle(!toggle)
+    
+  }
   function rightanswers(){
     let _answers = [...answers]
     var total = 0;
@@ -574,13 +583,18 @@ switch (myCurrency) {
     return "You Got "+correct+" correct out of "+total+" questions!"
   }
   function displaysubtitle(sub){
+      WeAreonSub = sub.subtNo
        var a = [...user.courses]
        var currentsub = 0;
        a.map((course)=>{
           if(course.courseName == courses.title){
             currentsub = course.currentSubtitle
+            console.log(course.currentSubtitle)
           }
        })
+       console.log(currentsub)
+       console.log(sub.subtNo)
+       
        if(sub.subtNo == currentsub | sub.subtNo < currentsub){
         setcurrentsub(sub)
        }else{
@@ -694,9 +708,10 @@ switch (myCurrency) {
        }
      console.log("Current Subtitle : " + currentsub)
      dispatch(updateSubtitle(formData))
-     await delay(3000)
+     await delay(1000)
      dispatch(refreshuser(formData2))
-
+     setanswers('')
+     setToggle(!toggle)
      
      toast.success("Next Subtitle Unlocked!")
      var arrayLength=0;
@@ -870,7 +885,7 @@ function RequestAccess(){
   }
   dispatch(requestAccess(data))
   dispatch(updateRequests(data))
-  navigate('/'+user.role)
+  navigate('/')
   dispatch(refreshuser(data2))
   toast.success("Request Sent !")
 }
@@ -920,7 +935,7 @@ function SubmitReport(){
       course:courses.title
     }
     dispatch(createReport(data))
-    navigate('/'+user.role)
+    navigate('/')
     toast.success('Report Submitted ! Please Check Report Status for further updates')
   }
   
@@ -942,7 +957,7 @@ function SubmitRefund(){
       course:courses.title
     }
     dispatch(createRefund(data))
-    navigate('/'+user.role)
+    navigate('/')
     toast.success('Refund Submitted ! Please Check Wallet for further updates')
   }
   
@@ -971,7 +986,7 @@ function gotopaymentendpoint(){
           {checkcourseProgress()}
           <div className="container-fluid no-padding" style={{padding:4}}>
             <div className="row">
-            <div className="col-2">
+            <div className="col-2 bg-white">
               
               <div class="flex-column align-items-stretch flex-shrink-0 bg-white " >
                   <br></br>
@@ -1006,11 +1021,11 @@ function gotopaymentendpoint(){
                     <br></br>
                   <h5>Subtitles</h5>
                   <br></br>
-                  <div class="list-group list-group-flush border-bottom scrollarea">
+                  <div class="list-group list-group-flush">
         
                     {courses.subtitles.map((sub)=>{
                       return(
-                            <a onClick={()=>displaysubtitle(sub)} class="list-group-item list-group-item-action  py-3 lh-tight border" aria-current="true">
+                            <a onClick={()=>displaysubtitle(sub)} class="list-group-item list-group-item-action  py-3 lh-tight" aria-current="true">
                               <div class="d-flex w-100 align-items-center justify-content-between">
                                 <strong class="mb-1">{sub.subt}</strong>
                                 <small>{sub.totalh} hours</small>
@@ -1026,9 +1041,11 @@ function gotopaymentendpoint(){
                   <br>
                   </br>
                   <h5>Course Settings</h5>
-                  <div className="btn-group-vertical">
+                  <div className="text-center">
+                  <div className="btn-group-vertical text-center">
                     
           {(user.username == courses.instructorName)?(<>
+          
             <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayDiscount()}>Add Discount</button>
 
            </>):(<></>)}
@@ -1041,8 +1058,9 @@ function gotopaymentendpoint(){
                              
                            
                   </>):(<></>)}
-                  <br></br>
+                 
                   {(flag2!=true &  (user.role == 'trainee' | user.role == 'corporate trainee'))?(<>
+                  
                     <button type='button' className='btn btn-primary  btn-block' onClick={()=>displayRateACourse()}>Rate Course</button>
                              
                              
@@ -1071,6 +1089,7 @@ function gotopaymentendpoint(){
                      
                     </>):(<></>)}
                     </div>
+                    </div>
                     <br></br>
             </div>
             
@@ -1078,11 +1097,16 @@ function gotopaymentendpoint(){
             <div className="col-10">
             <div className="container">
             {(currentsub!=null)?(<>{(currentsub.displaydiscount != null)?(<>
+            <div className="card test2 border-primary text-center">
+              <div className="card-title"><b> Add Discount</b></div>
+              <div className="card-body">
             <input type="Number" className='form-control' placeholder='Enter Discount from 0 to 100' onChange={(e)=>addDiscountHandler(e)} name='amountOfDiscount'/>
             <br></br>
             <input type="Date" className='form-control' placeholder='YYYY-MM-DD' onChange={(e)=>addDiscountHandler(e)} name='ExpiryDate' />
             <br></br>
             <button type='button' className='btn btn-primary' onClick={()=>submitDiscount()}>Add Discount</button>
+            </div>
+            </div>
               </>):(<></>)}</>):(<></>)}
             {(currentsub!=null)?(<>{(currentsub.displayViewRating != null)?(<>
               {(courses.ratings != null)?(<>
@@ -1092,8 +1116,8 @@ function gotopaymentendpoint(){
                     return(
                         <>
                         <div className="row">
-                            <div class="card border-primary" style={{width:1310}} >
-                                <div class="card-header">User : {rate.userwhorated}</div>
+                            <div class="card border-primary test my-3">
+                                
                                     <div class="card-body">
                                       {(rate.userRate == 0)?(<>
                                         <><div>
@@ -1173,11 +1197,13 @@ function gotopaymentendpoint(){
             </div>
               
               </>):(<></>)}</>):(<></>)}
-            {(currentsub!=null)?(<>{(currentsub.displayRateACourse1 != null)?(<><div>
-              <h4>Rate Course :</h4> 
+            {(currentsub!=null)?(<>{(currentsub.displayRateACourse1 != null)?(<><div className='card test2 border-primary text-center'>
+
+               
               <br></br>
-              <h5>Please rate this course </h5>
-              <div class="rating"> 
+              <div className="card-title text-center"><h5>Please rate this course </h5></div>
+              <div className="card-body text-center">
+              <div class="rating test"> 
                   <input type="radio" name="ratingCourse" value="5" id="5" onChange={(e) =>handleCourseRating(e)}/><label for="5">☆</label> 
                   <input type="radio" name="ratingCourse" value="4" id="4" onChange={(e) =>handleCourseRating(e)}/><label for="4">☆</label> 
                   <input type="radio" name="ratingCourse" value="3" id="3" onChange={(e) =>handleCourseRating(e)}/><label for="3">☆</label> 
@@ -1188,19 +1214,23 @@ function gotopaymentendpoint(){
              <textarea placeholder={"Review "+courses.title} name="reviewCourse" onChange={handleCourseReview}></textarea>
              <br></br>
              <br></br>
-               <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button>
+               <button type='button' className='btn btn-primary' onClick={ratesubmitCourse}>Rate Course</button></div>
             </div>
               
               </>):(<></>)}</>):(<></>)}
               {(currentsub!=null)?(<>{(currentsub.problemDisplay != null)?(<>
+              <div className='card test2 border-primary text-center'>
+                <div className="card-title">
                 <h5 className='text-center'>Report A Problem</h5>
-                <form>
+                </div>
+                <div className="card-body text-center">
+                <form className='text-center justify-content-center'>
                 
-                    <div class="form-group col-md-6">
-                      <label for="inputCity">Report Message</label>
-                      <input type="text" class="form-control" name="ReportMsg" placeholder='Write Your Message Here' onChange={(e) => handleReport(e)}/>
+                    <div class="form-group col-md-6 text-center">
+                      <label for="inputCity" className='text-center'>Report Message</label>
+                      <input type="text" class="form-control text-center" name="ReportMsg" placeholder='Write Your Message Here' onChange={(e) => handleReport(e)}/>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 text-center">
                       <label for="inputState">Report Type</label>
                       <select id="inputState" class="form-control" name='ReportType' onChange={(e)=> handleReport(e)}>
                         <option selected>Choose...</option>
@@ -1212,7 +1242,8 @@ function gotopaymentendpoint(){
                     <br />
                     <button type='button' className='btn btn-primary' onClick={() => SubmitReport()}>Submit Report</button>
                 </form>
-              
+                </div>
+                </div>
               </>):(<></>)}</>):(<></>)}
               {(currentsub!=null)?(<>{(currentsub.refundDisplay != null)?(<>
                 <h5 className='text-center'>Request a refund </h5>
@@ -1244,9 +1275,9 @@ function gotopaymentendpoint(){
               <h2 className='text-center'><br></br>{currentsub.title}<br></br></h2>
               
               <div className="col-6">
-              <div class="embed-responsive embed-responsive-16by9 ">
-                      <iframe class="embed-responsive-item" width={600} height={600}  src={courses.preview} allowfullscreen></iframe>
-                    </div>
+                
+                  <iframe class="test" src={courses.preview} allowfullscreen></iframe>
+                
               </div>
               <div className="col-6 ">
               <img className="card-img-top" style={{ width: '100%', height: 300 }} src={courses.thumbnail} alt='No Thumbnail Avail' />
@@ -1367,18 +1398,18 @@ function gotopaymentendpoint(){
                 <hr />
                 <br></br>
                 <div className="row">
-                  <div className="col-10 " style={{padding:0}}>
+                  <div className="col-10 " style={{padding:8}}>
                   {currentsub.videos.map((v)=>{
                 return(
                   <>
-                  <div>
+                  
                     
-                    <div class="embed-responsive embed-responsive-21by9 ">
-                      <iframe class="embed-responsive-item" width={1035} height={700} src={v.url+"?autoplay=1"} allow='' allowfullscreen></iframe>
-                    </div>
-                    <br></br>
                     
-                    </div>
+                      <iframe class="test" src={v.url+"?autoplay=1"} allow='' allowfullscreen></iframe>
+                    
+                   
+                    
+                    
                     </>
                 )
               })}
@@ -1425,7 +1456,7 @@ function gotopaymentendpoint(){
                                      
                                       
                                       {!toggle && (<div>
-                                      {(checkquestionanswer(q.question)=="true")?(<>You Were Right</>):(<>You Were Wrong <br></br>
+                                      {(checkquestionanswer(currentsub.subtNo,q.question)=="true")?(<>You Were Right</>):(<>You Were Wrong <br></br>
                                       Correct Answer : {q.correctanswer}</>)}
                                     </div>)}
                                     
@@ -1451,7 +1482,7 @@ function gotopaymentendpoint(){
 
                 </div>
                 <br></br>
-                {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Submit My Answers</button></>):(<></>)}
+                {((user.role=='trainee' | user.role=='corporate trainee') & toggle)?(<><button type='button' className='btn btn-primary' onClick={() => submitAnswersChecker()}>Submit My Answers</button></>):(<></>)}
               <br></br>
               <br></br>
               <br></br>
@@ -1493,11 +1524,11 @@ function gotopaymentendpoint(){
 
 
 
-          <div className='container-fluid border'>
+          <div className='container-fluid border 'style={{padding:0}}>
             <div className="row">
-              <div className="col-md-1" >
+              <div className="col-2" >
                 <br />
-                <div class="d-flex flex-column align-items-left flex-shrink-0 bg-white " style={{width: 250 }}>
+                <div class="d-flex flex-column align-items-left flex-shrink-0 bg-white " style={{width: 250 , padding:0}}>
                     <h5>Subtitles</h5>
                     <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
@@ -1521,32 +1552,104 @@ function gotopaymentendpoint(){
                 </div>
             
           
-                <div className="col-md-11 ">
+                <div className="col-10 ">
                   <div className="container">
+                  <div className="row">
+                
+                <h2 className='text-center'><br></br>{courses.title}<br></br></h2>
+                
+                <div className="col-6">
+                  
+                    <iframe class="test" src={courses.preview} allowfullscreen></iframe>
+                  
+                </div>
+                <div className="col-6 ">
+                <img className="card-img-top" style={{ width: '100%', height: 300 }} src={courses.thumbnail} alt='No Thumbnail Avail' />
+                  <br></br>
+                  <br></br>
+                  <p className='h6'>{courses.summary}</p>
+                  <span class="badge rounded-pill bg-primary text-dark"><b>{courses.subject}</b></span>
+                  <br></br>
+                  <br></br>
+  
+                  <h6>Teached By : {courses.instructorName}</h6>
+                  
+                  {(Math.round(courses.courseRating)==0)?(<>
+                  <><div>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <small>({0})</small>   
+                                      </div></>
+                </>):(<>
+                
+                  {(Math.floor(courses.courseRating) == 1)?(<><div>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <small>({courses.totalratings})</small>   
+                                      </div></>):(Math.floor(courses.courseRating)==2)?(<><div>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <small>({courses.totalratings})</small>     
+                                      </div>
+                                      
+                                      </>):((Math.floor(courses.courseRating)==3)?(<><div>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className=''></FaStar>
+                                          <FaStar className=''></FaStar> 
+                                          <small>({courses.totalratings})</small>    
+                                      </div>
+                                      </>):(((Math.floor(courses.courseRating)==4)?(<><div>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className=''></FaStar>  
+                                          <small>({courses.totalratings})</small>   
+                                      </div>
+                                      </>):(<><div>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>
+                                          <FaStar className='checked'></FaStar>  
+                                          <small>({courses.totalratings})</small>   
+                                      </div></>))))}
+                </>)}
+                <br></br>
+                  <h6>Course Length : {courses.totalHours} Hours</h6>
+                  <br></br>
+  
+                  
+                  
+                </div>
+                </div>
+               
+                  
+  
+                  
+               
+              
+               <br></br> 
+              
+  
+  
                     
-                    <br />
-                    <h1 className='text-center'>
-                        {courses.title}
-                    </h1>
-                    <div className="col-4">
-                      aa
-                    </div>
-                    <div className="col-8">
-
-                    <b1>
-                        Instructor : {courses.instructorName}
-                        <br></br>
-                        Subject : {courses.subject}
-                        <br></br>
-                        Course Rating : {courses.courseRating}
-                        <br></br>
-                        Total Hours : {courses.totalHours}
-                        <br></br>
-                        Price : {courses.price}
-                    </b1>
-                    </div>
-                    
-                    <br></br>
+  
+          <br>
+          </br>
+          <br></br>
+          
                     {checkifasked()}
                     {(user!=null & (user.role == 'trainee' ))?(<button onClick={() => gotopaymentendpoint()} type='button' className='btn btn-primary'>Buy This Course Now!</button>  ):(<></>)}
                     {((flag6 & user.role == 'corporate trainee')?(<></>):(<>{(user!=null & (user.role == 'corporate trainee'))?(<button onClick={() =>RequestAccess()} type='button' className='btn btn-primary'>Request Access To This Course</button>):(<></>)}</>))}

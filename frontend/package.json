@@ -23,6 +23,7 @@
     "react-bootstrap-sidebar-menu": "^2.0.3",
     "react-credit-cards": "^0.8.3",
     "react-dom": "^18.2.0",
+    "react-elastic-carousel": "^0.11.5",
     "react-file-base64": "^1.0.3",
     "react-final-form": "^6.5.9",
     "react-icons": "^4.6.0",

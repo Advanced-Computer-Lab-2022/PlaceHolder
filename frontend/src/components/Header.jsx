@@ -5,10 +5,11 @@ import {useSelector, useDispatch} from 'react-redux'
 import {logout , reset12} from '../features/auth/authSlice'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
-import "./lib/animate/animate.min.css"
-import "./lib/owlcarousel/assets/owl.carousel.min.css"
 import ".//css/bootstrap.min.css"
 import ".//css/style.css"
+import "../components/lib/animate/animate.min.css"
+import "../components/lib/owlcarousel/assets/owl.carousel.min.css"
+
 
 
 
@@ -42,7 +43,7 @@ function Header() {
     }
 
     const gotoUserHomePage = () =>{
-        navigate('/'+user.role)
+        navigate('/')
     }
   return (<>
     
@@ -59,14 +60,8 @@ function Header() {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
 
     
-    <link href="lib/animate/animate.min.css" rel="stylesheet"/>
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"/>
+   
 
-    
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-
-    
-    <link href="css/style.css" rel="stylesheet"></link>
 
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-0 pe-5">
         <a onClick={gotoUserHomePage} class="navbar-brand ps-5 me-0">
@@ -85,7 +80,8 @@ function Header() {
                         
                     </div>
                 </div>
-                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>
+                {(user.role == "corporate trainee")?(<>                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>
+</>):(<></>)}
                 </>):(<>
                     
                 </>)}
@@ -117,7 +113,7 @@ function Header() {
                 </>):(<></>)}
                 {(user && (user.role == "instructor"))?(<>
                     <div class="nav-item dropdown">
-                    <a href="/courses" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><FaBook/>Courses</a>
+                    <a href="/courses" class="nav-link dropdown-toggle" onClick={gotocourses} data-bs-toggle="dropdown"><FaBook/>Courses</a>
                     <div class="dropdown-menu  m-0">
                         <a href="/viewmyCoursesIns" class="dropdown-item"><FaBookOpen/>My Courses</a>
                         <a href="/addcourse" class="dropdown-item"><FaBookOpen/> Add Course</a>

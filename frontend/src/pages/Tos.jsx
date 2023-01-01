@@ -19,7 +19,7 @@ function Tos() {
         }
 
         if(user && user.toscheck=='true'){
-            navigate('/'+user.role)
+            navigate('/')
             toast.error('Access Denied!')
         }
 
@@ -32,11 +32,12 @@ function Tos() {
         }
 
         dispatch(updatetos(userData))
-        navigate('/'+user.role)
+        navigate('/')
     }
   return (
     <>
     <>
+    <div className="container">
     <p><strong>Terms of Service</strong></p>
 <p>Our Terms of Service were last updated on [___DATE___].</p>
 <p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -182,9 +183,11 @@ You agree that the original English text shall prevail in the case of a dispute.
 <li>By sending us an email: [___WEBSITE_CONTACT_EMAIL___]</li>
 </ul>
 <p></p>
+</div>
     </>
    {(user.role=="instructor") ? (<div>
-    Terms of Instructor
+    Terms of Instructor:
+    I accept that the website owns 30% of any student enrolling in your course and you will follow the above.
    </div>):(<></>)}
 
 
@@ -198,7 +201,7 @@ You agree that the original English text shall prevail in the case of a dispute.
         </form>
 
     </section>
-
+    
     </>
   )
 }

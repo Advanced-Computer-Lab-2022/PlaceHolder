@@ -74,16 +74,19 @@ function CourseForm() {
 		setSubtitleList(_SubtitleList)
 	}
     
+    
 
     //handle add Subt
 	const handleAddSubt = () => {
-        i++;
+        
 		let _SubtitleList = [...SubtitleList]
+        var a =_SubtitleList.slice(-1)
+        
 		_SubtitleList.push({
             subt: "",
             description: "",
             totalh: "",
-            subtNo:i,
+            subtNo:a[0].subtNo + 1,
             exercises:[
                 {
                 question:"",
@@ -106,6 +109,7 @@ function CourseForm() {
             id:uuidv4(),
         })
 		setSubtitleList(_SubtitleList)
+        console.log(SubtitleList)
 	}
 
 
@@ -176,7 +180,7 @@ function CourseForm() {
         dispatch(createCourse(userData))
        
         setText('')
-        navigate('/'+user.role)
+        navigate('/')
         toast.success("Course Added!")
     }
     const onChange = (e) => {

@@ -35,13 +35,13 @@ function Login() {
             navigate('/tos')
         }else{
         if(isSuccess || user && user.role == "admin"){
-            navigate('/admin')   
+            navigate('/')   
         }
         else if(isSuccess || user && user.role == "instructor"){
-            navigate('/instructor')
+            navigate('/')
         }
         else if(isSuccess || user){
-            navigate('/trainee')
+            navigate('/')
         }
         }
 

@@ -20,6 +20,13 @@ const getCourses = async () => {
 return response.data
 }
 
+const getMostPop = async () => {
+  const response = await axios.get(API_URL + '/mostPop')
+
+
+return response.data
+}
+
 //Get All Instructor Courses
 const getCoursesIns = async (insdata) => {
   const response = await axios.post(API_URL + '/getinscourses',insdata)
@@ -103,7 +110,8 @@ const courseService = {
     getCertficate,
     sendEmailCert,
     requestAccess,
-    addMultipleDiscounts
+    addMultipleDiscounts,
+    getMostPop
 }
 
 export default courseService

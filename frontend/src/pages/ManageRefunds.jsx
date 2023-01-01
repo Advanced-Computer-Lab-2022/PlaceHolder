@@ -27,7 +27,7 @@ function ManageRefunds() {
             toast.error('Please Log In First!')
         }else if(user.role !== "admin" ){
             toast.error('not Authorized!')
-            navigate('/'+user.role)
+            navigate('/')
             
         }
         dispatch(getAll())
