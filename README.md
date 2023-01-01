@@ -78,6 +78,17 @@ standard
 19. alot of react sub libraries can be found in package.json in frontend folder
 20. redux
 
+## File Structure
+
+We Have to Main Files : 
+1. backend 
+2. frontend
+
+backend folder has the models , controllers , routes , server.js
+
+frontend folder has the pages and features containing all the redux states and the store.js , components folder containing styles,  images and much more.. 
+
+
 ## Extra Features
 
 1. Most Popular Courses Carousel
