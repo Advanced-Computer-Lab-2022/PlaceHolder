@@ -120,10 +120,10 @@ const AddDiscount = asyncHandler(async (req, res) => {
         ExpiryDate:ExpiryDate,
         amountOfDiscount:amountOfDiscount
     }
-    console.log(title)
-    console.log(newdiscount)
+    //console.log(title)
+    //console.log(newdiscount)
     const courses = await Course.findOneAndUpdate({title},newdiscount)
-    console.log(courses)
+    //console.log(courses)
     res.status(200).json(courses)
 })
 
@@ -158,6 +158,41 @@ const ViewCoursePage = asyncHandler(async (req, res) => {
     }
 })
 
+const sort_by = (field, reverse, primer) => {
+
+    const key = primer ?
+      function(x) {
+        return primer(x[field])
+      } :
+      function(x) {
+        return x[field]
+      };
+  
+    reverse = !reverse ? 1 : -1;
+  
+    return function(a, b) {
+      return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+    }
+  }
+
+const getMostPop = asyncHandler(async (req, res) => {
+    try{
+        const courses = await Course.find();
+        let array1 = [
+            ...courses,
+          ]
+          
+          var sorted = array1.sort(sort_by('NumberOfUsers', true, parseInt))
+          //console.log(sorted)
+          const first5 = sorted.slice(0,6)
+        res.status(200).json(first5);
+        
+    }
+    catch(err){
+        res.status(500).send("Error");
+    }
+})
+
 const GenerateCert = asyncHandler(async (req, res) => {
     const title = req.params.title
     const firstName = req.params.firstname
@@ -184,7 +219,7 @@ const GenerateCertEmail = asyncHandler(async (req, res) => {
     const username = req.body.username
     //console.log(LastName)
     const user1 = await user.findOne({username})
-    console.log(user1)
+    //console.log(user1)
     const link = 'http://localhost:8000/courses/certf/' + title+'/'+firstName+'/'+LastName
     var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -215,7 +250,7 @@ const GenerateCertEmail = asyncHandler(async (req, res) => {
     })
     user1.courses = a
     const user2 = await user.findOneAndUpdate({email},user1)
-    console.log(user2)
+    //console.log(user2)
     
 })
 
@@ -229,6 +264,7 @@ module.exports = {
     ViewCoursesTrainee,
     GenerateCert,
     GenerateCertEmail,
-    AddDiscountMultiple
+    AddDiscountMultiple,
+    getMostPop
     
 }

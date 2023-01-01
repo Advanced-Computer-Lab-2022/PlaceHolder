@@ -25,7 +25,7 @@ function ManageCourseRequests() {
             toast.error('Please Log In First!')
         }else if(user.role !== "admin" ){
             toast.error('not Authorized!')
-            navigate('/'+user.role)
+            navigate('/')
             
         }
         dispatch(getAll())
@@ -44,7 +44,7 @@ function ManageCourseRequests() {
 
         dispatch(grant(data))
         toast.success("Course "+title+" granted to "+user1)
-        navigate('/'+user.role)
+        navigate('/')
    } 
   return (
 

@@ -14,6 +14,7 @@ function ManageReports() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     var flag1 = false
+    var flagseen = false
     const {user} = useSelector((state) => state.auth)
     const {report} = useSelector(
         (state) => state.report
@@ -26,7 +27,7 @@ function ManageReports() {
             toast.error('Please Log In First!')
         }else if(user.role !== "admin" ){
             toast.error('not Authorized!')
-            navigate('/'+user.role)
+            navigate('/')
             
         }
         dispatch(getAll())
@@ -75,10 +76,10 @@ function ManageReports() {
     <h1 className='text-center'>
        Manage Reports
     </h1>
-    <div className="container-fluid border">
+    <div className="container-fluid " style={{padding:4}}>
         <div className="row">
-            <div className="col-2">
-                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white border" style={{width: 250 }}>
+            <div className="col-2" style={{padding:0}}>
+                <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white " style={{width: 250 , padding:0}}>
                     <h5>Reports</h5>
                     <br></br>
                     <div class="list-group list-group-flush border-bottom scrollarea">
@@ -149,7 +150,7 @@ function ManageReports() {
                                                     </div>
                                                     
                                                 </div>  
-                                    </>):(<><h5 className='text-center'>No Unseen Reports</h5></>)}
+                                    </>):(<></>)}
                                </>):(<></>)}
 
 
@@ -180,7 +181,7 @@ function ManageReports() {
                                                     
                                                 </div>  
                                     
-                                    </>):(<h5 className='text-center'>No Pending Reports</h5>)}
+                                    </>):(<></>)}
                                
                                </>):(<></>)}
 
@@ -214,7 +215,7 @@ function ManageReports() {
                                                     
                                                 </div>  
                                     
-                                    </>):(<h5 className='text-center'>No Resolved Reports</h5>)}
+                                    </>):(<></>)}
                                
                                </>):(<></>)}
                             </>

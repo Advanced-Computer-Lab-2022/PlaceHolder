@@ -74,16 +74,19 @@ function CourseForm() {
 		setSubtitleList(_SubtitleList)
 	}
     
+    
 
     //handle add Subt
 	const handleAddSubt = () => {
-        i++;
+        
 		let _SubtitleList = [...SubtitleList]
+        var a =_SubtitleList.slice(-1)
+        
 		_SubtitleList.push({
             subt: "",
             description: "",
             totalh: "",
-            subtNo:i,
+            subtNo:a[0].subtNo + 1,
             exercises:[
                 {
                 question:"",
@@ -106,6 +109,7 @@ function CourseForm() {
             id:uuidv4(),
         })
 		setSubtitleList(_SubtitleList)
+        console.log(SubtitleList)
 	}
 
 
@@ -176,7 +180,7 @@ function CourseForm() {
         dispatch(createCourse(userData))
        
         setText('')
-        navigate('/'+user.role)
+        navigate('/')
         toast.success("Course Added!")
     }
     const onChange = (e) => {
@@ -401,12 +405,12 @@ function CourseForm() {
                                             />
                                             <br></br>
                                         </div>
-                                        <button type="button" class="btn btn-primary"  onClick={() => addNewVideoinSubtitle(subt.id)}>
+                                        {/* <button type="button" class="btn btn-primary"  onClick={() => addNewVideoinSubtitle(subt.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
                                         </svg>
                                         Add Video
-                                    </button>
+                                    </button> */}
                                     <br></br>
                                     </div>
                                     <br></br>

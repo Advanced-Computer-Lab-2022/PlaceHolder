@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {FaUser} from 'react-icons/fa'
-import {adduser, reset} from '../features/auth/authSlice'
+import {adduser, reset12} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
 import CountryData from "../components/CountryData.json";
@@ -86,11 +86,11 @@ function AdminRegister() {
              toast.error('Please Log In First!')
             }else if((user.role !== "admin")){
              toast.error('not Authorized!')
-             navigate('/'+user.role)
+             navigate('/')
                     
                 }
 
-            dispatch(reset())
+            dispatch(reset12())
 
         }, [user, isError, isSuccess, message, navigate, dispatch])
 
@@ -138,21 +138,13 @@ function AdminRegister() {
 
   return (
     <>
-    <section className='heading'> 
-    <h1>
-            <FaUser/> Register a new user
-    </h1>
-        <p>
-            Please Fill All Fields Below
-        </p>
-    </section>
+    <div className="container">
+        <h2 className='text-center'>Add new user</h2>
 
-    <section className='form'>
         <form onSubmit={onSubmit}>
-
-
-        <div className="form-group">
-            <select className="form-control" id='role' name='role' onChange={handleChangeRole} value={searchRole}>
+            <div className="mb-3">
+                <label className='form-label'>Select Role</label>
+                <select className="form-select" id='role' name='role' onChange={handleChangeRole} value={searchRole}>
 
             <option value="" hidden>
             Please Select Role
@@ -163,64 +155,80 @@ function AdminRegister() {
         
 
             </select>
-            {/* <input type="text" className="form-control" id='role' name='role' value={role} placeholder='Register as' onChange={onChange}/> */}
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>Username</label>
             <input type="text" className="form-control" id='username' name='username' value={username} placeholder='Enter your username' onChange={onChange}/>
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>First Name</label>
             <input type="text" className="form-control" id='firstName' name='firstName' value={firstName} placeholder='Enter your first name' onChange={onChange}/>
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>Last Name</label>
             <input type="text" className="form-control" id='lastName' name='lastName' value={lastName} placeholder='Enter your last name' onChange={onChange}/>
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>Email</label>
             <input type="text" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>Password</label>
             <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange}/>
             </div>
-            <div className="form-group">
+
+            <div className="mb-3">
+            <label className='form-label'>Confirm Password</label>
             <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm your password' onChange={onChange}/>
             </div>
-            <div className="form-group">
-            <select className="form-control" id='gender' name='gender' onChange={handleChangeGender} value={searchGender}>
 
-                        <option value="" hidden>
-                        Please Select Gender
-                        </option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+            <div className="mb-3">
+            <label className='form-label'>Gender</label>
+            <select className="form-select" id='gender' name='gender' onChange={handleChangeGender} value={searchGender}>
+
+<option value="" hidden>
+Please Select Gender
+</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
 
 
-            </select>
+</select>
             </div>
-            <div className="form-group">
-            <select className="form-control" id='country' name='country' onChange={handleChange} value={searchCountry}>
 
-            <option value="" hidden>
-                 Please Select Country
-                </option>
-            {
-                countries.map((item) => {
-                  return (
-                    <option key={uuidv4()} value={item.country}>
-                      {item.country}
-                    </option>
-                  );
-                })
-            }
-            
-            </select>
+            <div className="mb-3">
+            <label className='form-label'>Country</label>
 
+            <select className="form-select" id='country' name='country' onChange={handleChange} value={searchCountry}>
 
+<option value="" hidden>
+     Please Select Country
+    </option>
+{
+    countries.map((item) => {
+      return (
+        <option key={uuidv4()} value={item.country}>
+          {item.country}
+        </option>
+      );
+    })
+}
+
+</select>
             </div>
-            <div className="form-group">
-                <button type='submit' className='btn btn-block'>Sumbit</button>
+            <div className="mb-3">
+            <button type='submit' className='btn btn-primary'>Sumbit</button>
             </div>
-        
+
         </form>
-    </section>
+    </div>
+
+   
     
     
     

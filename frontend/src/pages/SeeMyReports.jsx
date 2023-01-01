@@ -22,7 +22,7 @@ function SeeMyReports() {
             navigate('/login')
         }else if((user.role !== "instructor") && (user.role !== "trainee") && (user.role !== 'corporate trainee')){
             toast.error('not Authorized!')
-            navigate('/'+user.role)
+            navigate('/')
             
         }
         const data = {
@@ -51,7 +51,7 @@ function SeeMyReports() {
         }
         dispatch(updateFollowUpUser(data))
         toast.success('Follow Up Message Sent !')
-        navigate('/'+user.role)
+        navigate('/')
     }
 
   return (

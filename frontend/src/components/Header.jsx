@@ -2,9 +2,15 @@ import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaS
 import React from 'react'
 import {Link , useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import {logout , reset} from '../features/auth/authSlice'
+import {logout , reset12} from '../features/auth/authSlice'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.js'
+import ".//css/bootstrap.min.css"
+import ".//css/style.css"
+import "../components/lib/animate/animate.min.css"
+import "../components/lib/owlcarousel/assets/owl.carousel.min.css"
+
+
 
 
 function Header() {
@@ -14,7 +20,7 @@ function Header() {
 
     const onLogout = () => {
         dispatch(logout())
-        dispatch(reset())
+        dispatch(reset12())
         navigate('/')
     }
 
@@ -31,107 +37,117 @@ function Header() {
     const registerme = () =>{
         navigate('/register')
     }
-  return (
+
+    const gotocourses = () =>{
+        navigate('/courses')
+    }
+
+    const gotoUserHomePage = () =>{
+        navigate('/')
+    }
+  return (<>
     
-    <header class="p-1 text-bg-dark">
+    <link href="img/favicon.ico" rel="icon"/>
 
-        <div className='container-m '>
-            <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <img src='https://i.ibb.co/QD8SrHQ/pngfind-com-learning-png-656188.png' width='150' height='40'></img>
-                </a>
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href='/courses' class="nav-link px-2 text-white"><FaBook/>Courses</a></li>
-                {user && (user.role =="instructor") ? (<>
-                    <li><a href='/addcourse' class="nav-link px-2 text-white">
-                    <FaBookOpen/> Add Course
-                </a></li>
-                <li><a href='/viewMyReports' class="nav-link px-2 text-white">
-                            <FaClipboardList/> My Reports
-                            </a></li>
-                        </>
-                    ): (<></>)}
-                    {user && (user.role =='trainee' | user.role=='corporate trainee') ? (
-                        <>
-                            <li><a href='/viewmyCoursesTrainee' class="nav-link px-2 text-white">
-                            <FaBookOpen/> My Courses
-                            </a></li>
-                            <li><a href='/viewMyReports' class="nav-link px-2 text-white">
-                            <FaClipboardList/> My Reports
-                            </a></li>
-                        </>  
-                    ): (<></>)}
-                {user && (user.role =="admin") ? (<>
-                    <li><a href='/newusers' class="nav-link px-2 text-white">
-                     <FaUserPlus/>Add New Users
-                </a></li>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap"
+        rel="stylesheet"/>
 
-                    <li><a href='/manageRequests' class="nav-link px-2 text-white">
-                     <FaBook/>Manage Course Requests
-                </a></li>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
 
-                <li><a href='/manageReports' class="nav-link px-2 text-white">
-                     <FaClipboardList/>Manage Reports
-                </a></li>   
+    
+   
 
-                <li><a href='/manageRefunds' class="nav-link px-2 text-white">
-                     <FaCashRegister/>Manage Refunds
-                </a></li>  
-                <li><a href='/manageDiscounts' class="nav-link px-2 text-white">
-                     <FaPercentage/>Manage Discounts
-                </a></li> 
-                </>): (<></>)}
-                {user && (user.role =="instructor") ? (<>
-                    <li><a href='/viewmyCoursesIns'  class="nav-link px-2 text-white"> 
-                    <FaBook/> View My Courses
-                    </a></li>
 
-                    <li><a href='/viewmyRatingsIns'  class="nav-link px-2 text-white"> 
-                    <FaStar/> View My Ratings
-                    </a></li>
-                    </>  
-                    ): (<></>)}
-                          
-                    
-                </ul>
-                <div class="text-end">
-                {user ? (<>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <li><a href='/me'  class="nav-link px-2 text-white">
-                            <FaUser/>{user.username}
-                            </a></li>
-                            <li><button type="button" class="btn btn-warning" onClick={onLogout}>Logout</button></li>
-                         </ul>   
-                        </>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-0 pe-5">
+        <a onClick={gotoUserHomePage} class="navbar-brand ps-5 me-0">
+            <h1 class="text-white m-0">LearnMore.</h1>
+        </a>
+        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                {(user && (user.role == "corporate trainee" | user.role == "trainee"))?(<>
+                    <div class="nav-item dropdown">
+                    <a href="/courses" onClick={gotocourses} class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><FaBook/>Courses</a>
+                    <div class="dropdown-menu  m-0">
+                        <a href="/viewmyCoursesTrainee" class="dropdown-item"><FaBookOpen/>My Courses</a>
                         
-                    ) : (<>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><button type="button" class="btn btn-warning me-2" onClick={loginnow}>
-                             Login
-                        </button>
-                        </li>
-                        
-                    
-                        <li><button type="button" class="btn btn-warning me-2" onClick={registerme}>
-                             Sign-up
-                        </button>
-                        </li>
-                        </ul>
-                    </>)}
-                    
-                    
+                    </div>
                 </div>
+                {(user.role == "corporate trainee")?(<>                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>
+</>):(<></>)}
+                </>):(<>
+                    
+                </>)}
                 
-            
-            
+                {(user &&(user.role == "trainee"))?(<>
+                    <div class="nav-item dropdown">
+                    <a   class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><FaBook/>Services</a>
+                    <div class="dropdown-menu  m-0">
+                        <a href="/viewMyReports" class="dropdown-item"><FaClipboardList/>My Reports</a>
+                        
+                    </div>
+                </div>
+                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>
+                </>):(<></>)}
+
+                {(user && (user.role == "admin"))?(<>
+                    <a href="/courses" class="nav-item nav-link"><FaBook/>Courses</a>
+                    <div class="nav-item dropdown">
+                    <a  class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><FaBook/>Services</a>
+                    <div class="dropdown-menu  m-0">
+                        <a href="/newusers" class="dropdown-item"><FaUserPlus/>Add New Users</a>
+                        <a href="/manageRequests" class="dropdown-item"><FaBook/>Manage Course Requests</a>
+                        <a href="/manageReports" class="dropdown-item"><FaClipboardList/>Manage Reports</a>
+                        <a href="/manageRefunds" class="dropdown-item"><FaCashRegister/>Manage Refunds</a>
+                        <a href="/manageDiscounts" class="dropdown-item"><FaPercentage/>Manage Discounts</a>
+                    </div>
+                </div>
+                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>
+                </>):(<></>)}
+                {(user && (user.role == "instructor"))?(<>
+                    <div class="nav-item dropdown">
+                    <a href="/courses" class="nav-link dropdown-toggle" onClick={gotocourses} data-bs-toggle="dropdown"><FaBook/>Courses</a>
+                    <div class="dropdown-menu  m-0">
+                        <a href="/viewmyCoursesIns" class="dropdown-item"><FaBookOpen/>My Courses</a>
+                        <a href="/addcourse" class="dropdown-item"><FaBookOpen/> Add Course</a>
+                        
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a  class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><FaBook/>Services</a>
+                    <div class="dropdown-menu  m-0">
+                        <a href="/viewMyReports" class="dropdown-item"><FaClipboardList/>My Reports</a>
+                        <a href="/viewmyRatingsIns" class="dropdown-item"><FaStar/> View My Ratings</a>
+
+                    </div>
+                </div>
+                <a href="/me" class="nav-item nav-link"><FaUser/>{user.username}</a>      
+                </>):(<></>)}
+                {!user ? (<>
+                    <a href="/courses" class="nav-item nav-link"><FaBook/>Courses</a>
+
+                </>):(<></>)}
             </div>
+            {user ? (<>
+                <a class="btn btn-primary px-3 d-none d-lg-block" onClick={onLogout}>Logout</a>
+            </>):(<>
+                <a class="btn btn-primary px-3 d-none d-lg-block" onClick={loginnow}>Login</a>
+                &nbsp;
+                &nbsp;
+                 <a  class="btn btn-primary px-3 d-none d-lg-block" onClick={registerme}>Sign-Up</a>
+            </>)}
             
         </div>
-    </header>
+    </nav>
+    </>
+    
   )
 }
 

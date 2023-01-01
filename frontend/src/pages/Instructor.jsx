@@ -16,7 +16,7 @@ function Instructor() {
             navigate('/login')
         }else if((user.role !== "admin") && (user.role !== "instructor") ){
             toast.error('not Authorized!')
-            navigate('/'+user.role)
+            navigate('/')
             
         }
 

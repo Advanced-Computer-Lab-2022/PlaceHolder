@@ -8,7 +8,8 @@ const { ViewCourses,
         ViewCoursesTrainee,
         GenerateCert,
         GenerateCertEmail,
-        AddDiscountMultiple
+        AddDiscountMultiple,
+        getMostPop
                      } = require('../controllers/coursecontroller')
 
 const { protect } = require('../middleware/authMiddleware')
@@ -22,5 +23,6 @@ router.post('/adddiscount',AddDiscount)
 router.post('/adddiscountMult',AddDiscountMultiple)
 router.get('/certf/:title/:firstname/:lastname',GenerateCert)
 router.post('/certfEmail',GenerateCertEmail)
+router.get('/mostPop',getMostPop)
 
 module.exports = router

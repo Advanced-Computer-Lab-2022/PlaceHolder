@@ -1,5 +1,6 @@
-import { FaUserPlus } from 'react-icons/fa';
+
 import {  useSelector } from 'react-redux'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaBook , FaBookOpen, FaUserPlus , FaStar} from 'react-icons/fa'
 import { Link } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom'
 import React from 'react'
@@ -250,6 +251,23 @@ function CourseItem({ course }) {
   const navigate = useNavigate()
   const ed = new Date(course.ExpiryDate)
   const nd = new Date()
+  function getMonthString(num){
+    switch(num){
+      case 1 : return "Jan";
+      case 2 : return "Feb";
+      case 3 : return "March";
+      case 4 : return "April";
+      case 5 : return "May";
+      case 6 : return "June";
+      case 7 : return "July";
+      case 8 : return "Aug";
+      case 9 : return "Sep";
+      case 10 : return "Oct";
+      case 11 : return "Nov";
+      case 12 : return "Dec";
+
+    }
+  }
   
   if(user){
    myCurrency = findMyCurrency(user.country)
@@ -270,35 +288,94 @@ function CourseItem({ course }) {
 
   return (
     
-      <div class="col">
-          <div class="card shadow-sm">
-          {(course.thumbnail==null)?(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src="https://i.ibb.co/QD8SrHQ/pngfind-com-learning-png-656188.png" alt='No Thumbnail Avail' />):(<img className="bd-placeholder-img card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />)}
+    <>
+    
+      <div class="card">
           
-
+          {(course.thumbnail==null)?(<img className="card-img-top" style={{ width: '100%', height: 300 }} src="https://i.ibb.co/QD8SrHQ/pngfind-com-learning-png-656188.png" alt='No Thumbnail Avail' />):(<img className="card-img-top" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />)}
+          
+            
             <div class="card-body">
+              <h3 className='card-title text-center' style={{color:'orange'}}>{course.title}</h3>
               <p class="card-text">
-              <h2>{course.title}</h2>
+              
               <br></br>
-              Total Hours : {course.totalHours}
+              
               <br />
-              Course Rating : {course.courseRating}
-              <br></br>
+              {(Math.round(course.courseRating)==0)?(<>
+                <><div>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({0})</small>   
+                                    </div></>
+              </>):(<>
+              
+                {(Math.floor(course.courseRating) == 1)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({course.totalratings})</small>   
+                                    </div></>):(Math.floor(course.courseRating)==2)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <small>({course.totalratings})</small>     
+                                    </div>
+                                    
+                                    </>):((Math.floor(course.courseRating)==3)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>
+                                        <FaStar className=''></FaStar> 
+                                        <small>({course.totalratings})</small>    
+                                    </div>
+                                    </>):(((Math.floor(course.courseRating)==4)?(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className=''></FaStar>  
+                                        <small>({course.totalratings})</small>   
+                                    </div>
+                                    </>):(<><div>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>
+                                        <FaStar className='checked'></FaStar>  
+                                        <small>({course.totalratings})</small>   
+                                    </div></>))))}
+              </>)}
+              
+              
               {(Flag==true)?(<>
-              Discount : {course.amountOfDiscount}%
+              
+              
+              <s> {Math.trunc(CourseFinalPrice)}     </s><b>{Math.trunc(DiscountedPrice)} {myCurrency}</b>
               <br></br>
-              <s>Old Price : {CourseFinalPrice} {myCurrency}</s>
-              <br></br>
-              New Price : {DiscountedPrice} {myCurrency}
-              </>):(<> Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+              <small style={{color:'red'}}>{course.amountOfDiscount}% Ends on {new Date(course.ExpiryDate).getDay()} {getMonthString(new Date(course.ExpiryDate).getMonth())} {new Date(course.ExpiryDate).getFullYear()}</small>
+              {/* New Price : {DiscountedPrice} {myCurrency} */}
+              </>):(<>  {(CourseFinalPrice == 0)   ? ( <><b>Free</b></>
           
           ) : (<>
-             {CourseFinalPrice} {myCurrency}
+             <b>{Math.trunc(CourseFinalPrice)} {myCurrency}</b>
             </>
           )}</>)}
           <br></br>
-              #ofUsers:{course.NumberOfUsers}
+          <small>{course.totalHours} Hours</small> 
+          <br></br>
+              <small>Enrolled Students : {course.NumberOfUsers}</small> 
              
               </p>
+              
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary" onClick={gotocourse}> 
@@ -310,31 +387,22 @@ function CourseItem({ course }) {
               </div>
             </div>
           </div>
-        
-        
-        
-      
-      
-      {/* <h2>{course.title}</h2>
-      <img className="activator" style={{ width: '100%', height: 300 }} src={course.thumbnail} alt='No Thumbnail Avail' />
-      <br></br>
-      Total Hours : {course.totalHours}
-      <br />
-      Course Rating : {course.courseRating}
-      <br></br>
-        
-      Price :  {(CourseFinalPrice == 0)   ? ( <>Free</>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          &nbsp;
           
-        ) : (<>
-          {myCurrency} {CourseFinalPrice}
+      
+        
+        
           </>
-        )}
-      <button  className='view' >
-        <Link to={pathCourse}>
-         <FaUserPlus/>View Course
-        </Link>
-      </button> */}
-    </div>
+      
+     
+     
+    
   )
 }
 

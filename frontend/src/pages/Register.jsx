@@ -4,7 +4,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {toast} from 'react-toastify'
 import {FaUser} from 'react-icons/fa'
-import {register, reset} from '../features/auth/authSlice'
+import {register, reset12} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import CountrySelector from '../components/CountrySelector'
 import CountryData from "../components/CountryData.json";
@@ -73,11 +73,11 @@ function Register() {
             }
 
             if(isSuccess || user){
-                navigate('/' + user.role)
+                navigate('/')
                 toast.success('Logged In !')
             }
 
-            dispatch(reset())
+            dispatch(reset12())
 
         }, [user, isError, isSuccess, message, navigate, dispatch])
 

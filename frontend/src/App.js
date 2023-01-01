@@ -29,6 +29,7 @@ import SeeMyReports from './pages/SeeMyReports'
 import StripeContainer from './pages/StripeContainer'
 import ManageRefunds from './pages/ManageRefunds'
 import ManageDiscounts from './pages/ManageDiscounts'
+import Footer from './components/Footer'
 
 function App() {
   const delay = ms => new Promise(
@@ -66,7 +67,7 @@ function App() {
         <Route path='/manageDiscounts' element={<ManageDiscounts />} />
         <Route path='/viewMyReports' element={<SeeMyReports/>} />
       </Routes>
-    
+      <Footer/>
     </Router>
     <ToastContainer/>
     </>

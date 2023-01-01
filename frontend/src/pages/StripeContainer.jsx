@@ -12,6 +12,7 @@ import {
 import { useSelector , useDispatch} from "react-redux";
 import { pay, refreshuser, registerCourse } from "../features/auth/authSlice";
 import {getCoursePage} from "../features/courses/courseSlice"
+import {getMyTransactions,payByWallet} from "../features/payment/paymentSlice"
 import { toast } from "react-toastify";
 
 
@@ -256,7 +257,13 @@ function StripeContainer() {
     const dispatch = useDispatch()
 	const {user} = useSelector((state) => state.auth)
   const {courses} = useSelector((state)=>state.courses)
+  const {payment} = useSelector((state) => state.payment)
+  const nd = new Date()
+  var ed = null;
   useEffect(() => {
+    if(!user | !user.role == 'trainee'){
+      navigate('/')
+    }
 
     if (!window.document.getElementById("stripe-script")) {
       var s = window.document.createElement("script");
@@ -270,7 +277,13 @@ function StripeContainer() {
       };
       window.document.body.appendChild(s);
     }
+    const data = {
+      username:user.username
+    }
     dispatch(getCoursePage(title2))
+    dispatch(getMyTransactions(data))
+    ed = new Date(courses.ExpiryDate)
+     
   }, []);
   const [toggle, setToggle] = useState()
   
@@ -323,12 +336,39 @@ function StripeContainer() {
   function handleWallet(){
     setToggle("wallet")
   }
+
+  function PayWithWallet(price,discount,amount){
+    const data = {
+      username:user.username,
+      price:price,
+      discount:discount,
+      title:courses.title,
+      ins:courses.instructorName,
+      org:courses.price,
+      amount:amount
+      
+    }
+    dispatch(payByWallet(data))
+    const data2 = {
+      username:user.username,
+      courseName:title2
+     }
+     const data3 = {
+      username:user.username
+     }
+     dispatch(registerCourse(data2))
+     dispatch(refreshuser(data3))
+     toast.success('Course Purchased Succesfully!')
+     navigate('/viewcourse/'+title2)
+     dispatch(refreshuser(data3)) 
+      
+  }
   return (
 	<>
   <div className="container-fluid">
     <div className="row">
     <div className="col-8 border">
-      <h5 className="text-center">Checkout</h5>
+      <h1 className="text-center">Checkout</h1>
       <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">First name</label>
@@ -457,7 +497,48 @@ function StripeContainer() {
     </Styles>):(<></>)}
     {(toggle == "wallet")?(
       <>
-      Pay With Wallet
+      <div className="container">
+        <h5>Pay With Wallet</h5>
+        {(payment.wallet != null)?(<>You Currently Have {Math.trunc(payment.wallet)} {payment.userCurrency}
+        {(courses.ExpiryDate != null)?(<>
+        {(new Date(courses.ExpiryDate).valueOf()>=nd.valueOf())?(<>
+          {(payment.wallet >= (CoursePriceConvertor(findMyCurrency(user.country),courses.price) - (CoursePriceConvertor(findMyCurrency(user.country),courses.price) * courses.amountOfDiscount/100)) )?(<>
+        <br></br>
+        Remaining Balance : {Math.trunc(payment.wallet - (CoursePriceConvertor(findMyCurrency(user.country),courses.price) - (CoursePriceConvertor(findMyCurrency(user.country),courses.price) * courses.amountOfDiscount/100)))} {payment.userCurrency}
+        <br></br>
+        <br></br>
+        <button type="button" className="btn btn-primary" onClick={()=>PayWithWallet((CoursePriceConvertor(findMyCurrency(user.country),courses.price) - (CoursePriceConvertor(findMyCurrency(user.country),courses.price) * courses.amountOfDiscount/100)),true,courses.amountOfDiscount)}>Pay</button>
+        <br></br>
+        </>):(<>You Dont Have Enough Money in your wallet please pay by card</>)}
+
+
+        </>):(<>
+          {(payment.wallet >= CoursePriceConvertor(findMyCurrency(user.country),courses.price) )?(<>
+        <br></br>
+        Remaining Balance : {Math.trunc(payment.wallet - CoursePriceConvertor(findMyCurrency(user.country),courses.price))} {payment.userCurrency}
+        <br></br>
+        <br></br>
+        <button type="button" className="btn btn-primary" onClick={()=>PayWithWallet(CoursePriceConvertor(findMyCurrency(user.country),courses.price),false,0)}>Pay</button>
+        <br></br>
+        </>):(<>You Dont Have Enough Money in your wallet please pay by card</>)}
+        
+        </>)}
+        
+        </>):(<>
+          {(payment.wallet >= CoursePriceConvertor(findMyCurrency(user.country),courses.price) )?(<>
+        <br></br>
+        Remaining Balance : {Math.trunc(payment.wallet - CoursePriceConvertor(findMyCurrency(user.country),courses.price))} {payment.userCurrency}
+        <br></br>
+        <br></br>
+        <button type="button" className="btn btn-primary" onClick={()=>PayWithWallet(CoursePriceConvertor(findMyCurrency(user.country),courses.price),false,0)}>Pay</button>
+        <br></br>
+        </>):(<>You Dont Have Enough Money in your wallet please pay by card</>)}
+        </>)}
+        
+        </>):(<>Your Wallet is Empty</>)}
+
+      </div>
+      <br></br>
       </>
     ):(<></>)}
     
@@ -475,13 +556,40 @@ function StripeContainer() {
               <h6 class="my-0">{title2}</h6>
               <small class="text-muted">Course</small>
             </div>
-            <span class="text-muted">{findMyCurrency(user.country)}{CoursePriceConvertor(findMyCurrency(user.country),courses.price)}</span>
+            <span class="text-muted">{findMyCurrency(user.country)} {Math.trunc(CoursePriceConvertor(findMyCurrency(user.country),courses.price))}</span>
           </li>
           {console.log(courses.price)}
-          <li class="list-group-item d-flex justify-content-between">
+          {(courses.ExpiryDate != null)?(<>
+            
+            {(new Date(courses.ExpiryDate).valueOf()>=nd.valueOf())?(<>
+            <li class="list-group-item d-flex justify-content-between bg-light">
+          <div class="text-success">
+            <h6 class="my-0">Discount</h6>
+            <small>{courses.amountOfDiscount}%</small>
+          </div>
+          <span class="text-success">{Math.trunc((CoursePriceConvertor(findMyCurrency(user.country),courses.price) * courses.amountOfDiscount/100))}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
             <span>Total ({findMyCurrency(user.country)})</span>
-            <strong>{CoursePriceConvertor(findMyCurrency(user.country),courses.price)}</strong>
+            <strong>{Math.trunc(CoursePriceConvertor(findMyCurrency(user.country),courses.price) - (CoursePriceConvertor(findMyCurrency(user.country),courses.price) * courses.amountOfDiscount/100))}</strong>
           </li>
+          </>):(<>
+            <li class="list-group-item d-flex justify-content-between">
+            <span>Total ({findMyCurrency(user.country)})</span>
+            <strong>{Math.trunc(CoursePriceConvertor(findMyCurrency(user.country),courses.price))}</strong>
+          </li>
+          </>)}
+          </>):(<>
+            <li class="list-group-item d-flex justify-content-between">
+            <span>Total ({findMyCurrency(user.country)})</span>
+            <strong>{Math.trunc(CoursePriceConvertor(findMyCurrency(user.country),courses.price))}</strong>
+          </li>
+          </>)}
+
+          
+          
+          
+          
         </ul>
 
         
