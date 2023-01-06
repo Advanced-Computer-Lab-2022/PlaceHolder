@@ -271,6 +271,912 @@ An admin can :
 
 ```
 
+
+## Usage/Examples
+
+```javascript
+import React from 'react'
+import {useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useSelector , useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
+import CourseItem from '../components/CourseItem'
+import Spinner from '../components/Spinner'
+import { getCourses, reset } from '../features/courses/courseSlice'
+import axios from 'axios'
+import { useState } from 'react'
+import {FaArrowUp , FaArrowDown} from 'react-icons/fa'
+import { v4 as uuidv4 } from "uuid";
+import "../components/Styling/Stars.css"
+import ReactSlider from 'react-slider'
+import MultiRangeSlider from "../components/multiRangeSlider/MultiRangeSlider";
+
+
+
+import SubjectData from "../components/SubjectData.json";
+
+
+function SearchCourses() {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    var min1 = 0
+    var max1 = 0;
+    const {user} = useSelector((state) => state.auth)
+    const { courses, isLoading, isError, message } = useSelector(
+      (state) => state.courses
+    )
+
+
+      const [subjects , setSubject] = useState(SubjectData);
+      const [searchSubject, setSearchSubject] = useState();
+     const[courses1 , setCourses] = useState();
+     const[refresher,setrefresher] = useState();
+     
+     
+     
+    useEffect(() => {
+      if (isError) {
+        console.log(message)
+      }
+  
+      
+  
+      dispatch(getCourses())
+      
+      return () => {
+        dispatch(reset())
+      }
+    }, [user, navigate, isError, message, dispatch])
+  
+    if (isLoading) {
+      return <Spinner />
+    }
+
+
+    function filterContent1(courses, searchTerm){
+        
+      var result1 = []
+      console.log(searchTerm)
+      if(searchTerm==''){
+        result1 = courses
+      }
+      const result = courses.map((course)=>{
+          if(course.title == searchTerm | course.instructorName == searchTerm){
+            if(result1==null){
+              result1 = course
+            }else{
+              result1.push(course)
+            }
+          }
+      })
+      
+        return setCourses(result1)
+        
+    }
+
+    function filterContent2(courses, searchTerm){
+      
+      var result1 = []
+      const result = courses.map((course)=>{
+          if(course.subject == searchTerm){
+            if(result1==null){
+              result1 = course
+            }else{
+              result1.push(course)
+            }
+          }
+      })
+      
+      return setCourses(result1) 
+      
+  }
+
+  function filterContent3(courses, searchTerm){
+    
+    const result = courses.filter((course) => course.instructorName.includes(searchTerm))
+    
+    return setCourses(result)
+    
+}
+
+function filterContent4(courses, searchTerm){
+  var result1 = []
+  const result = courses.map((course)=>{
+      if(Number(course.courseRating)>=searchTerm){
+        if(result1==null){
+          result1 = course
+        }else{
+          result1.push(course)
+        }
+      }
+  })
+  
+  return setCourses(result1)
+  
+}
+
+
+function filterContent5(courses,min,max){
+  console.log(min)
+  console.log(max)
+  var result1 = []
+  const result = courses.map((course)=>{
+      if(Number(course.price)>=min & Number(course.price)<=max){
+        if(result1==null){
+          result1 = course
+        }else{
+          result1.push(course)
+        }
+      }
+  })
+  
+  return setCourses(result1)
+  
+}
+
+
+const sort_by = (field, reverse, primer) => {
+
+  const key = primer ?
+    function(x) {
+      return primer(x[field])
+    } :
+    function(x) {
+      return x[field]
+    };
+
+  reverse = !reverse ? 1 : -1;
+
+  return function(a, b) {
+    return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+  }
+}
+
+    
+  const SortPriceAscending = (e) => {
+
+   
+    console.log(courses)
+      let array1 = [
+        ...courses,
+      ]
+      console.log(array1)
+      var sorted = array1.sort(sort_by('price', false, parseInt))
+      console.log(sorted)
+      setCourses(sorted)
+
+
+
+
+
+
+
+  }
+
+  const SortPopAsc = (e) => {
+
+   
+    console.log(courses)
+      let array1 = [
+        ...courses,
+      ]
+      console.log(array1)
+      var sorted = array1.sort(sort_by('NumberOfUsers', false, parseInt))
+      console.log(sorted)
+      setCourses(sorted)
+
+
+
+
+
+
+
+  }
+
+  const SortPriceDescending = (e) => {
+
+   
+    console.log(courses)
+      let array1 = [
+        ...courses,
+      ]
+      console.log(array1)
+      var sorted = array1.sort(sort_by('price', true, parseInt))
+      console.log(sorted)
+      setCourses(sorted)
+
+
+
+
+
+
+
+  }
+
+  const SortPopDesc = (e) => {
+
+   
+    console.log(courses)
+      let array1 = [
+        ...courses,
+      ]
+      console.log(array1)
+      var sorted = array1.sort(sort_by('NumberOfUsers', true, parseInt))
+      console.log(sorted)
+      setCourses(sorted)
+
+
+
+
+
+
+
+  }
+
+  const SortRatingDescending = (e) => {
+
+   
+    console.log(courses)
+      let array1 = [
+        ...courses,
+      ]
+      console.log(array1)
+      var sorted = array1.sort(sort_by('courseRating', true, parseInt))
+      console.log(sorted)
+      setCourses(sorted)
+
+
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+   const  handleSearcher1 = (e) => {
+      const searchTerm = e.currentTarget.value
+     
+      axios.get('/courses/').then((res) => {
+        if(res.data) {
+          
+          filterContent1(res.data, searchTerm)
+        }
+      })
+    }
+
+
+    const  handleSearcher2 = (e) => {
+      setSearchSubject(e.target.value)
+      const searchTerm = e.currentTarget.value
+     
+      axios.get('/courses/').then((res) => {
+        if(res.data) {
+          
+          filterContent2(res.data, searchTerm)
+        }
+      })
+    }
+
+    const  handleSearcher3 = (e) => {
+      const searchTerm = e.currentTarget.value
+     
+      axios.get('/courses/').then((res) => {
+        if(res.data) {
+          
+          filterContent3(res.data, searchTerm)
+        }
+      })
+
+      
+    }
+    function refreshe1r(courses){
+      if(courses==null || getlength(courses)==1){
+        setrefresher(courses)
+        refreshe1r(courses)
+      }
+    }
+    
+   function getlength(courses){
+    let x =0
+    if(courses == null){
+      return 0
+    }else{
+      courses.map((course)=>{
+        x++
+      })
+      return x
+    }
+
+    
+
+
+
+   } 
+   const handleRating = (e) =>{
+    const rate = e.currentTarget.value
+   
+    axios.get('/courses/').then((res) => {
+      if(res.data) {
+        
+        filterContent4(res.data, rate)
+      }
+    })
+  }
+
+  function SortByPriceHandler(){
+    axios.get('/courses/').then((res) => {
+      if(res.data) {
+        
+        filterContent5(res.data,min1,max1)
+      }
+    })
+        
+      
+    
+  }
+
+
+  return (<>
+  
+    <>
+    {(courses!=null) ? (<>
+  
+      <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <h1 class="display-3 text-white animated slideInRight">Courses</h1>
+            
+        </div>
+    </div>
+      <div className="container-fluid">
+         <div className="row">
+            <div className="col-2">
+                <section>
+                    <section id="filters" data-auto-filter="true">
+                      <h5>Filters</h5>
+                      <section className="mb-4">
+                        
+                  <h6 className="font-weight-bold mb-3">Course Rating</h6>
+
+                  <div class="rating"> 
+                  <input type="radio" name="rating" value="5" id="5" onChange={handleRating}/><label for="5">☆</label> 
+                  <input type="radio" name="rating" value="4" id="4" onChange={handleRating}/><label for="4">☆</label> 
+                  <input type="radio" name="rating" value="3" id="3" onChange={handleRating}/><label for="3">☆</label> 
+                  <input type="radio" name="rating" value="2" id="2" onChange={handleRating}/><label for="2">☆</label> 
+                  <input type="radio" name="rating" value="1" id="1" onChange={handleRating}/><label for="1">☆</label>
+                </div>
+                <h6 className="font-weight-bold mb-3">Subject</h6>
+                <select className="form-control" id='subject' name='subject' onChange={handleSearcher2} value={searchSubject}>
+
+                    <option value="" hidden>
+                        Please Select Subject
+                    </option>
+                    {
+                        subjects.map((item) => {
+                        return (
+                            <option key={uuidv4()} value={item.subject}>
+                                {item.subject}
+                    </option>
+                                );
+                                                })
+                    }          
+
+                    </select>
+                    <br></br>
+                    <h6 className="font-weight-bold mb-3">Search</h6>      
+                    <input type="text" className="form-control" id='search' name='search' placeholder='Search Courses' onChange={handleSearcher1}/>
+                    <br></br>
+                    <h6 className="font-weight-bold mb-3">Sort Price<button type="button" onClick={SortByPriceHandler} class="btn btn-outline-secondary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                      </svg>
+                  <span class="visually-hidden">Button</span>
+                </button></h6>
+                    <MultiRangeSlider
+                          min={0}
+                          max={1000}
+                          onChange={({ min, max }) => {min1 =min 
+                          max1 = max
+                          }}
+                        />
+                      <br></br>
+                      <br></br>
+                      
+                           
+                      <button type="button" class="btn btn-secondary" onClick={SortPriceDescending}>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                  </svg>
+                   </button>
+                   &nbsp;
+                   <button type="button" class="btn btn-secondary" onClick={SortPriceAscending}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
+                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                  </svg>
+              </button>
+              <h6 className="font-weight-bold mb-3">Sort By Popularity</h6>
+              <button type="button" class="btn btn-secondary" onClick={()=>SortPopDesc()}>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                  </svg>
+                   </button>
+                   &nbsp;
+                   <button type="button" class="btn btn-secondary" onClick={()=>SortPopAsc()}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up" viewBox="0 0 16 16">
+                    <path d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                  </svg>
+              </button>
+                      
+                        
+                    
+                </section>
+                    </section>
+                </section>    
+            </div>
+            
+            <div className="col-10">
+            <div class="row row-cols-2 row-cols-md-2 g-4">
+                          
+            
+                      {(courses1!=null)   ? (<>
+            {console.log(courses1)}
+            {courses1.map((course) => (
+            
+              <CourseItem key={course._id} course={course} />
+            ))}
+
+          </>
+          ) : ((courses!=null) ? ((Array.isArray(courses)?(<>
+          {courses.map((course) => (
+          <CourseItem key={course._id} course={course} />
+          ))}
+          </>):(<></>))) : (<></>)
+
+          )}
+   
+  
+    
+  
+ 
+</div>
+
+            </div>
+               
+         </div>
+      
+      </div> 
+                     
+      
+      
+
+    
+    </>) : (<></>)}
+  
+    </>
+    </>
+  )
+}
+
+export default SearchCourses
+```
+
+```javascript
+import React from 'react'
+import {useEffect,useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useSelector,useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
+import { refreshuser, updateEmail,updateBio,updatePassword,logout,reset12, pay } from '../features/auth/authSlice'
+import {getMyTransactions} from '../features/payment/paymentSlice'
+import logo from "../components/img/user1.png"
+
+
+function ViewMyProfile() {
+    const[refresher,setrefresher] = useState();
+    const navigate = useNavigate()
+    var flag = false
+    var counter = 1;
+    const dispatch = useDispatch()
+    const {user} = useSelector((state) => state.auth)
+    const payment = useSelector((state) => state.payment)
+    var email11 = user.email
+    const [email,setEmail] = useState({
+        email:email11
+    });
+    const [minibio,setminibio] = useState({
+        minibio:user.minibio
+    });
+    
+
+    useEffect(() => {
+
+        if(!user){
+            navigate('/login')
+            toast.error('Please Log In First!')
+        }else{
+            var data = {
+                username:user.username
+            }
+            console.log(data)
+            dispatch(getMyTransactions(data))
+        }
+        
+
+    },[user,navigate])
+
+    const [password,setPassword] = useState({
+        password:''
+    })
+    const [confirmpass,setConfirmpass] = useState({
+        confirmpass:''
+    })
+    const handlePassword = (e) => {
+        setPassword(e.target.value)
+     }
+
+     const handleconfirmpass = (e) => {
+        setConfirmpass(e.target.value)
+     } 
+    
+
+    function savenewinfo(){
+        var changed = false
+        const usernameData = {
+            username:user.username
+        }
+        console.log(email.email)
+        console.log(minibio)
+        if(email == ''){
+            toast.error('Email Cannot Be Empty')
+        }else{
+        if(email.email == user.email){
+            console.log("Email is Equal")
+        }else{
+            const userData = {
+                username:user.username,
+                email:email
+            }
+            changed=true
+            console.log(email)
+            dispatch(updateEmail(userData))
+            dispatch(refreshuser(usernameData))
+            toast.success('Email Changed!')
+        }
+        if(minibio == user.minibio){
+            console.log("Mini Bio Equal")
+        }else{
+            const userData = {
+                username:user.username,
+                minibio:minibio
+            }
+            changed=true
+            console.log(minibio)
+            dispatch(updateBio(userData))
+            dispatch(refreshuser(usernameData))
+            toast.success('Bio Changed')
+        }
+        navigate('/')
+        if(!changed){
+            toast.success('No Data Changed!')
+        }
+    }
+    }
+    const [toggle, setToggle] = useState(true)
+    const [toggle1, setToggle1] = useState(true)
+    // function DisplayPasswords(){
+    //     flag = true
+    //     forceUpdate()
+    //     console.log(flag)
+    // }
+    const handleEmail = (e) => {
+       setEmail(e.target.value)
+    }
+    function incrementCounter(){
+        counter++;
+    }
+    const handleminibio = (e) => {
+        setminibio(e.target.value)
+     }
+     function PasswordSolver(){
+        if(password == confirmpass){
+            
+            const userData = {
+                username:user.username,
+                password: password
+            }
+            dispatch(updatePassword(userData))
+            dispatch(logout())
+            dispatch(reset12())
+            navigate('/')
+            toast.success('Password Updated Please Log In Again With New Password!!')
+            
+        }else{
+            toast.error("Passwords Dont Match!")
+        }
+     }
+  return (<>
+  <div className='container border'>
+    <br></br>
+  <h3 className='text-center'><b>My Profile</b> </h3>
+        {(user.email != null)?(<> 
+        <div className="row">
+            <div className="col-6">
+                <img src={logo} className="img-thumbnail rounded-0" width={250} height={250}/>
+                <br></br>
+                <h4 className=''> <b>{user.firstName}  {user.lastName}</b></h4>
+                <h5><b>@{user.username}</b></h5>
+            </div>
+            <div className="col-6">
+            {(user.role == "instructor")?(<> <h4><b>Email : </b></h4>  <input contentEditable='true' name='email' placeholder={user.email} onChange={handleEmail} value={email.email}></input></>):(<><h4><b>Email : {user.email} </b></h4> </>)}
+        
+        <br></br>
+       <h4><b>Country : {user.country}</b></h4>  
+        <br></br>
+        <h4><b>Profile Type : {user.role}</b></h4>
+        <br></br>
+        {(user.role == "instructor")?(<>
+           <h4><b>Biography:</b></h4>  <input contentEditable='true' name='minibio' placeholder={user.minibio} onChange={handleminibio} value={minibio.minibio}></input>
+            
+        </>):(<></>)}
+        
+        {(user.role == "instructor" & (user.minibio != minibio.minibio) | (user.email != email.email))?(<>
+            <button onClick={savenewinfo}>Save</button>
+           
+        </>):(<></>)}
+        <br></br>
+        {((user.role == 'trainee' | user.role == 'instructor' ) & payment.payment != null)?(<>       <h4><b>My Wallet : {Math.trunc(payment.payment.wallet)} {payment.payment.userCurrency}</b></h4>   
+</>):(<></>)}
+        
+        </div>
+   
+        </div>
+    
+        </>):(<></>)}
+
+            <div>
+                <br></br>
+                <button type='button' className='btn btn-primary' onClick={() => setToggle(!toggle)}>Change My Password</button>
+                <br></br>
+                <br></br>
+                {!toggle && (<div>
+                    <br></br>
+                        New Password : <input type='password' onChange={handlePassword} value={password.password}></input>
+                        <br></br>
+                        <br></br>
+                        Confirm Password : <input type='password' onChange={handleconfirmpass} value={confirmpass.confirmpass}></input>
+                        <br></br>
+                        <br></br>
+                        <button type='button' className='btn btn-primary' onClick={PasswordSolver}>Save Password</button>
+
+
+
+                </div>)}
+                <br></br>
+            </div>
+           
+            <div>
+        
+        <br></br>
+        
+                {(user.role == 'trainee' | user.role == 'instructor')?(<> 
+                    <button type='button' className='btn btn-primary' onClick={()=> setToggle1(!toggle1)}>View All Transactions</button>
+
+                    {!toggle1 && (<div>
+                    <br></br>
+                       <h5>Transaction History</h5>
+                      < table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Course</th>
+      <th scope="col">Description</th>
+      <th scope="col">Date Of Purchase</th>
+    </tr>
+  </thead>
+  <tbody>
+    {payment.payment.transactions.map((trans)=>{
+        return(<>
+            <tr>
+            <th scope="row">{counter}</th>
+            <td>{trans.paymentAmount}</td>
+            <td><a href={"/viewcourse/"+trans.CoursePaidFor}>{trans.CoursePaidFor}</a></td>
+            <td>{trans.Description}</td>
+            <td>{trans.DateOfPurchase}</td>
+            </tr>
+            {incrementCounter()}
+            </>)
+    })}
+    
+  </tbody>
+</table>
+
+
+
+                </div>)}
+                
+                </>):(<></>)}
+
+            </div>
+            <br></br>
+    </div>
+    </>
+  )
+}
+
+export default ViewMyProfile
+```
+
+```javascript
+
+import {useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
+import {toast} from 'react-toastify'
+import {refreshuser} from '../features/auth/authSlice'
+import {getMostPop,reset} from '../features/courses/courseSlice'
+import Item from "../components/JS/Carousel"
+import Carousel from "react-elastic-carousel"
+import Logo from "../components/img/women2.jpg"
+import Women1 from "../components/img/women1.png"
+
+
+function Dashboard() {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const breakPoints = [
+      { width: 1, itemsToShow: 1 },
+      { width: 550, itemsToShow: 2 },
+      { width: 768, itemsToShow: 3 },
+      { width: 1200, itemsToShow: 4 },
+    ];
+
+    const {courses} = useSelector((state) => state.courses)
+    useEffect(() => {
+      dispatch(getMostPop())
+
+      return () => {
+        dispatch(reset())
+      }
+      
+
+  },[])
+
+  function gotocourse(course){
+    navigate('/viewcourse/'+course.title)
+  }
+  
+ 
+  return (
+    <>
+    {(courses != null)?(<>
+        <div class="container-fluid py-5 my-5 px-0">
+        <div class="text-center mx-auto wow fadeIn" data-wow-delay="0.1s">
+            <p class="fw-medium text-uppercase text-primary mb-2">Our Courses</p>
+            <h1 class="display-5 mb-5">See Our Most Popular Courses</h1>
+        </div>
+        </div>
+      <div className='container'>
+        <Carousel breakPoints={breakPoints}>
+          {courses.map((course)=>{
+            return(<>
+            <Item><img src={course.thumbnail} height={250} width={355} onClick={()=>gotocourse(course)}></img></Item>
+            </>)
+          })}
+          
+        </Carousel>
+      </div>
+      <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="row gx-3 h-100">
+                        <div class="col-6 align-self-start wow fadeInUp" data-wow-delay="0.1s">
+                            <img class="img-fluid" src={Logo}/>
+                        </div>
+                        <div class="col-6 align-self-end wow fadeInDown" data-wow-delay="0.1s">
+                            <img class="img-fluid" src={Women1}/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <p class="fw-medium text-uppercase text-primary mb-2">About Us</p>
+                    <h1 class="display-5 mb-4">We are trying to fully digitalize learning</h1>
+                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et
+                        eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
+                    </p>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0 bg-primary p-4">
+                            <h1 class="display-2">15</h1>
+                            <h5 class="text-white">Years of</h5>
+                            <h5 class="text-white">Experience</h5>
+                        </div>
+                        <div class="ms-4">
+                            <p><i class="fa fa-check text-primary me-2"></i>Computer Science</p>
+                            <p><i class="fa fa-check text-primary me-2"></i>Photography</p>
+                            <p><i class="fa fa-check text-primary me-2"></i>Engineering</p>
+                            <p><i class="fa fa-check text-primary me-2"></i>Law</p>
+                            <p class="mb-0"><i class="fa fa-check text-primary me-2"></i>much more..</p>
+                        </div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 btn-lg-square rounded-circle bg-primary">
+                                    <i class="fa fa-envelope-open text-white"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-2">Email us</p>
+                                    <h5 class="mb-0">info@learnmore.com</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 btn-lg-square rounded-circle bg-primary">
+                                    <i class="fa fa-phone-alt text-white"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-2">Call us</p>
+                                    <h5 class="mb-0">+012 345 6789</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid facts my-5 p-5">
+        <div class="row g-5">
+            <div class="col-md-6 col-xl-3 wow fadeIn" data-wow-delay="0.1s">
+                <div class="text-center border p-5">
+                    <i class="fa fa-certificate fa-3x text-white mb-3"></i>
+                    <h1 class="display-2 text-primary mb-0" data-toggle="counter-up">15</h1>
+                    <span class="fs-5 fw-semi-bold text-white">Years Experience</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 wow fadeIn" data-wow-delay="0.3s">
+                <div class="text-center border p-5">
+                    <i class="fa fa-users-cog fa-3x text-white mb-3"></i>
+                    <h1 class="display-2 text-primary mb-0" data-toggle="counter-up">100+</h1>
+                    <span class="fs-5 fw-semi-bold text-white">Instructors</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 wow fadeIn" data-wow-delay="0.5s">
+                <div class="text-center border p-5">
+                    <i class="fa fa-users fa-3x text-white mb-3"></i>
+                    <h1 class="display-2 text-primary mb-0" data-toggle="counter-up">9507+</h1>
+                    <span class="fs-5 fw-semi-bold text-white">Students</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 wow fadeIn" data-wow-delay="0.7s">
+                <div class="text-center border p-5">
+                    <i class="fa fa-check-double fa-3x text-white mb-3"></i>
+                    <h1 class="display-2 text-primary mb-0" data-toggle="counter-up">200+</h1>
+                    <span class="fs-5 fw-semi-bold text-white">Courses</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </>):(<></>)}
+   
+</>
+  )
+}
+
+export default Dashboard
+```
+
 ## API Reference
 
 <details>
@@ -4189,6 +5095,11 @@ to discuss what you would like to change.
 - [@mohamedElEraky]()
 - [@mohamedHazem]()
 - [@heneidy]()
+
+
+## Feedback
+
+If you have any feedback, please reach out to us at yahyaramzy@gmail.com
 
 
 
