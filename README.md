@@ -119,13 +119,200 @@ standard
 
 ## File Structure
 
-We Have to Main Files : 
-1. backend 
-2. frontend
-
-backend folder has the models , controllers , routes , server.js
-
-frontend folder has the pages and features containing all the redux states and the store.js , components folder containing styles,  images and much more.. 
+PlaceHolder-main/
+┣ backend/
+┃ ┣ config/
+┃ ┃ ┗ db.js
+┃ ┣ controllers/
+┃ ┃ ┣ corpcontroller.js
+┃ ┃ ┣ coursecontroller.js
+┃ ┃ ┣ dashcontroller.js
+┃ ┃ ┣ paymentcontroller.js
+┃ ┃ ┣ refundcontroller.js
+┃ ┃ ┣ reportcontroller.js
+┃ ┃ ┗ usercontroller.js
+┃ ┣ middleware/
+┃ ┃ ┗ authMiddleware.js
+┃ ┣ model/
+┃ ┃ ┣ copreqmodel.js
+┃ ┃ ┣ coursesmodel.js
+┃ ┃ ┣ paymentsModel.js
+┃ ┃ ┣ refundModel.js
+┃ ┃ ┣ reportmodel.js
+┃ ┃ ┗ usermodel.js
+┃ ┣ routes/
+┃ ┃ ┣ corpaccessroutes.js
+┃ ┃ ┣ coursesroute.js
+┃ ┃ ┣ dashroute.js
+┃ ┃ ┣ paymentroutes.js
+┃ ┃ ┣ refundroutes.js
+┃ ┃ ┣ reportroutes.js
+┃ ┃ ┗ userroutes.js
+┃ ┣ service/
+┃ ┃ ┣ fonts/
+┃ ┃ ┃ ┗ DancingScript-VariableFont_wght.ttf
+┃ ┃ ┣ images/
+┃ ┃ ┃ ┗ certificate.png
+┃ ┃ ┗ pdf-service.js
+┃ ┗ server.js
+┣ frontend/
+┃ ┣ public/
+┃ ┃ ┣ favicon.ico
+┃ ┃ ┣ index.html
+┃ ┃ ┣ logo192.png
+┃ ┃ ┣ logo512.png
+┃ ┃ ┣ manifest.json
+┃ ┃ ┗ robots.txt
+┃ ┣ src/
+┃ ┃ ┣ app/
+┃ ┃ ┃ ┗ store.js
+┃ ┃ ┣ components/
+┃ ┃ ┃ ┣ css/
+┃ ┃ ┃ ┃ ┣ bootstrap.min.css
+┃ ┃ ┃ ┃ ┗ style.css
+┃ ┃ ┃ ┣ img/
+┃ ┃ ┃ ┃ ┣ about-1.jpg
+┃ ┃ ┃ ┃ ┣ about-2.jpg
+┃ ┃ ┃ ┃ ┣ carousel-1.jpg
+┃ ┃ ┃ ┃ ┣ carousel-2.jpg
+┃ ┃ ┃ ┃ ┣ courosl.jpg
+┃ ┃ ┃ ┃ ┣ favicon.ico
+┃ ┃ ┃ ┃ ┣ feature.jpg
+┃ ┃ ┃ ┃ ┣ login-bg.mp4
+┃ ┃ ┃ ┃ ┣ project-1.jpg
+┃ ┃ ┃ ┃ ┣ project-2.jpg
+┃ ┃ ┃ ┃ ┣ project-3.jpg
+┃ ┃ ┃ ┃ ┣ project-4.jpg
+┃ ┃ ┃ ┃ ┣ project-5.jpg
+┃ ┃ ┃ ┃ ┣ project-6.jpg
+┃ ┃ ┃ ┃ ┣ service-1.jpg
+┃ ┃ ┃ ┃ ┣ service-2.jpg
+┃ ┃ ┃ ┃ ┣ service-3.jpg
+┃ ┃ ┃ ┃ ┣ team-1.jpg
+┃ ┃ ┃ ┃ ┣ team-2.jpg
+┃ ┃ ┃ ┃ ┣ team-3.jpg
+┃ ┃ ┃ ┃ ┣ testimonial-1.jpg
+┃ ┃ ┃ ┃ ┣ testimonial-2.jpg
+┃ ┃ ┃ ┃ ┣ testimonial-3.jpg
+┃ ┃ ┃ ┃ ┣ user1.png
+┃ ┃ ┃ ┃ ┣ women1.png
+┃ ┃ ┃ ┃ ┗ women2.jpg
+┃ ┃ ┃ ┣ JS/
+┃ ┃ ┃ ┃ ┣ Carousel.js
+┃ ┃ ┃ ┃ ┣ DoubleRange.js
+┃ ┃ ┃ ┃ ┣ main.js
+┃ ┃ ┃ ┃ ┣ OwlCarousel.js
+┃ ┃ ┃ ┃ ┣ sideBar.js
+┃ ┃ ┃ ┃ ┗ Youtube.js
+┃ ┃ ┃ ┣ lib/
+┃ ┃ ┃ ┃ ┣ animate/
+┃ ┃ ┃ ┃ ┣ counterup/
+┃ ┃ ┃ ┃ ┣ easing/
+┃ ┃ ┃ ┃ ┣ owlcarousel/
+┃ ┃ ┃ ┃ ┣ waypoints/
+┃ ┃ ┃ ┃ ┗ wow/
+┃ ┃ ┃ ┣ multiRangeSlider/
+┃ ┃ ┃ ┃ ┣ multiRangeSlider.css
+┃ ┃ ┃ ┃ ┣ MultiRangeSlider.js
+┃ ┃ ┃ ┃ ┗ Slider.js
+┃ ┃ ┃ ┣ scss/
+┃ ┃ ┃ ┃ ┣ bootstrap/
+┃ ┃ ┃ ┃ ┗ bootstrap.scss
+┃ ┃ ┃ ┣ Styling/
+┃ ┃ ┃ ┃ ┣ carousel.css
+┃ ┃ ┃ ┃ ┣ Divider.css
+┃ ┃ ┃ ┃ ┣ DoubleRange.css
+┃ ┃ ┃ ┃ ┣ EmbedResponsive.css
+┃ ┃ ┃ ┃ ┣ Login.css
+┃ ┃ ┃ ┃ ┣ Ratings.css
+┃ ┃ ┃ ┃ ┣ SideBar.css
+┃ ┃ ┃ ┃ ┗ Stars.css
+┃ ┃ ┃ ┣ Card.js
+┃ ┃ ┃ ┣ cardUtlis.js
+┃ ┃ ┃ ┣ CountryData.json
+┃ ┃ ┃ ┣ CountrySelector.jsx
+┃ ┃ ┃ ┣ CourseForm.jsx
+┃ ┃ ┃ ┣ CourseItem.jsx
+┃ ┃ ┃ ┣ DatePicker.jsx
+┃ ┃ ┃ ┣ Footer.jsx
+┃ ┃ ┃ ┣ Header.jsx
+┃ ┃ ┃ ┣ logo.png
+┃ ┃ ┃ ┣ PaymentForm.jsx
+┃ ┃ ┃ ┣ Spinner.jsx
+┃ ┃ ┃ ┣ Styles.js
+┃ ┃ ┃ ┗ SubjectData.json
+┃ ┃ ┣ features/
+┃ ┃ ┃ ┣ auth/
+┃ ┃ ┃ ┃ ┣ authService.js
+┃ ┃ ┃ ┃ ┗ authSlice.js
+┃ ┃ ┃ ┣ corpReq/
+┃ ┃ ┃ ┃ ┣ corpReqService.js
+┃ ┃ ┃ ┃ ┗ corpReqSlice.js
+┃ ┃ ┃ ┣ courses/
+┃ ┃ ┃ ┃ ┣ courseService.js
+┃ ┃ ┃ ┃ ┗ courseSlice.js
+┃ ┃ ┃ ┣ payment/
+┃ ┃ ┃ ┃ ┣ paymentService.js
+┃ ┃ ┃ ┃ ┗ paymentSlice.js
+┃ ┃ ┃ ┣ refunds/
+┃ ┃ ┃ ┃ ┣ refundService.js
+┃ ┃ ┃ ┃ ┗ refundSlice.js
+┃ ┃ ┃ ┣ reports/
+┃ ┃ ┃ ┃ ┣ reportService.js
+┃ ┃ ┃ ┃ ┗ reportSlice.js
+┃ ┃ ┃ ┗ search/
+┃ ┃ ┃   ┗ searchService.js
+┃ ┃ ┣ pages/
+┃ ┃ ┃ ┣ AddCourse.jsx
+┃ ┃ ┃ ┣ Admin.jsx
+┃ ┃ ┃ ┣ AdminRegister.jsx
+┃ ┃ ┃ ┣ Courses.jsx
+┃ ┃ ┃ ┣ dashboard.jsx
+┃ ┃ ┃ ┣ ForgotPassword.jsx
+┃ ┃ ┃ ┣ Instructor.jsx
+┃ ┃ ┃ ┣ Login.jsx
+┃ ┃ ┃ ┣ ManageCourseRequests.jsx
+┃ ┃ ┃ ┣ ManageDiscounts.jsx
+┃ ┃ ┃ ┣ ManageRefunds.jsx
+┃ ┃ ┃ ┣ ManageReports.jsx
+┃ ┃ ┃ ┣ Register.jsx
+┃ ┃ ┃ ┣ SearchCourses.jsx
+┃ ┃ ┃ ┣ SeeMyReports.jsx
+┃ ┃ ┃ ┣ StripeContainer.jsx
+┃ ┃ ┃ ┣ Tos.jsx
+┃ ┃ ┃ ┣ Trainee.jsx
+┃ ┃ ┃ ┣ ViewCourses.jsx
+┃ ┃ ┃ ┣ ViewMyCoursesIns.jsx
+┃ ┃ ┃ ┣ ViewMyCoursesTrainee.jsx
+┃ ┃ ┃ ┣ ViewMyProfile.jsx
+┃ ┃ ┃ ┗ ViewMyRatingsIns.jsx
+┃ ┃ ┣ App.js
+┃ ┃ ┣ App.test.js
+┃ ┃ ┣ index.css
+┃ ┃ ┣ index.js
+┃ ┃ ┣ reportWebVitals.js
+┃ ┃ ┗ setupTests.js
+┃ ┣ .gitignore
+┃ ┣ package-lock.json
+┃ ┣ package.json
+┃ ┗ README.md
+┣ ReadMeImages/
+┃ ┣ addcourse.png
+┃ ┣ Checkout.png
+┃ ┣ coursedash.png
+┃ ┣ courses.png
+┃ ┣ ManageDiscounts.png
+┃ ┣ mycourses.png
+┃ ┣ myProfile.png
+┃ ┣ Myreports.png
+┃ ┣ subexcer.png
+┃ ┗ Untitled.png
+┣ views/
+┃ ┗ index.ejs
+┣ .gitignore
+┣ package-lock.json
+┣ package.json
+┗ README.md
 
 
 ## Extra Features
