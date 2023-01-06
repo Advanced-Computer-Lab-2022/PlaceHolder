@@ -4157,6 +4157,26 @@ Tests:
 https://www.youtube.com/playlist?list=PLZlA0Gpn_vH_63f0HH-dUtkininO7GO6f
 
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`NODE_ENV`
+
+`PORT`
+
+`MONGO_URI`
+
+`JWT_SECRET`
+
+`EMAIL`
+
+`PASSWORD`
+
+`STRIPE_SECRET`
+
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
