@@ -4163,6 +4163,15 @@ Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
 
+## Authors
+
+- [@yahyaramzy](https://github.com/YahyaRamzy)
+- [@mohamedElEraky]()
+- [@mohamedHazem]()
+- [@heneidy]()
+
+
+
 ## Credits
 
 This website was created by Team PlaceHolder.
