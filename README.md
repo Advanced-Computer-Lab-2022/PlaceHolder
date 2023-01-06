@@ -1,3 +1,6 @@
+
+![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+
 # LearnMore.com Online Learning Platform
 
 LearnMore.com is an online learning platform developed during the ACL course in the GUC in 2022 . The Main purpose of this website is for students to buy courses and take them online just like udemy and coursera and others. 
@@ -118,7 +121,7 @@ standard
 20. redux
 
 ## File Structure
-# PlaceHolder-main
+<details><summary>Placeholder</summary>
 
 * [backend/](.\PlaceHolder-main\backend)
   * [config/](.\PlaceHolder-main\backend\config)
@@ -313,6 +316,9 @@ standard
 * [package-lock.json](.\PlaceHolder-main\package-lock.json)
 * [package.json](.\PlaceHolder-main\package.json)
 * [README.md](.\PlaceHolder-main\README.md)
+
+
+</details>
 
 
 
@@ -5290,6 +5296,18 @@ to discuss what you would like to change.
 If you have any feedback, please reach out to us at yahyaramzy@gmail.com
 
 
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+The Stripe CLI is licensed under the Apache License 2.0 and verified on GitHub as being owned by Stripe.
+
+## Used By
+
+This project is used by the following companies:
+
+- GUC
 
 ## Credits
 
