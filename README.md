@@ -118,201 +118,202 @@ standard
 20. redux
 
 ## File Structure
+# PlaceHolder-main
 
-PlaceHolder-main/
-┣ backend/
-┃ ┣ config/
-┃ ┃ ┗ db.js
-┃ ┣ controllers/
-┃ ┃ ┣ corpcontroller.js
-┃ ┃ ┣ coursecontroller.js
-┃ ┃ ┣ dashcontroller.js
-┃ ┃ ┣ paymentcontroller.js
-┃ ┃ ┣ refundcontroller.js
-┃ ┃ ┣ reportcontroller.js
-┃ ┃ ┗ usercontroller.js
-┃ ┣ middleware/
-┃ ┃ ┗ authMiddleware.js
-┃ ┣ model/
-┃ ┃ ┣ copreqmodel.js
-┃ ┃ ┣ coursesmodel.js
-┃ ┃ ┣ paymentsModel.js
-┃ ┃ ┣ refundModel.js
-┃ ┃ ┣ reportmodel.js
-┃ ┃ ┗ usermodel.js
-┃ ┣ routes/
-┃ ┃ ┣ corpaccessroutes.js
-┃ ┃ ┣ coursesroute.js
-┃ ┃ ┣ dashroute.js
-┃ ┃ ┣ paymentroutes.js
-┃ ┃ ┣ refundroutes.js
-┃ ┃ ┣ reportroutes.js
-┃ ┃ ┗ userroutes.js
-┃ ┣ service/
-┃ ┃ ┣ fonts/
-┃ ┃ ┃ ┗ DancingScript-VariableFont_wght.ttf
-┃ ┃ ┣ images/
-┃ ┃ ┃ ┗ certificate.png
-┃ ┃ ┗ pdf-service.js
-┃ ┗ server.js
-┣ frontend/
-┃ ┣ public/
-┃ ┃ ┣ favicon.ico
-┃ ┃ ┣ index.html
-┃ ┃ ┣ logo192.png
-┃ ┃ ┣ logo512.png
-┃ ┃ ┣ manifest.json
-┃ ┃ ┗ robots.txt
-┃ ┣ src/
-┃ ┃ ┣ app/
-┃ ┃ ┃ ┗ store.js
-┃ ┃ ┣ components/
-┃ ┃ ┃ ┣ css/
-┃ ┃ ┃ ┃ ┣ bootstrap.min.css
-┃ ┃ ┃ ┃ ┗ style.css
-┃ ┃ ┃ ┣ img/
-┃ ┃ ┃ ┃ ┣ about-1.jpg
-┃ ┃ ┃ ┃ ┣ about-2.jpg
-┃ ┃ ┃ ┃ ┣ carousel-1.jpg
-┃ ┃ ┃ ┃ ┣ carousel-2.jpg
-┃ ┃ ┃ ┃ ┣ courosl.jpg
-┃ ┃ ┃ ┃ ┣ favicon.ico
-┃ ┃ ┃ ┃ ┣ feature.jpg
-┃ ┃ ┃ ┃ ┣ login-bg.mp4
-┃ ┃ ┃ ┃ ┣ project-1.jpg
-┃ ┃ ┃ ┃ ┣ project-2.jpg
-┃ ┃ ┃ ┃ ┣ project-3.jpg
-┃ ┃ ┃ ┃ ┣ project-4.jpg
-┃ ┃ ┃ ┃ ┣ project-5.jpg
-┃ ┃ ┃ ┃ ┣ project-6.jpg
-┃ ┃ ┃ ┃ ┣ service-1.jpg
-┃ ┃ ┃ ┃ ┣ service-2.jpg
-┃ ┃ ┃ ┃ ┣ service-3.jpg
-┃ ┃ ┃ ┃ ┣ team-1.jpg
-┃ ┃ ┃ ┃ ┣ team-2.jpg
-┃ ┃ ┃ ┃ ┣ team-3.jpg
-┃ ┃ ┃ ┃ ┣ testimonial-1.jpg
-┃ ┃ ┃ ┃ ┣ testimonial-2.jpg
-┃ ┃ ┃ ┃ ┣ testimonial-3.jpg
-┃ ┃ ┃ ┃ ┣ user1.png
-┃ ┃ ┃ ┃ ┣ women1.png
-┃ ┃ ┃ ┃ ┗ women2.jpg
-┃ ┃ ┃ ┣ JS/
-┃ ┃ ┃ ┃ ┣ Carousel.js
-┃ ┃ ┃ ┃ ┣ DoubleRange.js
-┃ ┃ ┃ ┃ ┣ main.js
-┃ ┃ ┃ ┃ ┣ OwlCarousel.js
-┃ ┃ ┃ ┃ ┣ sideBar.js
-┃ ┃ ┃ ┃ ┗ Youtube.js
-┃ ┃ ┃ ┣ lib/
-┃ ┃ ┃ ┃ ┣ animate/
-┃ ┃ ┃ ┃ ┣ counterup/
-┃ ┃ ┃ ┃ ┣ easing/
-┃ ┃ ┃ ┃ ┣ owlcarousel/
-┃ ┃ ┃ ┃ ┣ waypoints/
-┃ ┃ ┃ ┃ ┗ wow/
-┃ ┃ ┃ ┣ multiRangeSlider/
-┃ ┃ ┃ ┃ ┣ multiRangeSlider.css
-┃ ┃ ┃ ┃ ┣ MultiRangeSlider.js
-┃ ┃ ┃ ┃ ┗ Slider.js
-┃ ┃ ┃ ┣ scss/
-┃ ┃ ┃ ┃ ┣ bootstrap/
-┃ ┃ ┃ ┃ ┗ bootstrap.scss
-┃ ┃ ┃ ┣ Styling/
-┃ ┃ ┃ ┃ ┣ carousel.css
-┃ ┃ ┃ ┃ ┣ Divider.css
-┃ ┃ ┃ ┃ ┣ DoubleRange.css
-┃ ┃ ┃ ┃ ┣ EmbedResponsive.css
-┃ ┃ ┃ ┃ ┣ Login.css
-┃ ┃ ┃ ┃ ┣ Ratings.css
-┃ ┃ ┃ ┃ ┣ SideBar.css
-┃ ┃ ┃ ┃ ┗ Stars.css
-┃ ┃ ┃ ┣ Card.js
-┃ ┃ ┃ ┣ cardUtlis.js
-┃ ┃ ┃ ┣ CountryData.json
-┃ ┃ ┃ ┣ CountrySelector.jsx
-┃ ┃ ┃ ┣ CourseForm.jsx
-┃ ┃ ┃ ┣ CourseItem.jsx
-┃ ┃ ┃ ┣ DatePicker.jsx
-┃ ┃ ┃ ┣ Footer.jsx
-┃ ┃ ┃ ┣ Header.jsx
-┃ ┃ ┃ ┣ logo.png
-┃ ┃ ┃ ┣ PaymentForm.jsx
-┃ ┃ ┃ ┣ Spinner.jsx
-┃ ┃ ┃ ┣ Styles.js
-┃ ┃ ┃ ┗ SubjectData.json
-┃ ┃ ┣ features/
-┃ ┃ ┃ ┣ auth/
-┃ ┃ ┃ ┃ ┣ authService.js
-┃ ┃ ┃ ┃ ┗ authSlice.js
-┃ ┃ ┃ ┣ corpReq/
-┃ ┃ ┃ ┃ ┣ corpReqService.js
-┃ ┃ ┃ ┃ ┗ corpReqSlice.js
-┃ ┃ ┃ ┣ courses/
-┃ ┃ ┃ ┃ ┣ courseService.js
-┃ ┃ ┃ ┃ ┗ courseSlice.js
-┃ ┃ ┃ ┣ payment/
-┃ ┃ ┃ ┃ ┣ paymentService.js
-┃ ┃ ┃ ┃ ┗ paymentSlice.js
-┃ ┃ ┃ ┣ refunds/
-┃ ┃ ┃ ┃ ┣ refundService.js
-┃ ┃ ┃ ┃ ┗ refundSlice.js
-┃ ┃ ┃ ┣ reports/
-┃ ┃ ┃ ┃ ┣ reportService.js
-┃ ┃ ┃ ┃ ┗ reportSlice.js
-┃ ┃ ┃ ┗ search/
-┃ ┃ ┃   ┗ searchService.js
-┃ ┃ ┣ pages/
-┃ ┃ ┃ ┣ AddCourse.jsx
-┃ ┃ ┃ ┣ Admin.jsx
-┃ ┃ ┃ ┣ AdminRegister.jsx
-┃ ┃ ┃ ┣ Courses.jsx
-┃ ┃ ┃ ┣ dashboard.jsx
-┃ ┃ ┃ ┣ ForgotPassword.jsx
-┃ ┃ ┃ ┣ Instructor.jsx
-┃ ┃ ┃ ┣ Login.jsx
-┃ ┃ ┃ ┣ ManageCourseRequests.jsx
-┃ ┃ ┃ ┣ ManageDiscounts.jsx
-┃ ┃ ┃ ┣ ManageRefunds.jsx
-┃ ┃ ┃ ┣ ManageReports.jsx
-┃ ┃ ┃ ┣ Register.jsx
-┃ ┃ ┃ ┣ SearchCourses.jsx
-┃ ┃ ┃ ┣ SeeMyReports.jsx
-┃ ┃ ┃ ┣ StripeContainer.jsx
-┃ ┃ ┃ ┣ Tos.jsx
-┃ ┃ ┃ ┣ Trainee.jsx
-┃ ┃ ┃ ┣ ViewCourses.jsx
-┃ ┃ ┃ ┣ ViewMyCoursesIns.jsx
-┃ ┃ ┃ ┣ ViewMyCoursesTrainee.jsx
-┃ ┃ ┃ ┣ ViewMyProfile.jsx
-┃ ┃ ┃ ┗ ViewMyRatingsIns.jsx
-┃ ┃ ┣ App.js
-┃ ┃ ┣ App.test.js
-┃ ┃ ┣ index.css
-┃ ┃ ┣ index.js
-┃ ┃ ┣ reportWebVitals.js
-┃ ┃ ┗ setupTests.js
-┃ ┣ .gitignore
-┃ ┣ package-lock.json
-┃ ┣ package.json
-┃ ┗ README.md
-┣ ReadMeImages/
-┃ ┣ addcourse.png
-┃ ┣ Checkout.png
-┃ ┣ coursedash.png
-┃ ┣ courses.png
-┃ ┣ ManageDiscounts.png
-┃ ┣ mycourses.png
-┃ ┣ myProfile.png
-┃ ┣ Myreports.png
-┃ ┣ subexcer.png
-┃ ┗ Untitled.png
-┣ views/
-┃ ┗ index.ejs
-┣ .gitignore
-┣ package-lock.json
-┣ package.json
-┗ README.md
+* [backend/](.\PlaceHolder-main\backend)
+  * [config/](.\PlaceHolder-main\backend\config)
+    * [db.js](.\PlaceHolder-main\backend\config\db.js)
+  * [controllers/](.\PlaceHolder-main\backend\controllers)
+    * [corpcontroller.js](.\PlaceHolder-main\backend\controllers\corpcontroller.js)
+    * [coursecontroller.js](.\PlaceHolder-main\backend\controllers\coursecontroller.js)
+    * [dashcontroller.js](.\PlaceHolder-main\backend\controllers\dashcontroller.js)
+    * [paymentcontroller.js](.\PlaceHolder-main\backend\controllers\paymentcontroller.js)
+    * [refundcontroller.js](.\PlaceHolder-main\backend\controllers\refundcontroller.js)
+    * [reportcontroller.js](.\PlaceHolder-main\backend\controllers\reportcontroller.js)
+    * [usercontroller.js](.\PlaceHolder-main\backend\controllers\usercontroller.js)
+  * [middleware/](.\PlaceHolder-main\backend\middleware)
+    * [authMiddleware.js](.\PlaceHolder-main\backend\middleware\authMiddleware.js)
+  * [model/](.\PlaceHolder-main\backend\model)
+    * [copreqmodel.js](.\PlaceHolder-main\backend\model\copreqmodel.js)
+    * [coursesmodel.js](.\PlaceHolder-main\backend\model\coursesmodel.js)
+    * [paymentsModel.js](.\PlaceHolder-main\backend\model\paymentsModel.js)
+    * [refundModel.js](.\PlaceHolder-main\backend\model\refundModel.js)
+    * [reportmodel.js](.\PlaceHolder-main\backend\model\reportmodel.js)
+    * [usermodel.js](.\PlaceHolder-main\backend\model\usermodel.js)
+  * [routes/](.\PlaceHolder-main\backend\routes)
+    * [corpaccessroutes.js](.\PlaceHolder-main\backend\routes\corpaccessroutes.js)
+    * [coursesroute.js](.\PlaceHolder-main\backend\routes\coursesroute.js)
+    * [dashroute.js](.\PlaceHolder-main\backend\routes\dashroute.js)
+    * [paymentroutes.js](.\PlaceHolder-main\backend\routes\paymentroutes.js)
+    * [refundroutes.js](.\PlaceHolder-main\backend\routes\refundroutes.js)
+    * [reportroutes.js](.\PlaceHolder-main\backend\routes\reportroutes.js)
+    * [userroutes.js](.\PlaceHolder-main\backend\routes\userroutes.js)
+  * [service/](.\PlaceHolder-main\backend\service)
+    * [fonts/](.\PlaceHolder-main\backend\service\fonts)
+      * [DancingScript-VariableFont_wght.ttf](.\PlaceHolder-main\backend\service\fonts\DancingScript-VariableFont_wght.ttf)
+    * [images/](.\PlaceHolder-main\backend\service\images)
+      * [certificate.png](.\PlaceHolder-main\backend\service\images\certificate.png)
+    * [pdf-service.js](.\PlaceHolder-main\backend\service\pdf-service.js)
+  * [server.js](.\PlaceHolder-main\backend\server.js)
+* [frontend/](.\PlaceHolder-main\frontend)
+  * [public/](.\PlaceHolder-main\frontend\public)
+    * [favicon.ico](.\PlaceHolder-main\frontend\public\favicon.ico)
+    * [index.html](.\PlaceHolder-main\frontend\public\index.html)
+    * [logo192.png](.\PlaceHolder-main\frontend\public\logo192.png)
+    * [logo512.png](.\PlaceHolder-main\frontend\public\logo512.png)
+    * [manifest.json](.\PlaceHolder-main\frontend\public\manifest.json)
+    * [robots.txt](.\PlaceHolder-main\frontend\public\robots.txt)
+  * [src/](.\PlaceHolder-main\frontend\src)
+    * [app/](.\PlaceHolder-main\frontend\src\app)
+      * [store.js](.\PlaceHolder-main\frontend\src\app\store.js)
+    * [components/](.\PlaceHolder-main\frontend\src\components)
+      * [css/](.\PlaceHolder-main\frontend\src\components\css)
+        * [bootstrap.min.css](.\PlaceHolder-main\frontend\src\components\css\bootstrap.min.css)
+        * [style.css](.\PlaceHolder-main\frontend\src\components\css\style.css)
+      * [img/](.\PlaceHolder-main\frontend\src\components\img)
+        * [about-1.jpg](.\PlaceHolder-main\frontend\src\components\img\about-1.jpg)
+        * [about-2.jpg](.\PlaceHolder-main\frontend\src\components\img\about-2.jpg)
+        * [carousel-1.jpg](.\PlaceHolder-main\frontend\src\components\img\carousel-1.jpg)
+        * [carousel-2.jpg](.\PlaceHolder-main\frontend\src\components\img\carousel-2.jpg)
+        * [courosl.jpg](.\PlaceHolder-main\frontend\src\components\img\courosl.jpg)
+        * [favicon.ico](.\PlaceHolder-main\frontend\src\components\img\favicon.ico)
+        * [feature.jpg](.\PlaceHolder-main\frontend\src\components\img\feature.jpg)
+        * [login-bg.mp4](.\PlaceHolder-main\frontend\src\components\img\login-bg.mp4)
+        * [project-1.jpg](.\PlaceHolder-main\frontend\src\components\img\project-1.jpg)
+        * [project-2.jpg](.\PlaceHolder-main\frontend\src\components\img\project-2.jpg)
+        * [project-3.jpg](.\PlaceHolder-main\frontend\src\components\img\project-3.jpg)
+        * [project-4.jpg](.\PlaceHolder-main\frontend\src\components\img\project-4.jpg)
+        * [project-5.jpg](.\PlaceHolder-main\frontend\src\components\img\project-5.jpg)
+        * [project-6.jpg](.\PlaceHolder-main\frontend\src\components\img\project-6.jpg)
+        * [service-1.jpg](.\PlaceHolder-main\frontend\src\components\img\service-1.jpg)
+        * [service-2.jpg](.\PlaceHolder-main\frontend\src\components\img\service-2.jpg)
+        * [service-3.jpg](.\PlaceHolder-main\frontend\src\components\img\service-3.jpg)
+        * [team-1.jpg](.\PlaceHolder-main\frontend\src\components\img\team-1.jpg)
+        * [team-2.jpg](.\PlaceHolder-main\frontend\src\components\img\team-2.jpg)
+        * [team-3.jpg](.\PlaceHolder-main\frontend\src\components\img\team-3.jpg)
+        * [testimonial-1.jpg](.\PlaceHolder-main\frontend\src\components\img\testimonial-1.jpg)
+        * [testimonial-2.jpg](.\PlaceHolder-main\frontend\src\components\img\testimonial-2.jpg)
+        * [testimonial-3.jpg](.\PlaceHolder-main\frontend\src\components\img\testimonial-3.jpg)
+        * [user1.png](.\PlaceHolder-main\frontend\src\components\img\user1.png)
+        * [women1.png](.\PlaceHolder-main\frontend\src\components\img\women1.png)
+        * [women2.jpg](.\PlaceHolder-main\frontend\src\components\img\women2.jpg)
+      * [JS/](.\PlaceHolder-main\frontend\src\components\JS)
+        * [Carousel.js](.\PlaceHolder-main\frontend\src\components\JS\Carousel.js)
+        * [DoubleRange.js](.\PlaceHolder-main\frontend\src\components\JS\DoubleRange.js)
+        * [main.js](.\PlaceHolder-main\frontend\src\components\JS\main.js)
+        * [OwlCarousel.js](.\PlaceHolder-main\frontend\src\components\JS\OwlCarousel.js)
+        * [sideBar.js](.\PlaceHolder-main\frontend\src\components\JS\sideBar.js)
+        * [Youtube.js](.\PlaceHolder-main\frontend\src\components\JS\Youtube.js)
+      * [lib/](.\PlaceHolder-main\frontend\src\components\lib)
+        * [animate/](.\PlaceHolder-main\frontend\src\components\lib\animate)
+        * [counterup/](.\PlaceHolder-main\frontend\src\components\lib\counterup)
+        * [easing/](.\PlaceHolder-main\frontend\src\components\lib\easing)
+        * [owlcarousel/](.\PlaceHolder-main\frontend\src\components\lib\owlcarousel)
+        * [waypoints/](.\PlaceHolder-main\frontend\src\components\lib\waypoints)
+        * [wow/](.\PlaceHolder-main\frontend\src\components\lib\wow)
+      * [multiRangeSlider/](.\PlaceHolder-main\frontend\src\components\multiRangeSlider)
+        * [multiRangeSlider.css](.\PlaceHolder-main\frontend\src\components\multiRangeSlider\multiRangeSlider.css)
+        * [MultiRangeSlider.js](.\PlaceHolder-main\frontend\src\components\multiRangeSlider\MultiRangeSlider.js)
+        * [Slider.js](.\PlaceHolder-main\frontend\src\components\multiRangeSlider\Slider.js)
+      * [scss/](.\PlaceHolder-main\frontend\src\components\scss)
+        * [bootstrap/](.\PlaceHolder-main\frontend\src\components\scss\bootstrap)
+        * [bootstrap.scss](.\PlaceHolder-main\frontend\src\components\scss\bootstrap.scss)
+      * [Styling/](.\PlaceHolder-main\frontend\src\components\Styling)
+        * [carousel.css](.\PlaceHolder-main\frontend\src\components\Styling\carousel.css)
+        * [Divider.css](.\PlaceHolder-main\frontend\src\components\Styling\Divider.css)
+        * [DoubleRange.css](.\PlaceHolder-main\frontend\src\components\Styling\DoubleRange.css)
+        * [EmbedResponsive.css](.\PlaceHolder-main\frontend\src\components\Styling\EmbedResponsive.css)
+        * [Login.css](.\PlaceHolder-main\frontend\src\components\Styling\Login.css)
+        * [Ratings.css](.\PlaceHolder-main\frontend\src\components\Styling\Ratings.css)
+        * [SideBar.css](.\PlaceHolder-main\frontend\src\components\Styling\SideBar.css)
+        * [Stars.css](.\PlaceHolder-main\frontend\src\components\Styling\Stars.css)
+      * [Card.js](.\PlaceHolder-main\frontend\src\components\Card.js)
+      * [cardUtlis.js](.\PlaceHolder-main\frontend\src\components\cardUtlis.js)
+      * [CountryData.json](.\PlaceHolder-main\frontend\src\components\CountryData.json)
+      * [CountrySelector.jsx](.\PlaceHolder-main\frontend\src\components\CountrySelector.jsx)
+      * [CourseForm.jsx](.\PlaceHolder-main\frontend\src\components\CourseForm.jsx)
+      * [CourseItem.jsx](.\PlaceHolder-main\frontend\src\components\CourseItem.jsx)
+      * [DatePicker.jsx](.\PlaceHolder-main\frontend\src\components\DatePicker.jsx)
+      * [Footer.jsx](.\PlaceHolder-main\frontend\src\components\Footer.jsx)
+      * [Header.jsx](.\PlaceHolder-main\frontend\src\components\Header.jsx)
+      * [logo.png](.\PlaceHolder-main\frontend\src\components\logo.png)
+      * [PaymentForm.jsx](.\PlaceHolder-main\frontend\src\components\PaymentForm.jsx)
+      * [Spinner.jsx](.\PlaceHolder-main\frontend\src\components\Spinner.jsx)
+      * [Styles.js](.\PlaceHolder-main\frontend\src\components\Styles.js)
+      * [SubjectData.json](.\PlaceHolder-main\frontend\src\components\SubjectData.json)
+    * [features/](.\PlaceHolder-main\frontend\src\features)
+      * [auth/](.\PlaceHolder-main\frontend\src\features\auth)
+        * [authService.js](.\PlaceHolder-main\frontend\src\features\auth\authService.js)
+        * [authSlice.js](.\PlaceHolder-main\frontend\src\features\auth\authSlice.js)
+      * [corpReq/](.\PlaceHolder-main\frontend\src\features\corpReq)
+        * [corpReqService.js](.\PlaceHolder-main\frontend\src\features\corpReq\corpReqService.js)
+        * [corpReqSlice.js](.\PlaceHolder-main\frontend\src\features\corpReq\corpReqSlice.js)
+      * [courses/](.\PlaceHolder-main\frontend\src\features\courses)
+        * [courseService.js](.\PlaceHolder-main\frontend\src\features\courses\courseService.js)
+        * [courseSlice.js](.\PlaceHolder-main\frontend\src\features\courses\courseSlice.js)
+      * [payment/](.\PlaceHolder-main\frontend\src\features\payment)
+        * [paymentService.js](.\PlaceHolder-main\frontend\src\features\payment\paymentService.js)
+        * [paymentSlice.js](.\PlaceHolder-main\frontend\src\features\payment\paymentSlice.js)
+      * [refunds/](.\PlaceHolder-main\frontend\src\features\refunds)
+        * [refundService.js](.\PlaceHolder-main\frontend\src\features\refunds\refundService.js)
+        * [refundSlice.js](.\PlaceHolder-main\frontend\src\features\refunds\refundSlice.js)
+      * [reports/](.\PlaceHolder-main\frontend\src\features\reports)
+        * [reportService.js](.\PlaceHolder-main\frontend\src\features\reports\reportService.js)
+        * [reportSlice.js](.\PlaceHolder-main\frontend\src\features\reports\reportSlice.js)
+      * [search/](.\PlaceHolder-main\frontend\src\features\search)
+        * [searchService.js](.\PlaceHolder-main\frontend\src\features\search\searchService.js)
+    * [pages/](.\PlaceHolder-main\frontend\src\pages)
+      * [AddCourse.jsx](.\PlaceHolder-main\frontend\src\pages\AddCourse.jsx)
+      * [Admin.jsx](.\PlaceHolder-main\frontend\src\pages\Admin.jsx)
+      * [AdminRegister.jsx](.\PlaceHolder-main\frontend\src\pages\AdminRegister.jsx)
+      * [Courses.jsx](.\PlaceHolder-main\frontend\src\pages\Courses.jsx)
+      * [dashboard.jsx](.\PlaceHolder-main\frontend\src\pages\dashboard.jsx)
+      * [ForgotPassword.jsx](.\PlaceHolder-main\frontend\src\pages\ForgotPassword.jsx)
+      * [Instructor.jsx](.\PlaceHolder-main\frontend\src\pages\Instructor.jsx)
+      * [Login.jsx](.\PlaceHolder-main\frontend\src\pages\Login.jsx)
+      * [ManageCourseRequests.jsx](.\PlaceHolder-main\frontend\src\pages\ManageCourseRequests.jsx)
+      * [ManageDiscounts.jsx](.\PlaceHolder-main\frontend\src\pages\ManageDiscounts.jsx)
+      * [ManageRefunds.jsx](.\PlaceHolder-main\frontend\src\pages\ManageRefunds.jsx)
+      * [ManageReports.jsx](.\PlaceHolder-main\frontend\src\pages\ManageReports.jsx)
+      * [Register.jsx](.\PlaceHolder-main\frontend\src\pages\Register.jsx)
+      * [SearchCourses.jsx](.\PlaceHolder-main\frontend\src\pages\SearchCourses.jsx)
+      * [SeeMyReports.jsx](.\PlaceHolder-main\frontend\src\pages\SeeMyReports.jsx)
+      * [StripeContainer.jsx](.\PlaceHolder-main\frontend\src\pages\StripeContainer.jsx)
+      * [Tos.jsx](.\PlaceHolder-main\frontend\src\pages\Tos.jsx)
+      * [Trainee.jsx](.\PlaceHolder-main\frontend\src\pages\Trainee.jsx)
+      * [ViewCourses.jsx](.\PlaceHolder-main\frontend\src\pages\ViewCourses.jsx)
+      * [ViewMyCoursesIns.jsx](.\PlaceHolder-main\frontend\src\pages\ViewMyCoursesIns.jsx)
+      * [ViewMyCoursesTrainee.jsx](.\PlaceHolder-main\frontend\src\pages\ViewMyCoursesTrainee.jsx)
+      * [ViewMyProfile.jsx](.\PlaceHolder-main\frontend\src\pages\ViewMyProfile.jsx)
+      * [ViewMyRatingsIns.jsx](.\PlaceHolder-main\frontend\src\pages\ViewMyRatingsIns.jsx)
+    * [App.js](.\PlaceHolder-main\frontend\src\App.js)
+    * [App.test.js](.\PlaceHolder-main\frontend\src\App.test.js)
+    * [index.css](.\PlaceHolder-main\frontend\src\index.css)
+    * [index.js](.\PlaceHolder-main\frontend\src\index.js)
+    * [reportWebVitals.js](.\PlaceHolder-main\frontend\src\reportWebVitals.js)
+    * [setupTests.js](.\PlaceHolder-main\frontend\src\setupTests.js)
+  * [.gitignore](.\PlaceHolder-main\frontend\.gitignore)
+  * [package-lock.json](.\PlaceHolder-main\frontend\package-lock.json)
+  * [package.json](.\PlaceHolder-main\frontend\package.json)
+  * [README.md](.\PlaceHolder-main\frontend\README.md)
+* [ReadMeImages/](.\PlaceHolder-main\ReadMeImages)
+  * [addcourse.png](.\PlaceHolder-main\ReadMeImages\addcourse.png)
+  * [Checkout.png](.\PlaceHolder-main\ReadMeImages\Checkout.png)
+  * [coursedash.png](.\PlaceHolder-main\ReadMeImages\coursedash.png)
+  * [courses.png](.\PlaceHolder-main\ReadMeImages\courses.png)
+  * [ManageDiscounts.png](.\PlaceHolder-main\ReadMeImages\ManageDiscounts.png)
+  * [mycourses.png](.\PlaceHolder-main\ReadMeImages\mycourses.png)
+  * [myProfile.png](.\PlaceHolder-main\ReadMeImages\myProfile.png)
+  * [Myreports.png](.\PlaceHolder-main\ReadMeImages\Myreports.png)
+  * [subexcer.png](.\PlaceHolder-main\ReadMeImages\subexcer.png)
+  * [Untitled.png](.\PlaceHolder-main\ReadMeImages\Untitled.png)
+* [views/](.\PlaceHolder-main\views)
+  * [index.ejs](.\PlaceHolder-main\views\index.ejs)
+* [.gitignore](.\PlaceHolder-main\.gitignore)
+* [package-lock.json](.\PlaceHolder-main\package-lock.json)
+* [package.json](.\PlaceHolder-main\package.json)
+* [README.md](.\PlaceHolder-main\README.md)
+
 
 
 ## Extra Features
